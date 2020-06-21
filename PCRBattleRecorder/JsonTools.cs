@@ -29,10 +29,10 @@ namespace PCRBattleRecorder
             return json;
         }
 
-        public object Decode(string json)
+        public JToken Decode(string json)
         {
-            var obj = JsonConvert.DeserializeObject(json);
-            return obj;
+            var jObj = JToken.Parse(json);
+            return jObj;
         }
 
         public T Decode<T>(string json)
