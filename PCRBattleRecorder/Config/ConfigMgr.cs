@@ -75,6 +75,28 @@ namespace PCRBattleRecorder.Config
             return path;
         }
 
+        public string PCRTemplateImgDir
+        {
+            get
+            {
+                var path = config.GetString("PCRTemplateImgDir");
+                if (!Directory.Exists(path))
+                {
+                    path = SetPCRTemplateImgDirByDialog();
+                }
+                return path;
+            }
+            set { config.Set("PCRTemplateImgDir", value); }
+        }
+
+        public string SetPCRTemplateImgDirByDialog()
+        {
+            var path = GetDirPathByDialog(Trans.T("请选择保存PCR样图的目录"));
+            PCRTemplateImgDir = path;
+            Save();
+            return path;
+        }
+
         public string GetFilePathByDialog(string title, string fileName, string filter)
         {
             var openDialog = new OpenFileDialog();
@@ -86,6 +108,17 @@ namespace PCRBattleRecorder.Config
                 throw new GetFilePathException(Trans.T("配置文件路径失败"));
             }
             return openDialog.FileName;
+        }
+
+        public string GetDirPathByDialog(string title)
+        {
+            var folderDialog = new FolderBrowserDialog();
+            folderDialog.Description = title;
+            if (folderDialog.ShowDialog() != DialogResult.OK)
+            {
+                throw new GetFilePathException(Trans.T("配置目录路径失败"));
+            }
+            return folderDialog.SelectedPath;
         }
 
         public void Save()
@@ -101,6 +134,21 @@ namespace PCRBattleRecorder.Config
                 var path = fileTools.JoinPath(dirPath, "error.log");
                 return path;
             }
+        }
+
+        public string CacheDir
+        {
+            get
+            {
+                var dirPath = fileTools.GetDirFullPath("cache");
+                return dirPath;
+            }
+        }
+
+        public string GetCacheFullPath(string relativePath)
+        {
+            var fullPath = fileTools.JoinPath(CacheDir, relativePath);
+            return fullPath;
         }
 
         public Size MumuViewportEmulatorSize

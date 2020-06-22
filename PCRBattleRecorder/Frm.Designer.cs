@@ -34,13 +34,18 @@
             this.menuRegionTaiwan = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRegionJapan = new System.Windows.Forms.ToolStripMenuItem();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSetAdbServerPath = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSetPCRTemplateDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuRegions});
+            this.menuRegions,
+            this.menuSettings});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(519, 25);
@@ -87,6 +92,37 @@
             this.txtOutput.TabIndex = 2;
             this.txtOutput.Text = "";
             // 
+            // menuSettings
+            // 
+            this.menuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuSetAdbServerPath,
+            this.menuSetTesseractPath,
+            this.menuSetPCRTemplateDir});
+            this.menuSettings.Name = "menuSettings";
+            this.menuSettings.Size = new System.Drawing.Size(59, 21);
+            this.menuSettings.Text = "设置(&S)";
+            // 
+            // menuSetTesseractPath
+            // 
+            this.menuSetTesseractPath.Name = "menuSetTesseractPath";
+            this.menuSetTesseractPath.Size = new System.Drawing.Size(222, 22);
+            this.menuSetTesseractPath.Text = "设置Tesseract主程序路径";
+            this.menuSetTesseractPath.Click += new System.EventHandler(this.menuSetTesseractPath_Click);
+            // 
+            // menuSetAdbServerPath
+            // 
+            this.menuSetAdbServerPath.Name = "menuSetAdbServerPath";
+            this.menuSetAdbServerPath.Size = new System.Drawing.Size(222, 22);
+            this.menuSetAdbServerPath.Text = "设置MumuAdbServer路径";
+            this.menuSetAdbServerPath.Click += new System.EventHandler(this.menuSetAdbServerPath_Click);
+            // 
+            // menuSetPCRTemplateDir
+            // 
+            this.menuSetPCRTemplateDir.Name = "menuSetPCRTemplateDir";
+            this.menuSetPCRTemplateDir.Size = new System.Drawing.Size(222, 22);
+            this.menuSetPCRTemplateDir.Text = "设置PCR样图目录";
+            this.menuSetPCRTemplateDir.Click += new System.EventHandler(this.menuSetPCRTemplateDir_Click);
+            // 
             // Frm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -115,6 +151,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuRegionTaiwan;
         private System.Windows.Forms.ToolStripMenuItem menuRegionJapan;
         private System.Windows.Forms.RichTextBox txtOutput;
+        private System.Windows.Forms.ToolStripMenuItem menuSettings;
+        private System.Windows.Forms.ToolStripMenuItem menuSetAdbServerPath;
+        private System.Windows.Forms.ToolStripMenuItem menuSetTesseractPath;
+        private System.Windows.Forms.ToolStripMenuItem menuSetPCRTemplateDir;
     }
 }
 

@@ -4,6 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PCRBattleRecorder.Config;
+using RawPoint = System.Drawing.Point;
+using EmulatorPoint = System.Drawing.Point;
+using OpenCvSharp;
 
 namespace PCRBattleRecorder
 {
@@ -20,6 +24,8 @@ namespace PCRBattleRecorder
             }
             return instance;
         }
+
+        private ConfigMgr configMgr = ConfigMgr.GetInstance();
 
         private MumuTools()
         {
@@ -73,6 +79,20 @@ namespace PCRBattleRecorder
                 throw new Exception(Trans.T("无法获取Mumu模拟器窗口尺寸"));
             }
             return viewportRect;
+        }
+
+        public EmulatorPoint GetEmulatorPoint(Vec2f pointRate)
+        {
+            var emulatorSize = configMgr.MumuViewportEmulatorSize;
+            var emulatorWid = (int)(1.0f * emulatorSize.Width * pointRate.Item0);
+            var emulatorHei = (int)(1.0f * emulatorSize.Height * pointRate.Item1);
+            return new EmulatorPoint(emulatorWid, emulatorHei);
+        }
+
+        public EmulatorPoint GetEmulatorPoint(RECT viewportRect, RawPoint point)
+        {
+            var pointRate = new Vec2f(1.0f * point.X / viewportRect.Width, 1.0f * point.Y / viewportRect.Height);
+            return GetEmulatorPoint(pointRate);
         }
     }
 }

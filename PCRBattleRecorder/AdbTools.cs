@@ -24,6 +24,7 @@ namespace PCRBattleRecorder
 
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private Tools tools = Tools.GetInstance();
+        private LogTools logTools = LogTools.GetInstance();
 
         private AdbTools()
         {
@@ -32,6 +33,7 @@ namespace PCRBattleRecorder
         public void ConnectToMumuAdbServer()
         {
             var output = RunCommand("connect 127.0.0.1:7555");
+            logTools.Info("ConnectToMumuAdbServer", output);
         }
 
         public string GetTapCommand(EmulatorPoint point)

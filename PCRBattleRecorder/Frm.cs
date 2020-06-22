@@ -26,12 +26,13 @@ namespace PCRBattleRecorder
         private void Frm_Load(object sender, EventArgs e)
         {
             RegisterLogEvents();
+            InitPathConfigs();
             RefreshRegions();
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
             //var rect = MumuTools.GetInstance().GetMumuRect();
-            
+            var path = PCRTools.GetInstance().GetTemplateImgPathOfRegion(PCRRegion.Mainland, "dasdsa.png");
         }
 
         void RegisterLogEvents()
@@ -42,11 +43,11 @@ namespace PCRBattleRecorder
 
         private void LogTools_OnInfo(string tag, string msg)
         {
-            txtOutput?.AppendLineThreadSafe($"[{tag}] msg", Color.Black);
+            txtOutput?.AppendLineThreadSafe($"[{tag}] {msg}", Color.Black);
         }
         private void LogTools_OnError(string tag, string msg)
         {
-            txtOutput?.AppendLineThreadSafe($"[{tag}] msg", Color.Red);
+            txtOutput?.AppendLineThreadSafe($"[{tag}] {msg}", Color.Red);
         }
 
         void RefreshRegions()
@@ -74,6 +75,28 @@ namespace PCRBattleRecorder
         {
             configMgr.PCRRegion = PCRRegion.Japan;
             RefreshRegions();
+        }
+
+        void InitPathConfigs()
+        {
+            var p1 = configMgr.MumuAdbServerPath;
+            var p2 = configMgr.TesseractShellPath;
+            var d1 = configMgr.PCRTemplateImgDir;
+        }
+
+        private void menuSetAdbServerPath_Click(object sender, EventArgs e)
+        {
+            configMgr.SetMumuAdbServerPathByDialog();
+        }
+
+        private void menuSetTesseractPath_Click(object sender, EventArgs e)
+        {
+            configMgr.SetTesseractShellPathByDialog();
+        }
+
+        private void menuSetPCRTemplateDir_Click(object sender, EventArgs e)
+        {
+            configMgr.SetPCRTemplateImgDirByDialog();
         }
     }
 }
