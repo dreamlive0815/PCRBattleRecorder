@@ -25,12 +25,16 @@ namespace PCRBattleRecorder
 
         public string Encode(object obj)
         {
-            var json = JsonConvert.SerializeObject(obj);
+            var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
             return json;
         }
 
         public JToken Decode(string json)
         {
+            if (string.IsNullOrEmpty(json))
+            {
+                json = "{}";
+            }
             var jObj = JToken.Parse(json);
             return jObj;
         }

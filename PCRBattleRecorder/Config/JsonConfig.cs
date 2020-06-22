@@ -1,23 +1,78 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PCRBattleRecorder.Config
 {
-    class JsonConfig
+    class JsonConfig : Config
     {
-        private string jsonPath;
+        private JsonTools jsonTools = JsonTools.GetInstance();
+        private string filePath;
 
-        public JsonConfig(string jsonPath)
+        public static JsonConfig FromString(string json)
         {
-            LoadFromFile(jsonPath);
+            var obj = new JsonConfig();
+            obj.LoadFromString(json);
+            return obj;
         }
 
-        private void LoadFromFile(string jsonPath)
+        public static JsonConfig FromFile(string filePath)
         {
+            var obj = new JsonConfig();
+            obj.LoadFromFile(filePath);
+            return obj;
+        }
 
+        private JsonConfig()
+        {
+        }
+
+        private void LoadFromString(string json)
+        {
+            var jObj = jsonTools.Decode(json);
+            foreach (var token in jObj)
+            {
+                if (!(token is JProperty)) continue;
+                var jPro = token as JProperty;
+                var key = jPro.Name;
+                var valToken = jPro.Value;
+                object val;
+                if (valToken.Type == JTokenType.String)
+                {
+                    val = valToken.ToObject<string>();
+                }
+                else
+                {
+                    val = valToken;
+                }
+                Set(key, val);
+            }
+        }
+
+        private void LoadFromFile(string filePath)
+        {
+            this.filePath = filePath;
+            var json = File.ReadAllText(filePath);
+            LoadFromString(json);
+        }
+
+        public void SaveAsFile(string filePath)
+        {
+            var dictionary = AsDictionary();
+            var json = jsonTools.Encode(dictionary);
+            File.WriteAllText(filePath, json);
+        }
+
+        public override void Save()
+        {
+            if (File.Exists(filePath))
+            {
+                SaveAsFile(filePath);
+            }
         }
     }
 }

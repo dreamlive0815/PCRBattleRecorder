@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,12 +35,17 @@ namespace PCRBattleRecorder.Config
             return false;
         }
 
-        public virtual void Set(string key, string value)
+        public virtual void Set(string key, object value)
         {
             container[key] = value;
         }
 
         public abstract void Save();
+
+        public virtual DataContainerType AsDictionary()
+        {
+            return container;
+        }
 
         public virtual IEnumerator<ItemType> GetEnumerator()
         {
