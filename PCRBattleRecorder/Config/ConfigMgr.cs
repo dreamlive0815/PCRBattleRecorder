@@ -138,13 +138,6 @@ namespace PCRBattleRecorder.Config
 
     }
 
-    class GetFilePathException : Exception
-    {
-        public GetFilePathException(string msg) : base(msg)
-        {
-        }
-    }
-
     enum PCRRegion
     {
         Mainland,

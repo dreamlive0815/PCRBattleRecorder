@@ -36,7 +36,7 @@ namespace PCRBattleRecorder
             OnError?.Invoke(tag, msg);
             if (writeIntoFile)
             {
-                AppendIntoFile(ConfigMgr.GetInstance().ErrorLogPath, msg);
+                AppendIntoFile(ConfigMgr.GetInstance().ErrorLogPath, $"[{tag}] {msg}");
             }
         }
 
@@ -48,8 +48,13 @@ namespace PCRBattleRecorder
         public void Error(string tag, Exception e)
         {
             var ex = e.InnerException ?? e;
-            if (IsSelfOrChildrenNoTrackTraceException(ex)) return;
-            Error(tag, ex.Message);
+
+            var noTrack = IsSelfOrChildrenNoTrackTraceException(ex);
+            Error(tag, ex.Message, !noTrack);
+            if (!noTrack)
+            {
+                Error(tag, ex.StackTrace);
+            }
         }
 
         public void Info(string tag, string msg)

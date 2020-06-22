@@ -21,5 +21,20 @@ namespace PCRBattleRecorder
         }
     }
 
+    class GetFilePathException : Exception
+    {
+        public GetFilePathException(string msg) : base(msg)
+        {
+        }
+    }
     
+
+    class ShellException : Exception
+    {
+        public ShellException(string msg) : base(msg)
+        {
+        }
+    }
+
+
 }

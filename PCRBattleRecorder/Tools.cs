@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,7 +28,31 @@ namespace PCRBattleRecorder
         {
         }
 
+        public string DoShell(string exePath, string arguments)
+        {
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = exePath,
+                Arguments = arguments,
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+            };
+            var proc = Process.Start(startInfo);
+            proc.WaitForExit();
+            var output = proc.StandardOutput.ReadToEnd();
+            var error = proc.StandardError.ReadToEnd().Trim();
+            if (!string.IsNullOrEmpty(error))
+            {
+                throw new ShellException(error);
+            }
+            return output;
+        }
+
     }
+
+    
 
     struct RECT
     {

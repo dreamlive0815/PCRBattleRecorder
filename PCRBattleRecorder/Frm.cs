@@ -28,10 +28,9 @@ namespace PCRBattleRecorder
             RegisterLogEvents();
             RefreshRegions();
 
-            var rect = MumuTools.GetInstance().GetMumuRect();
+            AdbTools.GetInstance().ConnectToMumuAdbServer();
 
-            var b = 0;
-            var a = 1 / b;
+            //var rect = MumuTools.GetInstance().GetMumuRect();
             
         }
 
