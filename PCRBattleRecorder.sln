@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRBattleRecorder", "PCRBattleRecorder\PCRBattleRecorder.csproj", "{C9325D5D-D1C8-4A1E-9A23-35490F5B1E5A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F19369E7-33D5-4335-8B79-31C163A117AA} = {F19369E7-33D5-4335-8B79-31C163A117AA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRTools", "PCRTools\PCRTools.csproj", "{F19369E7-33D5-4335-8B79-31C163A117AA}"
 EndProject
