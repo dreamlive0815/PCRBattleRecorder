@@ -19,6 +19,8 @@ namespace PCRBattleRecorder.Script
 
         public override int Interval { get; set; } = 500;
 
+        public override bool CanKeepOnWhenException { get; } = true;
+
         public override void OnStart(Bitmap viewportCapture, RECT viewportRect)
         {
             

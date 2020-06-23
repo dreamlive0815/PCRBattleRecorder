@@ -37,10 +37,10 @@
             this.menuSetAdbServerPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetPCRTemplateDir = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.menuScripts = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuShowViewportSizeScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +53,7 @@
             this.menuStopScript});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(519, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(677, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -70,21 +70,21 @@
             // menuRegionMainland
             // 
             this.menuRegionMainland.Name = "menuRegionMainland";
-            this.menuRegionMainland.Size = new System.Drawing.Size(152, 22);
+            this.menuRegionMainland.Size = new System.Drawing.Size(100, 22);
             this.menuRegionMainland.Text = "国服";
             this.menuRegionMainland.Click += new System.EventHandler(this.menuRegionMainland_Click);
             // 
             // menuRegionTaiwan
             // 
             this.menuRegionTaiwan.Name = "menuRegionTaiwan";
-            this.menuRegionTaiwan.Size = new System.Drawing.Size(152, 22);
+            this.menuRegionTaiwan.Size = new System.Drawing.Size(100, 22);
             this.menuRegionTaiwan.Text = "台湾";
             this.menuRegionTaiwan.Click += new System.EventHandler(this.menuRegionTaiwan_Click);
             // 
             // menuRegionJapan
             // 
             this.menuRegionJapan.Name = "menuRegionJapan";
-            this.menuRegionJapan.Size = new System.Drawing.Size(152, 22);
+            this.menuRegionJapan.Size = new System.Drawing.Size(100, 22);
             this.menuRegionJapan.Text = "日本";
             this.menuRegionJapan.Click += new System.EventHandler(this.menuRegionJapan_Click);
             // 
@@ -119,15 +119,6 @@
             this.menuSetPCRTemplateDir.Text = "设置PCR样图目录";
             this.menuSetPCRTemplateDir.Click += new System.EventHandler(this.menuSetPCRTemplateDir_Click);
             // 
-            // txtOutput
-            // 
-            this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtOutput.Location = new System.Drawing.Point(0, 25);
-            this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(519, 339);
-            this.txtOutput.TabIndex = 2;
-            this.txtOutput.Text = "";
-            // 
             // menuScripts
             // 
             this.menuScripts.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -136,13 +127,6 @@
             this.menuScripts.Size = new System.Drawing.Size(59, 21);
             this.menuScripts.Text = "脚本(&T)";
             // 
-            // menuStopScript
-            // 
-            this.menuStopScript.Name = "menuStopScript";
-            this.menuStopScript.Size = new System.Drawing.Size(83, 21);
-            this.menuStopScript.Text = "终止脚本(&E)";
-            this.menuStopScript.Click += new System.EventHandler(this.menuStopScript_Click);
-            // 
             // menuShowViewportSizeScript
             // 
             this.menuShowViewportSizeScript.Name = "menuShowViewportSizeScript";
@@ -150,11 +134,27 @@
             this.menuShowViewportSizeScript.Text = "跟踪Mumu视口大小";
             this.menuShowViewportSizeScript.Click += new System.EventHandler(this.menuShowViewportSizeScript_Click);
             // 
+            // menuStopScript
+            // 
+            this.menuStopScript.Name = "menuStopScript";
+            this.menuStopScript.Size = new System.Drawing.Size(83, 21);
+            this.menuStopScript.Text = "终止脚本(&E)";
+            this.menuStopScript.Click += new System.EventHandler(this.menuStopScript_Click);
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtOutput.Location = new System.Drawing.Point(0, 25);
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.Size = new System.Drawing.Size(677, 361);
+            this.txtOutput.TabIndex = 2;
+            this.txtOutput.Text = "";
+            // 
             // Frm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 364);
+            this.ClientSize = new System.Drawing.Size(677, 386);
             this.Controls.Add(this.txtOutput);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Consolas", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
