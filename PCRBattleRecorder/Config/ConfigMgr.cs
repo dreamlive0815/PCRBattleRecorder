@@ -105,7 +105,7 @@ namespace PCRBattleRecorder.Config
             openDialog.Filter = filter;
             if (openDialog.ShowDialog() != DialogResult.OK)
             {
-                throw new GetFilePathException(Trans.T("配置文件路径失败"));
+                throw new SetFilePathException(Trans.T("配置文件路径失败"));
             }
             return openDialog.FileName;
         }
@@ -116,7 +116,7 @@ namespace PCRBattleRecorder.Config
             folderDialog.Description = title;
             if (folderDialog.ShowDialog() != DialogResult.OK)
             {
-                throw new GetFilePathException(Trans.T("配置目录路径失败"));
+                throw new SetFilePathException(Trans.T("配置目录路径失败"));
             }
             return folderDialog.SelectedPath;
         }

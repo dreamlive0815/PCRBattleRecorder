@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PCRBattleRecorder
 {
@@ -21,14 +17,13 @@ namespace PCRBattleRecorder
         }
     }
 
-    class GetFilePathException : Exception
+    class SetFilePathException : Exception
     {
-        public GetFilePathException(string msg) : base(msg)
+        public SetFilePathException(string msg) : base(msg)
         {
         }
     }
     
-
     class ShellException : Exception
     {
         public ShellException(string msg) : base(msg)

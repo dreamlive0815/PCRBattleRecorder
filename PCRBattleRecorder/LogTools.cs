@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PCRBattleRecorder.Config;
 using System.IO;
+using PCRBattleRecorder.Config;
 
 namespace PCRBattleRecorder
 {

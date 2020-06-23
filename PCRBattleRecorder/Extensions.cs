@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using RawPoint = System.Drawing.Point;
 using EmulatorPoint = System.Drawing.Point;
 using OpenCvSharp;
@@ -57,7 +52,6 @@ namespace PCRBattleRecorder
             }
         }
     }
-
 
     static class OpenCvExtension
     {
