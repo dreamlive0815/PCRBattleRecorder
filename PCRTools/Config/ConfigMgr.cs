@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PCRBattleRecorder.Config
 {
-    class ConfigMgr
+    public class ConfigMgr
     {
         private static ConfigMgr instance;
 
@@ -181,31 +178,5 @@ namespace PCRBattleRecorder.Config
                 Save();
             }
         }
-
-        
-
     }
-
-    enum PCRRegion
-    {
-        Mainland,
-        Taiwan,
-        Japan,
-    }
-
-    static class PCRRegionExtension
-    {
-        public static string ToCNString(this PCRRegion region)
-        {
-            switch(region)
-            {
-                case PCRRegion.Mainland: return "国服";
-                case PCRRegion.Taiwan: return "台湾";
-                case PCRRegion.Japan: return "日本";
-            }
-            return "未知区域";
-        }
-    }
-
-
 }

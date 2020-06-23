@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PCRBattleRecorder
 {
-    class JsonTools
+    public class JsonTools
     {
         private static JsonTools instance;
 

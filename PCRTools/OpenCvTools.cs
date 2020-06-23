@@ -6,7 +6,7 @@ using OpenCvPoint = OpenCvSharp.Point;
 
 namespace PCRBattleRecorder
 {
-    class OpenCvTools
+    public class OpenCvTools
     {
 
         private static OpenCvTools instance;
@@ -64,7 +64,7 @@ namespace PCRBattleRecorder
 
     }
 
-    struct OpenCvMatchImageResult
+    public struct OpenCvMatchImageResult
     {
         public bool Success;
         public RECT MatchedRect;

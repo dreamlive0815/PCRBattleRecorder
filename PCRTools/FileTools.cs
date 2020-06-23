@@ -4,7 +4,7 @@ using System.IO;
 
 namespace PCRBattleRecorder
 {
-    class FileTools
+    public class FileTools
     {
         private static FileTools instance;
 

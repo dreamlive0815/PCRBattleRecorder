@@ -2,7 +2,7 @@
 
 namespace PCRBattleRecorder
 {
-    class Trans
+    public class Trans
     {
         public static string T(string s)
         {

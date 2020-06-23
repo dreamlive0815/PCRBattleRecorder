@@ -4,8 +4,10 @@ using PCRBattleRecorder.Config;
 
 namespace PCRBattleRecorder
 {
-    class OCRTools
+
+    public class OCRTools
     {
+
         private static OCRTools instance;
 
         public static OCRTools GetInstance()

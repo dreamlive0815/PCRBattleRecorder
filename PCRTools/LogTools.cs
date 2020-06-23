@@ -5,7 +5,7 @@ using PCRBattleRecorder.Config;
 
 namespace PCRBattleRecorder
 {
-    class LogTools
+    public class LogTools
     {
         private static LogTools instance;
 

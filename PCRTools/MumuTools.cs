@@ -8,7 +8,8 @@ using OpenCvSharp;
 
 namespace PCRBattleRecorder
 {
-    class MumuTools
+
+    public class MumuTools
     {
 
         private static MumuTools instance;

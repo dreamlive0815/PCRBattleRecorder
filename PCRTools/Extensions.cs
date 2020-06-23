@@ -8,7 +8,7 @@ using OpenCvSharp.Extensions;
 
 namespace PCRBattleRecorder
 {
-    static class RichTextBoxExtension
+    public static class RichTextBoxExtension
     {
 
         public static void ScrollToEnd(this RichTextBox richTextBox)
@@ -53,7 +53,7 @@ namespace PCRBattleRecorder
         }
     }
 
-    static class OpenCvExtension
+    public static class OpenCvExtension
     {
         public static Mat ToOpenCvMat(this Bitmap bitmap)
         {

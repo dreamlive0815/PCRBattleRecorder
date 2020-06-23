@@ -3,28 +3,28 @@
 namespace PCRBattleRecorder
 {
 
-    class NoTrackTraceException : Exception
+    public class NoTrackTraceException : Exception
     {
         public NoTrackTraceException(string msg) : base(msg)
         {
         }
     }
 
-    class BreakException : NoTrackTraceException
+    public class BreakException : NoTrackTraceException
     {
         public BreakException(string msg) : base(msg)
         {
         }
     }
 
-    class SetFilePathException : Exception
+    public class SetFilePathException : Exception
     {
         public SetFilePathException(string msg) : base(msg)
         {
         }
     }
-    
-    class ShellException : Exception
+
+    public class ShellException : Exception
     {
         public ShellException(string msg) : base(msg)
         {

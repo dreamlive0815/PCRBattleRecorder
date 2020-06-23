@@ -9,7 +9,7 @@ using EmulatorPoint = System.Drawing.Point;
 
 namespace PCRBattleRecorder
 {
-    class AdbTools
+    public class AdbTools
     {
         private static AdbTools instance;
 

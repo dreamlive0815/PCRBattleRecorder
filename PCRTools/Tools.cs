@@ -1,14 +1,15 @@
-﻿using OpenCvSharp;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using RawPoint = System.Drawing.Point;
+using OpenCvSharp;
 
 namespace PCRBattleRecorder
 {
-    class Tools
+    public class Tools
     {
 
         private static Tools instance;
@@ -50,9 +51,7 @@ namespace PCRBattleRecorder
 
     }
 
-    
-
-    struct RECT
+    public struct RECT
     {
         public int x1;
         public int y1;
@@ -104,7 +103,7 @@ namespace PCRBattleRecorder
 
     }
 
-    class Win32Api
+    public class Win32Api
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr GetWindowRect(IntPtr hWnd, out RECT rect);
