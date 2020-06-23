@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PCRBattleRecorder.Config;
-using System.IO;
+using PCRBattleRecorder.Script;
+
 
 namespace PCRBattleRecorder
 {
@@ -17,6 +20,7 @@ namespace PCRBattleRecorder
 
         ConfigMgr configMgr = ConfigMgr.GetInstance();
         LogTools logTools = LogTools.GetInstance();
+        ScriptMgr scriptMgr = ScriptMgr.GetInstance();
 
         public Frm()
         {
@@ -32,7 +36,6 @@ namespace PCRBattleRecorder
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
             //var rect = MumuTools.GetInstance().GetMumuRect();
-            var path = PCRTools.GetInstance().GetTemplateImgPathOfRegion(PCRRegion.Mainland, "dasdsa.png");
         }
 
         void RegisterLogEvents()
@@ -97,6 +100,16 @@ namespace PCRBattleRecorder
         private void menuSetPCRTemplateDir_Click(object sender, EventArgs e)
         {
             configMgr.SetPCRTemplateImgDirByDialog();
+        }
+
+        private void menuShowViewportSizeScript_Click(object sender, EventArgs e)
+        {
+            scriptMgr.RunScript(new ShowViewportSizeScript());
+        }
+
+        private void menuStopScript_Click(object sender, EventArgs e)
+        {
+            scriptMgr.StopCurScript();
         }
     }
 }

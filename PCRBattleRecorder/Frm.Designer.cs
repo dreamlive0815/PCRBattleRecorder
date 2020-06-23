@@ -33,11 +33,14 @@
             this.menuRegionMainland = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRegionTaiwan = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRegionJapan = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetAdbServerPath = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetPCRTemplateDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.menuScripts = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuShowViewportSizeScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +48,9 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRegions,
-            this.menuSettings});
+            this.menuSettings,
+            this.menuScripts,
+            this.menuStopScript});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(519, 25);
@@ -83,15 +88,6 @@
             this.menuRegionJapan.Text = "日本";
             this.menuRegionJapan.Click += new System.EventHandler(this.menuRegionJapan_Click);
             // 
-            // txtOutput
-            // 
-            this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtOutput.Location = new System.Drawing.Point(0, 25);
-            this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(519, 339);
-            this.txtOutput.TabIndex = 2;
-            this.txtOutput.Text = "";
-            // 
             // menuSettings
             // 
             this.menuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -102,13 +98,6 @@
             this.menuSettings.Size = new System.Drawing.Size(59, 21);
             this.menuSettings.Text = "设置(&S)";
             // 
-            // menuSetTesseractPath
-            // 
-            this.menuSetTesseractPath.Name = "menuSetTesseractPath";
-            this.menuSetTesseractPath.Size = new System.Drawing.Size(222, 22);
-            this.menuSetTesseractPath.Text = "设置Tesseract主程序路径";
-            this.menuSetTesseractPath.Click += new System.EventHandler(this.menuSetTesseractPath_Click);
-            // 
             // menuSetAdbServerPath
             // 
             this.menuSetAdbServerPath.Name = "menuSetAdbServerPath";
@@ -116,12 +105,50 @@
             this.menuSetAdbServerPath.Text = "设置MumuAdbServer路径";
             this.menuSetAdbServerPath.Click += new System.EventHandler(this.menuSetAdbServerPath_Click);
             // 
+            // menuSetTesseractPath
+            // 
+            this.menuSetTesseractPath.Name = "menuSetTesseractPath";
+            this.menuSetTesseractPath.Size = new System.Drawing.Size(222, 22);
+            this.menuSetTesseractPath.Text = "设置Tesseract主程序路径";
+            this.menuSetTesseractPath.Click += new System.EventHandler(this.menuSetTesseractPath_Click);
+            // 
             // menuSetPCRTemplateDir
             // 
             this.menuSetPCRTemplateDir.Name = "menuSetPCRTemplateDir";
             this.menuSetPCRTemplateDir.Size = new System.Drawing.Size(222, 22);
             this.menuSetPCRTemplateDir.Text = "设置PCR样图目录";
             this.menuSetPCRTemplateDir.Click += new System.EventHandler(this.menuSetPCRTemplateDir_Click);
+            // 
+            // txtOutput
+            // 
+            this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtOutput.Location = new System.Drawing.Point(0, 25);
+            this.txtOutput.Name = "txtOutput";
+            this.txtOutput.Size = new System.Drawing.Size(519, 339);
+            this.txtOutput.TabIndex = 2;
+            this.txtOutput.Text = "";
+            // 
+            // menuScripts
+            // 
+            this.menuScripts.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuShowViewportSizeScript});
+            this.menuScripts.Name = "menuScripts";
+            this.menuScripts.Size = new System.Drawing.Size(59, 21);
+            this.menuScripts.Text = "脚本(&T)";
+            // 
+            // menuStopScript
+            // 
+            this.menuStopScript.Name = "menuStopScript";
+            this.menuStopScript.Size = new System.Drawing.Size(83, 21);
+            this.menuStopScript.Text = "终止脚本(&E)";
+            this.menuStopScript.Click += new System.EventHandler(this.menuStopScript_Click);
+            // 
+            // menuShowViewportSizeScript
+            // 
+            this.menuShowViewportSizeScript.Name = "menuShowViewportSizeScript";
+            this.menuShowViewportSizeScript.Size = new System.Drawing.Size(185, 22);
+            this.menuShowViewportSizeScript.Text = "跟踪Mumu视口大小";
+            this.menuShowViewportSizeScript.Click += new System.EventHandler(this.menuShowViewportSizeScript_Click);
             // 
             // Frm
             // 
@@ -135,7 +162,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Frm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Form1";
+            this.Text = "PCRBattleRecorder";
             this.Load += new System.EventHandler(this.Frm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -155,6 +182,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuSetAdbServerPath;
         private System.Windows.Forms.ToolStripMenuItem menuSetTesseractPath;
         private System.Windows.Forms.ToolStripMenuItem menuSetPCRTemplateDir;
+        private System.Windows.Forms.ToolStripMenuItem menuScripts;
+        private System.Windows.Forms.ToolStripMenuItem menuStopScript;
+        private System.Windows.Forms.ToolStripMenuItem menuShowViewportSizeScript;
     }
 }
 

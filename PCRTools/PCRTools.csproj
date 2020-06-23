@@ -80,12 +80,16 @@
     <Compile Include="OpenCvTools.cs" />
     <Compile Include="PCRTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Script\ScriptBase.cs" />
+    <Compile Include="Script\ScriptMgr.cs" />
+    <Compile Include="Script\ShowViewportSizeScript.cs" />
     <Compile Include="T.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

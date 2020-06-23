@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using RawPoint = System.Drawing.Point;
 using OpenCvSharp;
+using System.Drawing;
 
 namespace PCRBattleRecorder
 {
@@ -47,6 +48,21 @@ namespace PCRBattleRecorder
                 throw new ShellException(error);
             }
             return output;
+        }
+
+        public Bitmap DoCaptureScreen(RECT rect)
+        {
+            if (rect.x1 < 0 || rect.y1 < 0) throw new NoTrackTraceException(Trans.T("左上角坐标不合法"));
+            if (rect.x2 < 0 || rect.y2 < 0) throw new NoTrackTraceException(Trans.T("右下角坐标不合法"));
+            var width = Math.Abs(rect.x1 - rect.x2);
+            var height = Math.Abs(rect.y1 - rect.y2);
+            width = Math.Max(width, 10); //下限保护
+            height = Math.Max(height, 10); //下限保护
+            var bitmap = new Bitmap(width, height);
+            var g = Graphics.FromImage(bitmap);
+            g.CopyFromScreen(rect.x1, rect.y1, 0, 0, new System.Drawing.Size(width, height));
+            g.Dispose();
+            return bitmap;
         }
 
     }

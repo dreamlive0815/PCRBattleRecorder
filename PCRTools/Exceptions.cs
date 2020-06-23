@@ -17,7 +17,7 @@ namespace PCRBattleRecorder
         }
     }
 
-    public class SetFilePathException : Exception
+    public class SetFilePathException : NoTrackTraceException
     {
         public SetFilePathException(string msg) : base(msg)
         {

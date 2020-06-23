@@ -49,7 +49,7 @@ namespace PCRBattleRecorder
         {
             if (rect.x1 < 0 || rect.y1 < 0 || rect.x2 < 0 || rect.y2 < 0)
             {
-                throw new Exception(Trans.T("窗口尺寸不合法，可能是因为窗口没有前置显示"));
+                throw new NoTrackTraceException(Trans.T("窗口尺寸不合法，可能是因为窗口没有前置显示"));
             }
         }
 
