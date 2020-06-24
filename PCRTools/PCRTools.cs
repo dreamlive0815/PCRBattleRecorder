@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using OpenCvSharp;
 using CvSize = OpenCvSharp.Size;
 using PCRBattleRecorder.Config;
-
+using ConfigBase = PCRBattleRecorder.Config.Config;
+using Newtonsoft.Json.Linq;
 
 namespace PCRBattleRecorder
 {
@@ -25,8 +26,55 @@ namespace PCRBattleRecorder
         private FileTools fileTools = FileTools.GetInstance();
         private OpenCvTools opencvTools = OpenCvTools.GetInstance();
 
+
         private PCRTools()
         {
+        }
+
+        private const string MSRectRateJsonFileName = "match_source_rect_rate.json";
+        private ConfigBase parentMSRectRateData = JsonConfig.FromFileOrEmpty(FileTools.GetInstance().JoinPath(ConfigMgr.GetInstance().PCRDataDir, "Template", MSRectRateJsonFileName));
+
+        private Dictionary<string, ConfigBase> childMSRectRateDataDict = new Dictionary<string, ConfigBase>();
+
+        public ConfigBase GetMatchSourceRectRateData(string key)
+        {
+            //缓存
+            if (childMSRectRateDataDict.ContainsKey(key))
+                return childMSRectRateDataDict[key];
+            var data = JsonConfig.FromFileOrEmpty(fileTools.JoinPath(configMgr.PCRDataDir, "Template", key, MSRectRateJsonFileName));
+            childMSRectRateDataDict[key] = data; //缓存
+            return data;
+        }
+
+        public Vec4f GetRectRateByJArray(JArray jArr)
+        {
+            var getFloat = new Func<int, float>((index) =>
+            {
+                return jArr[index].Value<float>();
+            });
+            return new Vec4f(getFloat(0), getFloat(1), getFloat(2), getFloat(3));
+        }
+
+        public Vec4f GetTemplateMatchSourceRectRate(string type, string imgName)
+        {
+            var rectRateData = GetMatchSourceRectRateData(type);
+            try
+            {
+                if (rectRateData.HasKey(imgName))
+                {
+                    var jArr = rectRateData.Get(imgName) as JArray;
+                    return GetRectRateByJArray(jArr);
+                }
+                else
+                {
+                    var jArr = parentMSRectRateData.Get(imgName) as JArray;
+                    return GetRectRateByJArray(jArr);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(Trans.T("无法读取 {0}.{0} 样图的采样区域", type, imgName));
+            }
         }
 
         public string GetTemplateImgPath(string relativePath)
@@ -36,17 +84,10 @@ namespace PCRBattleRecorder
             return path;
         }
 
-        public string GetCommonTemplateImgPath(string imgName)
+        public string GetTemplateImgPath(string type, string imgName)
         {
-            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template", "Common");
+            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template", type);
             var path = fileTools.JoinPath(imgDir, imgName);
-            return path;
-        }
-
-        public string GetTemplateImgPathOfRegion(PCRRegion region, string imgName)
-        {
-            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template");
-            var path = fileTools.JoinPath(imgDir, region.ToString(), imgName);
             return path;
         }
 
@@ -57,16 +98,9 @@ namespace PCRBattleRecorder
             return mat;
         }
 
-        public Mat GetCommonTemplateMat(string name)
+        public Mat GetTemplateMat(string type, string imgName)
         {
-            var path = GetCommonTemplateImgPath(name);
-            var mat = OpenCvExtension.ReadMatFromFile(path);
-            return mat;
-        }
-
-        public Mat GetTemplateMatOfRegion(PCRRegion region, string name)
-        {
-            var path = GetTemplateImgPathOfRegion(region, name);
+            var path = GetTemplateImgPath(type, imgName);
             var mat = OpenCvExtension.ReadMatFromFile(path);
             return mat;
         }
@@ -78,16 +112,20 @@ namespace PCRBattleRecorder
             return resized;
         }
 
-        public Mat GetResizedCommonTemplateMat(string name)
+        public Mat GetResizedTemplateMatOfCommon(string imgName)
         {
-            var mat = GetCommonTemplateMat(name);
-            var resized = ResizedByTemplateViewportSize(mat);
-            return resized;
+            return GetResizedTemplateMat("Common", imgName);
         }
 
-        public Mat GetResizedTemplateMatOfRegion(PCRRegion region, string name)
+        public Mat GetResizedTemplateMatOfDefaultRegion(string imgName)
         {
-            var mat = GetTemplateMatOfRegion(region, name);
+            var region = configMgr.PCRRegion;
+            return GetResizedTemplateMat(region.ToString(), imgName);
+        }
+
+        public Mat GetResizedTemplateMat(string type, string imgName)
+        {
+            var mat = GetTemplateMat(type, imgName);
             var resized = ResizedByTemplateViewportSize(mat);
             return resized;
         }

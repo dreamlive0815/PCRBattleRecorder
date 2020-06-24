@@ -11,6 +11,11 @@ namespace PCRBattleRecorder.Config
 
         protected DataContainerType container = new DataContainerType();
 
+        public virtual bool HasKey(string key)
+        {
+            return container.ContainsKey(key);
+        }
+
         public virtual object Get(string key)
         {
             if (!container.ContainsKey(key)) return null;

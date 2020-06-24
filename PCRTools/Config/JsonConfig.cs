@@ -25,6 +25,14 @@ namespace PCRBattleRecorder.Config
             return obj;
         }
 
+        public static JsonConfig FromFileOrEmpty(string filePath)
+        {
+            var obj = new JsonConfig();
+            if (File.Exists(filePath))
+                obj.LoadFromFile(filePath);
+            return obj;
+        }
+
         private JsonConfig()
         {
         }

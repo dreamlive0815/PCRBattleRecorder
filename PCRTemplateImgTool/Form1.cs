@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using OpenCvSharp;
 using RawSize = System.Drawing.Size;
 using PCRBattleRecorder;
+using System.IO;
 
 namespace PCRTemplateImgTool
 {
@@ -87,6 +88,9 @@ namespace PCRTemplateImgTool
                 Clipboard.SetText(s);
             }
             Text = $"{GetPointRate().Format()} {GetRectRate().Format()}";
+
+            var ss = $"\"{fileName}\": {GetRectRate().FormatAsJsonArray()},";
+            Clipboard.SetText(ss);
         }
 
         string FormatFloat(double f)
@@ -119,6 +123,8 @@ namespace PCRTemplateImgTool
             RefreshImageByViewportCapture();
         }
 
+        string fileName = "";
+
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.S)
@@ -138,6 +144,8 @@ namespace PCRTemplateImgTool
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
                     childMat.SaveImage(saveDialog.FileName);
+                    var name = new FileInfo(saveDialog.FileName).Name;
+                    fileName = name;
                 }
             }
             else if (e.KeyCode == Keys.F5)
@@ -168,6 +176,14 @@ namespace PCRTemplateImgTool
         public static string Format(this Vec4f rectRate)
         {
             var s = string.Format("new Vec4f({0}f, {1}f, {2}f, {3}f)",
+                rectRate.Item0.Format(), rectRate.Item1.Format(),
+                rectRate.Item2.Format(), rectRate.Item3.Format());
+            return s;
+        }
+
+        public static string FormatAsJsonArray(this Vec4f rectRate)
+        {
+            var s = string.Format("[{0}, {1}, {2}, {3}]",
                 rectRate.Item0.Format(), rectRate.Item1.Format(),
                 rectRate.Item2.Format(), rectRate.Item3.Format());
             return s;

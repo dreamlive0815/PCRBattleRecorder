@@ -38,6 +38,7 @@ namespace PCRBattleRecorder
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
             //var rect = MumuTools.GetInstance().GetMumuRect();
+            var rectRate = PCRTools.GetInstance().GetTemplateMatchSourceRectRate(PCRRegion.Taiwan.ToString(), "battle_challenge.png");
         }
 
         void RegisterLogEvents()
