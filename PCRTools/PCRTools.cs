@@ -31,6 +31,37 @@ namespace PCRBattleRecorder
         {
         }
 
+
+        #region 下面是PCR配置文件加载策略 先从主程序同级目录加载 再从PCRData下childType目录加载 最后从PCRData下parentType目录加载
+
+
+        private Dictionary<string, ConfigBase> dataContainerDict = new Dictionary<string, ConfigBase>();
+
+        private string GetDictKey(string parentType, string childType, string fileName)
+        {
+            var parentEmpty = string.IsNullOrEmpty(parentType);
+            var childEmpty = string.IsNullOrEmpty(childType);
+            return null;
+        }
+
+        private string GetFilePath(string parentType, string childType, string fileName)
+        {
+            return null;
+        }
+
+        public ConfigBase GetDataContainer(string parentType, string childType, string fileName)
+        {
+            return null;
+        }
+
+        public ConfigBase ChooseDataContainer(string parentType, string childType, string fileName, string key)
+        {
+            return null;
+        }
+
+        #endregion
+
+
         private const string MSRectRateJsonFileName = "match_source_rect_rate.json";
         private ConfigBase parentMSRectRateData = JsonConfig.FromFileOrEmpty(FileTools.GetInstance().JoinPath(ConfigMgr.GetInstance().PCRDataDir, "Template", MSRectRateJsonFileName));
 

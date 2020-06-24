@@ -22,6 +22,7 @@ namespace PCRBattleRecorder
         LogTools logTools = LogTools.GetInstance();
         ScriptMgr scriptMgr = ScriptMgr.GetInstance();
         FileTools fileTools = FileTools.GetInstance();
+        PCRTools pcrTools = PCRTools.GetInstance();
 
         public Frm()
         {
@@ -38,7 +39,7 @@ namespace PCRBattleRecorder
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
             //var rect = MumuTools.GetInstance().GetMumuRect();
-            var rectRate = PCRTools.GetInstance().GetTemplateMatchSourceRectRate(PCRRegion.Taiwan.ToString(), "battle_challenge.png");
+            var mat = pcrTools.GetResizedTemplateMatOfDefaultRegion("battle_challenge.png");
         }
 
         void RegisterLogEvents()
