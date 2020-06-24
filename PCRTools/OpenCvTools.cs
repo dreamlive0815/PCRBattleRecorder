@@ -69,5 +69,24 @@ namespace PCRBattleRecorder
         public bool Success;
         public RECT MatchedRect;
         public double Maxval;
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="viewportRect">Mumu视口大小</param>
+        /// <param name="matchSourceRectRate">采样区域相对于Mumu视口比率</param>
+        /// <returns></returns>
+        public RECT GetMatchedAbsoluteRect(RECT viewportRect, Vec4f matchSourceRectRate)
+        {
+            var matchSourceRelativeRect = viewportRect.GetChildRectByRate(matchSourceRectRate);
+            return new RECT()
+            {
+                x1 = matchSourceRelativeRect.x1 + MatchedRect.x1,
+                y1 = matchSourceRelativeRect.y1 + MatchedRect.y1,
+                x2 = matchSourceRelativeRect.x1 + MatchedRect.x2,
+                y2 = matchSourceRelativeRect.y1 + MatchedRect.y2,
+            };
+        }
     }
 }

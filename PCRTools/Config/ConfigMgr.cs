@@ -148,11 +148,6 @@ namespace PCRBattleRecorder.Config
             return fullPath;
         }
 
-        public Size MumuViewportEmulatorSize
-        {
-            get { return new Size(2160, 1080); }
-        }
-
         public PCRRegion ParsePCRRegion(string s)
         {
             s = s.ToLower();
@@ -178,5 +173,17 @@ namespace PCRBattleRecorder.Config
                 Save();
             }
         }
+
+        public Size MumuViewportTemplateSize
+        {
+            get { return new Size(1280, 640); }
+        }
+
+        public Size MumuViewportEmulatorSize
+        {
+            get { return new Size(2160, 1080); }
+        }
+
+        public bool OutputAutoScroll { get; set; }
     }
 }

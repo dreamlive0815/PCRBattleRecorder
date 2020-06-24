@@ -5,6 +5,7 @@ using RawPoint = System.Drawing.Point;
 using EmulatorPoint = System.Drawing.Point;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using PCRBattleRecorder.Config;
 
 namespace PCRBattleRecorder
 {
@@ -44,11 +45,23 @@ namespace PCRBattleRecorder
                 richTextBox.Invoke(new Action<RichTextBox, string, Color>(AppendTextThreadSafe), richTextBox, s, color);
             }
             else
-            {
+            {   
                 if (richTextBox.IsDisposed) return;
                 richTextBox.SelectionColor = color;
+                //richTextBox.AppendText(s);
+                //ScrollToEnd(richTextBox);
+
+                int savedVpos = Win32Api.GetScrollPos(richTextBox.Handle, Win32Api.SB_VERT);
                 richTextBox.AppendText(s);
-                ScrollToEnd(richTextBox);
+                if (ConfigMgr.GetInstance().OutputAutoScroll)
+                {
+                    int VSmin, VSmax;
+                    Win32Api.GetScrollRange(richTextBox.Handle, Win32Api.SB_VERT, out VSmin, out VSmax);
+                    int sbOffset = (int)((richTextBox.ClientSize.Height - SystemInformation.HorizontalScrollBarHeight) / (richTextBox.Font.Height));
+                    savedVpos = VSmax - sbOffset;
+                }
+                Win32Api.SetScrollPos(richTextBox.Handle, Win32Api.SB_VERT, savedVpos, true);
+                Win32Api.PostMessageA(richTextBox.Handle, Win32Api.WM_VSCROLL, Win32Api.SB_THUMBPOSITION + 0x10000 * savedVpos, 0);
             }
         }
     }

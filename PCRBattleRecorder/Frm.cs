@@ -21,6 +21,7 @@ namespace PCRBattleRecorder
         ConfigMgr configMgr = ConfigMgr.GetInstance();
         LogTools logTools = LogTools.GetInstance();
         ScriptMgr scriptMgr = ScriptMgr.GetInstance();
+        FileTools fileTools = FileTools.GetInstance();
 
         public Frm()
         {
@@ -32,6 +33,7 @@ namespace PCRBattleRecorder
             RegisterLogEvents();
             InitPathConfigs();
             RefreshRegions();
+            RefreshOutputAutoScroll();
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
@@ -60,6 +62,11 @@ namespace PCRBattleRecorder
             menuRegionTaiwan.Checked = pcrRegion == PCRRegion.Taiwan;
             menuRegionJapan.Checked = pcrRegion == PCRRegion.Japan;
             Text = Trans.T("当前区域: {0}", pcrRegion.ToCNString());
+        }
+
+        void RefreshOutputAutoScroll()
+        {
+            menuOutputAutoScroll.Checked = configMgr.OutputAutoScroll;
         }
 
         private void menuRegionMainland_Click(object sender, EventArgs e)
@@ -110,6 +117,22 @@ namespace PCRBattleRecorder
         private void menuStopScript_Click(object sender, EventArgs e)
         {
             scriptMgr.StopCurScript();
+        }
+
+        private void menuOutputAutoScroll_Click(object sender, EventArgs e)
+        {
+            configMgr.OutputAutoScroll = !configMgr.OutputAutoScroll;
+            RefreshOutputAutoScroll();
+        }
+
+        private void menuClearOutput_Click(object sender, EventArgs e)
+        {
+            txtOutput.Clear();
+        }
+
+        private void menuOpenCacheDir_Click(object sender, EventArgs e)
+        {
+            fileTools.OpenDirInExplorer(configMgr.CacheDir);
         }
     }
 }

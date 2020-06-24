@@ -5,6 +5,7 @@ using PCRBattleRecorder.Config;
 using RawPoint = System.Drawing.Point;
 using EmulatorPoint = System.Drawing.Point;
 using OpenCvSharp;
+using System.Drawing;
 
 namespace PCRBattleRecorder
 {
@@ -28,7 +29,6 @@ namespace PCRBattleRecorder
         private MumuTools()
         {
         }
-
 
         public Process GetMumuProcess()
         {
@@ -77,6 +77,13 @@ namespace PCRBattleRecorder
                 throw new Exception(Trans.T("无法获取Mumu模拟器窗口尺寸"));
             }
             return viewportRect;
+        }
+
+        public Bitmap DoCaptureViewport()
+        {
+            var viewportRect = GetMumuViewportRect();
+            var capture = Tools.GetInstance().DoCaptureScreen(viewportRect);
+            return capture;
         }
 
         public EmulatorPoint GetEmulatorPoint(Vec2f pointRate)

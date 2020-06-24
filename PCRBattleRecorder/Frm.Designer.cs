@@ -34,13 +34,17 @@
             this.menuRegionTaiwan = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRegionJapan = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOutputAutoScroll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetAdbServerPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetPCRTemplateDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScripts = new System.Windows.Forms.ToolStripMenuItem();
             this.menuShowViewportSizeScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuClearOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.menuToolsAndHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOpenCacheDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +54,9 @@
             this.menuRegions,
             this.menuSettings,
             this.menuScripts,
-            this.menuStopScript});
+            this.menuToolsAndHelp,
+            this.menuStopScript,
+            this.menuClearOutput});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(677, 25);
@@ -70,33 +76,41 @@
             // menuRegionMainland
             // 
             this.menuRegionMainland.Name = "menuRegionMainland";
-            this.menuRegionMainland.Size = new System.Drawing.Size(100, 22);
+            this.menuRegionMainland.Size = new System.Drawing.Size(152, 22);
             this.menuRegionMainland.Text = "国服";
             this.menuRegionMainland.Click += new System.EventHandler(this.menuRegionMainland_Click);
             // 
             // menuRegionTaiwan
             // 
             this.menuRegionTaiwan.Name = "menuRegionTaiwan";
-            this.menuRegionTaiwan.Size = new System.Drawing.Size(100, 22);
+            this.menuRegionTaiwan.Size = new System.Drawing.Size(152, 22);
             this.menuRegionTaiwan.Text = "台湾";
             this.menuRegionTaiwan.Click += new System.EventHandler(this.menuRegionTaiwan_Click);
             // 
             // menuRegionJapan
             // 
             this.menuRegionJapan.Name = "menuRegionJapan";
-            this.menuRegionJapan.Size = new System.Drawing.Size(100, 22);
+            this.menuRegionJapan.Size = new System.Drawing.Size(152, 22);
             this.menuRegionJapan.Text = "日本";
             this.menuRegionJapan.Click += new System.EventHandler(this.menuRegionJapan_Click);
             // 
             // menuSettings
             // 
             this.menuSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuOutputAutoScroll,
             this.menuSetAdbServerPath,
             this.menuSetTesseractPath,
             this.menuSetPCRTemplateDir});
             this.menuSettings.Name = "menuSettings";
             this.menuSettings.Size = new System.Drawing.Size(59, 21);
             this.menuSettings.Text = "设置(&S)";
+            // 
+            // menuOutputAutoScroll
+            // 
+            this.menuOutputAutoScroll.Name = "menuOutputAutoScroll";
+            this.menuOutputAutoScroll.Size = new System.Drawing.Size(222, 22);
+            this.menuOutputAutoScroll.Text = "输出自动滚动";
+            this.menuOutputAutoScroll.Click += new System.EventHandler(this.menuOutputAutoScroll_Click);
             // 
             // menuSetAdbServerPath
             // 
@@ -141,6 +155,13 @@
             this.menuStopScript.Text = "终止脚本(&E)";
             this.menuStopScript.Click += new System.EventHandler(this.menuStopScript_Click);
             // 
+            // menuClearOutput
+            // 
+            this.menuClearOutput.Name = "menuClearOutput";
+            this.menuClearOutput.Size = new System.Drawing.Size(84, 21);
+            this.menuClearOutput.Text = "清空输出(&C)";
+            this.menuClearOutput.Click += new System.EventHandler(this.menuClearOutput_Click);
+            // 
             // txtOutput
             // 
             this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -149,6 +170,21 @@
             this.txtOutput.Size = new System.Drawing.Size(677, 361);
             this.txtOutput.TabIndex = 2;
             this.txtOutput.Text = "";
+            // 
+            // menuToolsAndHelp
+            // 
+            this.menuToolsAndHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuOpenCacheDir});
+            this.menuToolsAndHelp.Name = "menuToolsAndHelp";
+            this.menuToolsAndHelp.Size = new System.Drawing.Size(86, 21);
+            this.menuToolsAndHelp.Text = "工具|帮助(&T)";
+            // 
+            // menuOpenCacheDir
+            // 
+            this.menuOpenCacheDir.Name = "menuOpenCacheDir";
+            this.menuOpenCacheDir.Size = new System.Drawing.Size(152, 22);
+            this.menuOpenCacheDir.Text = "打开缓存目录";
+            this.menuOpenCacheDir.Click += new System.EventHandler(this.menuOpenCacheDir_Click);
             // 
             // Frm
             // 
@@ -185,6 +221,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuScripts;
         private System.Windows.Forms.ToolStripMenuItem menuStopScript;
         private System.Windows.Forms.ToolStripMenuItem menuShowViewportSizeScript;
+        private System.Windows.Forms.ToolStripMenuItem menuOutputAutoScroll;
+        private System.Windows.Forms.ToolStripMenuItem menuClearOutput;
+        private System.Windows.Forms.ToolStripMenuItem menuToolsAndHelp;
+        private System.Windows.Forms.ToolStripMenuItem menuOpenCacheDir;
     }
 }
 

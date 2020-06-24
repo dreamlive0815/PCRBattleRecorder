@@ -21,6 +21,8 @@ namespace PCRBattleRecorder.Script
             return instance;
         }
 
+        public event Action<ScriptBase> OnScriptEnded;
+
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private MumuTools mumuTools = MumuTools.GetInstance();
         private Tools tools = Tools.GetInstance();
@@ -44,26 +46,21 @@ namespace PCRBattleRecorder.Script
             return curTask;
         }
 
-        public Task RunScript(ScriptBase script)
+        public CreateScriptTaskResult CreateScriptTask(ScriptBase script)
         {
-            if (HasRunningScript())
-            {
-                throw new BreakException(Trans.T("当前有脚本: {0} 正在执行", script.Name));
-            }
-            curScript = script;
-            tokenSource = new CancellationTokenSource();
-            token = tokenSource.Token;
-            curTask = new Task(() =>
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+            var task = new Task(() =>
             {
                 var viewportRect = mumuTools.GetMumuViewportRect();
                 var viewportCapture = tools.DoCaptureScreen(viewportRect);
-                logTools.Info("RunScript", $"Script: {script.Name} OnStart");
+                logTools.Info("ScriptStart", $"Script: {script.Name} OnStart");
                 script.OnStart(viewportCapture, viewportRect);
                 while (true)
                 {
                     if (token.IsCancellationRequested)
                     {
-                        logTools.Info("RunScriptLoop", Trans.T("脚本: {0} 被终止", script.Name));
+                        logTools.Info("ScriptLoop", Trans.T("脚本: {0} 被终止", script.Name));
                         break;
                     }
                     try
@@ -71,27 +68,48 @@ namespace PCRBattleRecorder.Script
                         Thread.Sleep(script.Interval);
                         viewportRect = mumuTools.GetMumuViewportRect();
                         viewportCapture = tools.DoCaptureScreen(viewportRect);
-                        logTools.Info("RunScriptLoop", $"Script: {script.Name} Tick");
+                        logTools.Info("ScriptLoop", $"Script: {script.Name} Tick");
                         script.Tick(viewportCapture, viewportRect);
                     }
                     catch (Exception e)
                     {
-                        logTools.Error("RunScriptLoop", Trans.T("脚本: {0} 终止或者发生错误", script.Name), false);
+                        logTools.Error("ScriptLoop", Trans.T("脚本: {0} 终止或者发生错误", script.Name), false);
                         var needBreak = logTools.IsSelfOrChildrenBreakException(e);
                         if (!script.CanKeepOnWhenException || needBreak)
                             throw e;
                         else
-                            logTools.Error("RunScriptLoop", e);
+                            logTools.Error("ScriptLoop", e);
                     }
                 }
             }, tokenSource.Token);
-            curTask.ContinueWith((t) =>
+            task.ContinueWith((t) =>
             {
                 if (t.IsFaulted)
-                    logTools.Error("RunScript", t.Exception);
+                    logTools.Error("ScriptTask", t.Exception);
                 else if (t.IsCanceled)
-                    logTools.Error("RunScript", Trans.T("脚本: {0} 被终止", script.Name));
+                    logTools.Error("ScriptTask", Trans.T("脚本: {0} 被终止", script.Name));
+                OnScriptEnded?.Invoke(script);
             });
+            return new CreateScriptTaskResult()
+            {
+                Task = task,
+                Script = script,
+                TaskTokenSource = tokenSource,
+                TaskToken = token,
+            };
+        }
+
+        public Task RunScript(ScriptBase script)
+        {
+            if (HasRunningScript())
+            {
+                throw new BreakException(Trans.T("当前有脚本: {0} 正在执行", script.Name));
+            }
+            curScript = script;
+            var createRes = CreateScriptTask(script);
+            curTask = createRes.Task;
+            tokenSource = createRes.TaskTokenSource;
+            token = createRes.TaskToken;
             curTask.Start();
             return curTask;
         }
@@ -102,5 +120,13 @@ namespace PCRBattleRecorder.Script
             logTools.Info("StopCurScript", Trans.T("尝试终止当前脚本"));
             tokenSource?.Cancel();
         }
+    }
+
+    public struct CreateScriptTaskResult
+    {
+        public Task Task;
+        public ScriptBase Script;
+        public CancellationTokenSource TaskTokenSource;
+        public CancellationToken TaskToken;
     }
 }

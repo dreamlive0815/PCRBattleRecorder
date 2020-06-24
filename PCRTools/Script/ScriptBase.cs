@@ -23,5 +23,8 @@ namespace PCRBattleRecorder.Script
         public abstract void OnStart(Bitmap viewportCapture, RECT viewportRect);
 
         public abstract void Tick(Bitmap viewportCapture, RECT viewportRect);
+
+
+
     }
 }

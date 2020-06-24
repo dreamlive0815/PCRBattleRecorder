@@ -10,6 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRBattleRecorder", "PCRBat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRTools", "PCRTools\PCRTools.csproj", "{F19369E7-33D5-4335-8B79-31C163A117AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRTemplateImgTool", "PCRTemplateImgTool\PCRTemplateImgTool.csproj", "{770B23D0-68E4-49CF-B8CB-B2912DC9437A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F19369E7-33D5-4335-8B79-31C163A117AA} = {F19369E7-33D5-4335-8B79-31C163A117AA}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +29,10 @@ Global
 		{F19369E7-33D5-4335-8B79-31C163A117AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F19369E7-33D5-4335-8B79-31C163A117AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F19369E7-33D5-4335-8B79-31C163A117AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{770B23D0-68E4-49CF-B8CB-B2912DC9437A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{770B23D0-68E4-49CF-B8CB-B2912DC9437A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{770B23D0-68E4-49CF-B8CB-B2912DC9437A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{770B23D0-68E4-49CF-B8CB-B2912DC9437A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

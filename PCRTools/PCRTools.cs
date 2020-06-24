@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using OpenCvSharp;
+using CvSize = OpenCvSharp.Size;
 using PCRBattleRecorder.Config;
+
 
 namespace PCRBattleRecorder
 {
@@ -41,11 +43,48 @@ namespace PCRBattleRecorder
             return path;
         }
 
+        public Mat GetTemplateMat(string relativePath)
+        {
+            var path = GetTemplateImgPath(relativePath);
+            var mat = OpenCvExtension.ReadMatFromFile(path);
+            return mat;
+        }
+
         public Mat GetTemplateMatOfRegion(PCRRegion region, string name)
         {
             var path = GetTemplateImgPathOfRegion(region, name);
             var mat = OpenCvExtension.ReadMatFromFile(path);
             return mat;
+        }
+
+        public Mat GetResizedTemplateMat(string relativePath)
+        {
+            var mat = GetTemplateMat(relativePath);
+            var resized = ResizedByTemplateViewportSize(mat);
+            return resized;
+        }
+
+        private bool bGotViewportSize = false;
+        private Size viewportSize; //有缓存的话想更新这个数据必须重启
+
+        public Size GetViewportSize()
+        {
+            if (bGotViewportSize)
+                return viewportSize;
+            var viewportRect = MumuTools.GetInstance().GetMumuViewportRect();
+            viewportSize = new Size(viewportRect.Width, viewportRect.Height);
+            bGotViewportSize = true; //缓存
+            return viewportSize;
+        }
+
+        public Mat ResizedByTemplateViewportSize(Mat mat)
+        {
+            var templateSize = configMgr.MumuViewportTemplateSize;
+            var realSize = GetViewportSize();
+            var widScale = 1.0f * realSize.Width / templateSize.Width;
+            var heiScale = 1.0f * realSize.Height / templateSize.Height;
+            var resized = mat.Resize(new CvSize(mat.Width * widScale, mat.Height * heiScale));
+            return resized;
         }
     }
 

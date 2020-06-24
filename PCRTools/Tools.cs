@@ -100,6 +100,11 @@ namespace PCRBattleRecorder
             return point;
         }
 
+        /// <summary>
+        /// 特别注意这是相对于RECT的坐标而不是屏幕绝对坐标
+        /// </summary>
+        /// <param name="rate"></param>
+        /// <returns></returns>
         public RECT GetChildRectByRate(Vec4f rate)
         {
             RECT rect = new RECT();
@@ -121,6 +126,11 @@ namespace PCRBattleRecorder
 
     public class Win32Api
     {
+        public const int SB_VERT = 0x1;
+        public const int SB_THUMBPOSITION = 0x4;
+        public const int WM_VSCROLL = 0x115;
+
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr GetWindowRect(IntPtr hWnd, out RECT rect);
 
@@ -132,6 +142,18 @@ namespace PCRBattleRecorder
 
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int nMaxCount);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        [DllImport("user32.dll")]
+        public static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+
+        [DllImport("user32.dll")]
+        public static extern bool PostMessageA(IntPtr hWnd, int nBar, int wParam, int lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool GetScrollRange(IntPtr hWnd, int nBar, out int lpMinPos, out int lpMaxPos);
 
         public static RECT GetWindowRect(IntPtr hWnd)
         {
