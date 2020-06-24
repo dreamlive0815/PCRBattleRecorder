@@ -91,7 +91,7 @@ namespace PCRBattleRecorder
         {
             var p1 = configMgr.MumuAdbServerPath;
             var p2 = configMgr.TesseractShellPath;
-            var d1 = configMgr.PCRTemplateImgDir;
+            var d1 = configMgr.PCRDataDir;
         }
 
         private void menuSetAdbServerPath_Click(object sender, EventArgs e)
@@ -104,9 +104,9 @@ namespace PCRBattleRecorder
             configMgr.SetTesseractShellPathByDialog();
         }
 
-        private void menuSetPCRTemplateDir_Click(object sender, EventArgs e)
+        private void menuSetPCRDataDir_Click(object sender, EventArgs e)
         {
-            configMgr.SetPCRTemplateImgDirByDialog();
+            configMgr.SetPCRDataDirByDialog();
         }
 
         private void menuShowViewportSizeScript_Click(object sender, EventArgs e)
@@ -134,5 +134,7 @@ namespace PCRBattleRecorder
         {
             fileTools.OpenDirInExplorer(configMgr.CacheDir);
         }
+
+        
     }
 }

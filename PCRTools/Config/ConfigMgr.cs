@@ -28,6 +28,11 @@ namespace PCRBattleRecorder.Config
             config = JsonConfig.FromFile(jsonFileFullPath);
         }
 
+        public Config GetConfig()
+        {
+            return config;
+        }
+
         public string TesseractShellPath
         {
             get
@@ -72,24 +77,24 @@ namespace PCRBattleRecorder.Config
             return path;
         }
 
-        public string PCRTemplateImgDir
+        public string PCRDataDir
         {
             get
             {
-                var path = config.GetString("PCRTemplateImgDir");
+                var path = config.GetString("PCRDataDir");
                 if (!Directory.Exists(path))
                 {
-                    path = SetPCRTemplateImgDirByDialog();
+                    path = SetPCRDataDirByDialog();
                 }
                 return path;
             }
-            set { config.Set("PCRTemplateImgDir", value); }
+            set { config.Set("PCRDataDir", value); }
         }
 
-        public string SetPCRTemplateImgDirByDialog()
+        public string SetPCRDataDirByDialog()
         {
-            var path = GetDirPathByDialog(Trans.T("请选择保存PCR样图的目录"));
-            PCRTemplateImgDir = path;
+            var path = GetDirPathByDialog(Trans.T("请选择保存PCR数据资源的目录"));
+            PCRDataDir = path;
             Save();
             return path;
         }

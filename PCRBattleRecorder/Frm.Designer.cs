@@ -37,14 +37,14 @@
             this.menuOutputAutoScroll = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetAdbServerPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuSetPCRTemplateDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSetPCRDataDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScripts = new System.Windows.Forms.ToolStripMenuItem();
             this.menuShowViewportSizeScript = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolsAndHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuOpenCacheDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuClearOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
-            this.menuToolsAndHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuOpenCacheDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,7 +100,7 @@
             this.menuOutputAutoScroll,
             this.menuSetAdbServerPath,
             this.menuSetTesseractPath,
-            this.menuSetPCRTemplateDir});
+            this.menuSetPCRDataDir});
             this.menuSettings.Name = "menuSettings";
             this.menuSettings.Size = new System.Drawing.Size(59, 21);
             this.menuSettings.Text = "设置(&S)";
@@ -126,12 +126,12 @@
             this.menuSetTesseractPath.Text = "设置Tesseract主程序路径";
             this.menuSetTesseractPath.Click += new System.EventHandler(this.menuSetTesseractPath_Click);
             // 
-            // menuSetPCRTemplateDir
+            // menuSetPCRDataDir
             // 
-            this.menuSetPCRTemplateDir.Name = "menuSetPCRTemplateDir";
-            this.menuSetPCRTemplateDir.Size = new System.Drawing.Size(222, 22);
-            this.menuSetPCRTemplateDir.Text = "设置PCR样图目录";
-            this.menuSetPCRTemplateDir.Click += new System.EventHandler(this.menuSetPCRTemplateDir_Click);
+            this.menuSetPCRDataDir.Name = "menuSetPCRDataDir";
+            this.menuSetPCRDataDir.Size = new System.Drawing.Size(222, 22);
+            this.menuSetPCRDataDir.Text = "设置PCR数据资源目录";
+            this.menuSetPCRDataDir.Click += new System.EventHandler(this.menuSetPCRDataDir_Click);
             // 
             // menuScripts
             // 
@@ -147,6 +147,21 @@
             this.menuShowViewportSizeScript.Size = new System.Drawing.Size(185, 22);
             this.menuShowViewportSizeScript.Text = "跟踪Mumu视口大小";
             this.menuShowViewportSizeScript.Click += new System.EventHandler(this.menuShowViewportSizeScript_Click);
+            // 
+            // menuToolsAndHelp
+            // 
+            this.menuToolsAndHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuOpenCacheDir});
+            this.menuToolsAndHelp.Name = "menuToolsAndHelp";
+            this.menuToolsAndHelp.Size = new System.Drawing.Size(86, 21);
+            this.menuToolsAndHelp.Text = "工具|帮助(&T)";
+            // 
+            // menuOpenCacheDir
+            // 
+            this.menuOpenCacheDir.Name = "menuOpenCacheDir";
+            this.menuOpenCacheDir.Size = new System.Drawing.Size(152, 22);
+            this.menuOpenCacheDir.Text = "打开缓存目录";
+            this.menuOpenCacheDir.Click += new System.EventHandler(this.menuOpenCacheDir_Click);
             // 
             // menuStopScript
             // 
@@ -170,21 +185,6 @@
             this.txtOutput.Size = new System.Drawing.Size(677, 361);
             this.txtOutput.TabIndex = 2;
             this.txtOutput.Text = "";
-            // 
-            // menuToolsAndHelp
-            // 
-            this.menuToolsAndHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuOpenCacheDir});
-            this.menuToolsAndHelp.Name = "menuToolsAndHelp";
-            this.menuToolsAndHelp.Size = new System.Drawing.Size(86, 21);
-            this.menuToolsAndHelp.Text = "工具|帮助(&T)";
-            // 
-            // menuOpenCacheDir
-            // 
-            this.menuOpenCacheDir.Name = "menuOpenCacheDir";
-            this.menuOpenCacheDir.Size = new System.Drawing.Size(152, 22);
-            this.menuOpenCacheDir.Text = "打开缓存目录";
-            this.menuOpenCacheDir.Click += new System.EventHandler(this.menuOpenCacheDir_Click);
             // 
             // Frm
             // 
@@ -217,7 +217,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
         private System.Windows.Forms.ToolStripMenuItem menuSetAdbServerPath;
         private System.Windows.Forms.ToolStripMenuItem menuSetTesseractPath;
-        private System.Windows.Forms.ToolStripMenuItem menuSetPCRTemplateDir;
+        private System.Windows.Forms.ToolStripMenuItem menuSetPCRDataDir;
         private System.Windows.Forms.ToolStripMenuItem menuScripts;
         private System.Windows.Forms.ToolStripMenuItem menuStopScript;
         private System.Windows.Forms.ToolStripMenuItem menuShowViewportSizeScript;

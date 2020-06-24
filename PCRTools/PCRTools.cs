@@ -31,14 +31,21 @@ namespace PCRBattleRecorder
 
         public string GetTemplateImgPath(string relativePath)
         {
-            var imgDir = configMgr.PCRTemplateImgDir;
+            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template");
             var path = fileTools.JoinPath(imgDir, relativePath);
+            return path;
+        }
+
+        public string GetCommonTemplateImgPath(string imgName)
+        {
+            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template", "Common");
+            var path = fileTools.JoinPath(imgDir, imgName);
             return path;
         }
 
         public string GetTemplateImgPathOfRegion(PCRRegion region, string imgName)
         {
-            var imgDir = configMgr.PCRTemplateImgDir;
+            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template");
             var path = fileTools.JoinPath(imgDir, region.ToString(), imgName);
             return path;
         }
@@ -46,6 +53,13 @@ namespace PCRBattleRecorder
         public Mat GetTemplateMat(string relativePath)
         {
             var path = GetTemplateImgPath(relativePath);
+            var mat = OpenCvExtension.ReadMatFromFile(path);
+            return mat;
+        }
+
+        public Mat GetCommonTemplateMat(string name)
+        {
+            var path = GetCommonTemplateImgPath(name);
             var mat = OpenCvExtension.ReadMatFromFile(path);
             return mat;
         }
@@ -60,6 +74,20 @@ namespace PCRBattleRecorder
         public Mat GetResizedTemplateMat(string relativePath)
         {
             var mat = GetTemplateMat(relativePath);
+            var resized = ResizedByTemplateViewportSize(mat);
+            return resized;
+        }
+
+        public Mat GetResizedCommonTemplateMat(string name)
+        {
+            var mat = GetCommonTemplateMat(name);
+            var resized = ResizedByTemplateViewportSize(mat);
+            return resized;
+        }
+
+        public Mat GetResizedTemplateMatOfRegion(PCRRegion region, string name)
+        {
+            var mat = GetTemplateMatOfRegion(region, name);
             var resized = ResizedByTemplateViewportSize(mat);
             return resized;
         }

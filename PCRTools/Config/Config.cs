@@ -13,22 +13,49 @@ namespace PCRBattleRecorder.Config
 
         public virtual object Get(string key)
         {
-            if (!container.ContainsKey(key)) return string.Empty;
+            if (!container.ContainsKey(key)) return null;
             return container[key];
         }
 
         public string GetString(string key)
         {
+            return GetString(key, string.Empty);
+        }
+
+        public string GetString(string key, string defaultStr)
+        {
             var r = Get(key);
-            return r?.ToString() ?? "";
+            return r?.ToString() ?? defaultStr;
         }
 
         public bool GetBool(string key)
         {
-            var r = GetString(key);
-            r = r.ToLower();
-            if (r == "true" || r == "1") return true;
+            return GetBool(key, false);
+        }
+
+        public bool GetBool(string key, bool defaultBool)
+        {
+            var r = Get(key);
+            if (r == null) return defaultBool;
+            var lower = r.ToString().ToLower();
+            if (lower == "true" || lower == "1") return true;
             return false;
+        }
+
+        public double GetDouble(string key)
+        {
+            return GetDouble(key, 0);
+        }
+
+        public double GetDouble(string key, double defaultDouble)
+        {
+            var r = Get(key);
+            if (r == null) return defaultDouble;
+            double num;
+            if (double.TryParse(r.ToString(), out num))
+                return num;
+            else
+                return defaultDouble;
         }
 
         public virtual void Set(string key, object value)
