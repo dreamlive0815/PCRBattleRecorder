@@ -189,8 +189,26 @@ namespace PCRBattleRecorder.Config
             get { return new Size(2160, 1080); }
         }
 
-        public bool OutputAutoScroll { get; set; }
+        public bool OutputAutoScroll
+        {
+            get
+            {
+                var s = config.GetString("OutputAutoScroll");
+                bool r;
+                if (bool.TryParse(s, out r))
+                    return r;
+                else
+                    return false;
+            }
+            set
+            {
+                config.Set("OutputAutoScroll", value.ToString());
+                Save();
+            }
+        }
 
         public double DefaultMatchTemplateThreshold { get; set; } = 0.8;
+
+        public bool PrintShellOutput { get; set; } = true;
     }
 }

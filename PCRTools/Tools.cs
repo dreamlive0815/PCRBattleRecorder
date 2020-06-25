@@ -7,6 +7,8 @@ using System.Text;
 using RawPoint = System.Drawing.Point;
 using OpenCvSharp;
 using System.Drawing;
+using PCRBattleRecorder.Config;
+using System.IO;
 
 namespace PCRBattleRecorder
 {
@@ -24,6 +26,9 @@ namespace PCRBattleRecorder
             return instance;
         }
 
+        private ConfigMgr configMgr = ConfigMgr.GetInstance();
+        private LogTools logTools = LogTools.GetInstance();
+
         private Tools()
         {
         }
@@ -34,7 +39,8 @@ namespace PCRBattleRecorder
             {
                 FileName = exePath,
                 Arguments = arguments,
-                WindowStyle = ProcessWindowStyle.Hidden,
+                WindowStyle = ProcessWindowStyle.Minimized,
+                CreateNoWindow = true,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -46,6 +52,11 @@ namespace PCRBattleRecorder
             if (!string.IsNullOrEmpty(error))
             {
                 throw new ShellException(error);
+            }
+            if (configMgr.PrintShellOutput)
+            {
+                var fileName = new FileInfo(exePath).Name;
+                logTools.Info("DoShell", $"[{fileName}] {output}");
             }
             return output;
         }

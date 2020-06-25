@@ -132,6 +132,31 @@ namespace PCRBattleRecorder
             }
         }
 
+        private const string PointRateJsonFileName = "point_rate.json";
+
+        public Vec2f GetPointRateByJArray(JArray jArr)
+        {
+            var getFloat = new Func<int, float>((index) =>
+            {
+                return jArr[index].Value<float>();
+            });
+            return new Vec2f(getFloat(0), getFloat(1));
+        }
+
+        public Vec2f GetPointRate(string type, string key)
+        {
+            try
+            {
+                var dataContainer = ChooseDataContainer("Template", type, PointRateJsonFileName, key);
+                var jArr = dataContainer.Get(key) as JArray;
+                return GetPointRateByJArray(jArr);
+            }
+            catch (Exception e)
+            {
+                throw new BreakException(Trans.T("无法读取 {0}.{1} 采样点的位置", type, key));
+            }
+        }
+
         private const string MatchTemplateThresholdJsonFileName = "match_template_threshold.json";
 
         public double GetMatchTemplateThreshold(string type, string imgName)
@@ -264,5 +289,35 @@ namespace PCRBattleRecorder
             }
             return "未知区域";
         }
+    }
+
+    public enum PCRTab
+    {
+        Mainpage,
+        Character,
+        Story,
+        Battle,
+        Guildhouse,
+        Pickup,
+        Menu,
+    }
+
+    public enum PCRBattleMode
+    {
+        Mainline,
+        Explore,
+        Underground,
+        Survey,
+        Team,
+        Arena,
+        PrincessArena,
+    }
+
+    public enum PCRStory
+    {
+        Mainline,
+        Character,
+        Guild,
+        Extra,
     }
 }

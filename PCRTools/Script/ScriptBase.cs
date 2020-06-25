@@ -37,12 +37,22 @@ namespace PCRBattleRecorder.Script
             return pcrTools.GetTemplateMatchSourceRectRate(type, imgName);
         }
 
+        public virtual double GetMatchTemplateThreshold(string type, string imgName)
+        {
+            return pcrTools.GetMatchTemplateThreshold(type, imgName);
+        }
+
+        public virtual Vec2f GetPointRate(string type, string key)
+        {
+            return pcrTools.GetPointRate(type, key);
+        }
+
         public OpenCvMatchImageResult GetMatchTemplateResult(Mat viewportMat, RECT viewportRect, string type, string imgName)
         {
             var matchSourceRectRate = GetMatchSourceRectRate(type, imgName);
             var matchSourceMat = viewportMat.GetChildMatByRectRate(matchSourceRectRate);
             var templateMat = pcrTools.GetResizedTemplateMat(type, imgName);
-            var threshold = pcrTools.GetMatchTemplateThreshold(type, imgName);
+            var threshold = GetMatchTemplateThreshold(type, imgName);
             var matchResult = opencvTools.MatchImage(matchSourceMat, templateMat, threshold);
             return matchResult;
         }
@@ -79,6 +89,19 @@ namespace PCRBattleRecorder.Script
             var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, centerPos);
             mumuTools.DoClick(emulatorPoint);
             return true;
+        }
+
+        public void ClickTab(RECT viewportRect, PCRTab tab)
+        {
+            ClickTab(viewportRect, configMgr.PCRRegion.ToString(), tab);
+        }
+
+        public void ClickTab(RECT viewportRect, string type, PCRTab tab)
+        {
+            var key = $"PCRTab_{tab}";
+            var pointRate = GetPointRate(type, key);
+            var emulatorPoint = mumuTools.GetEmulatorPoint(pointRate);
+            mumuTools.DoClick(emulatorPoint);
         }
     }
 

@@ -17,12 +17,13 @@ namespace PCRBattleRecorder
 {
     public partial class Frm : Form
     {
-
+        AdbTools adbTools = AdbTools.GetInstance();
         ConfigMgr configMgr = ConfigMgr.GetInstance();
-        LogTools logTools = LogTools.GetInstance();
-        ScriptMgr scriptMgr = ScriptMgr.GetInstance();
         FileTools fileTools = FileTools.GetInstance();
+        LogTools logTools = LogTools.GetInstance();
+        MumuTools mumuTools = MumuTools.GetInstance();
         PCRTools pcrTools = PCRTools.GetInstance();
+        ScriptMgr scriptMgr = ScriptMgr.GetInstance();
 
         public Frm()
         {
@@ -36,11 +37,19 @@ namespace PCRBattleRecorder
             RefreshRegions();
             RefreshOutputAutoScroll();
 
-            AdbTools.GetInstance().ConnectToMumuAdbServer();
+
+            adbTools.OnEvent += AdbTools_OnEvent;
+            adbTools.ConnectToMumuAdbServer();
+            adbTools.StartMonitorEvents();
 
             //var rect = MumuTools.GetInstance().GetMumuRect();
             //var threshold = pcrTools.GetMatchTemplateThreshold("Taiwan", "battle_challenge.png");
 
+        }
+
+        private void AdbTools_OnEvent(AdbEvent obj)
+        {
+            logTools.Info("AdbTools_OnEvent", $"{obj.Param0} {obj.Param1} {obj.Param2}");
         }
 
         void RegisterLogEvents()
@@ -138,6 +147,10 @@ namespace PCRBattleRecorder
             fileTools.OpenDirInExplorer(configMgr.CacheDir);
         }
 
-        
+        private void menuTapPCRMenu_Click(object sender, EventArgs e)
+        {
+            var viewportRect = mumuTools.GetMumuViewportRect();
+            EmptyScript.GetInstance().ClickTab(viewportRect, PCRTab.Menu);
+        }
     }
 }

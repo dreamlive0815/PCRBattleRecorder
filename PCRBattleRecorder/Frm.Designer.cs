@@ -45,6 +45,7 @@
             this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuClearOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
+            this.menuTapPCRMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -152,7 +153,8 @@
             // menuToolsAndHelp
             // 
             this.menuToolsAndHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuOpenCacheDir});
+            this.menuOpenCacheDir,
+            this.menuTapPCRMenu});
             this.menuToolsAndHelp.Name = "menuToolsAndHelp";
             this.menuToolsAndHelp.Size = new System.Drawing.Size(104, 24);
             this.menuToolsAndHelp.Text = "工具|帮助(&T)";
@@ -160,7 +162,7 @@
             // menuOpenCacheDir
             // 
             this.menuOpenCacheDir.Name = "menuOpenCacheDir";
-            this.menuOpenCacheDir.Size = new System.Drawing.Size(174, 26);
+            this.menuOpenCacheDir.Size = new System.Drawing.Size(203, 26);
             this.menuOpenCacheDir.Text = "打开缓存目录";
             this.menuOpenCacheDir.Click += new System.EventHandler(this.menuOpenCacheDir_Click);
             // 
@@ -187,6 +189,13 @@
             this.txtOutput.Size = new System.Drawing.Size(677, 358);
             this.txtOutput.TabIndex = 2;
             this.txtOutput.Text = "";
+            // 
+            // menuTapPCRMenu
+            // 
+            this.menuTapPCRMenu.Name = "menuTapPCRMenu";
+            this.menuTapPCRMenu.Size = new System.Drawing.Size(203, 26);
+            this.menuTapPCRMenu.Text = "测试点击PCR菜单";
+            this.menuTapPCRMenu.Click += new System.EventHandler(this.menuTapPCRMenu_Click);
             // 
             // Frm
             // 
@@ -227,6 +236,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuClearOutput;
         private System.Windows.Forms.ToolStripMenuItem menuToolsAndHelp;
         private System.Windows.Forms.ToolStripMenuItem menuOpenCacheDir;
+        private System.Windows.Forms.ToolStripMenuItem menuTapPCRMenu;
     }
 }
 

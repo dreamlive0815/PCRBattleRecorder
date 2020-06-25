@@ -95,7 +95,7 @@ namespace PCRTemplateImgTool
                     rectangle = new Rectangle(e.X, e.Y, 0, 0);
                 }
                 var pointRate = GetPointRate();
-                var s = pointRate.Format();
+                var s = pointRate.FormatAsJsonArray();
                 Clipboard.SetText(s);
             }
             RefreshTitle(e.X, e.Y);
@@ -193,6 +193,13 @@ namespace PCRTemplateImgTool
         public static string Format(this Vec2f pointRate)
         {
             var s = string.Format("new Vec2f({0}f, {1}f)", pointRate.Item0.Format(), pointRate.Item1.Format());
+            return s;
+        }
+
+        public static string FormatAsJsonArray(this Vec2f pointRate)
+        {
+            var s = string.Format("[{0}, {1}]",
+                pointRate.Item0.Format(), pointRate.Item1.Format());
             return s;
         }
 
