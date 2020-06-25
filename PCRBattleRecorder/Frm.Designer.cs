@@ -50,6 +50,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRegions,
             this.menuSettings,
@@ -59,7 +60,7 @@
             this.menuClearOutput});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(677, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(677, 28);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -70,27 +71,27 @@
             this.menuRegionTaiwan,
             this.menuRegionJapan});
             this.menuRegions.Name = "menuRegions";
-            this.menuRegions.Size = new System.Drawing.Size(60, 21);
+            this.menuRegions.Size = new System.Drawing.Size(71, 24);
             this.menuRegions.Text = "区域(&R)";
             // 
             // menuRegionMainland
             // 
             this.menuRegionMainland.Name = "menuRegionMainland";
-            this.menuRegionMainland.Size = new System.Drawing.Size(152, 22);
+            this.menuRegionMainland.Size = new System.Drawing.Size(114, 26);
             this.menuRegionMainland.Text = "国服";
             this.menuRegionMainland.Click += new System.EventHandler(this.menuRegionMainland_Click);
             // 
             // menuRegionTaiwan
             // 
             this.menuRegionTaiwan.Name = "menuRegionTaiwan";
-            this.menuRegionTaiwan.Size = new System.Drawing.Size(152, 22);
+            this.menuRegionTaiwan.Size = new System.Drawing.Size(114, 26);
             this.menuRegionTaiwan.Text = "台湾";
             this.menuRegionTaiwan.Click += new System.EventHandler(this.menuRegionTaiwan_Click);
             // 
             // menuRegionJapan
             // 
             this.menuRegionJapan.Name = "menuRegionJapan";
-            this.menuRegionJapan.Size = new System.Drawing.Size(152, 22);
+            this.menuRegionJapan.Size = new System.Drawing.Size(114, 26);
             this.menuRegionJapan.Text = "日本";
             this.menuRegionJapan.Click += new System.EventHandler(this.menuRegionJapan_Click);
             // 
@@ -102,34 +103,34 @@
             this.menuSetTesseractPath,
             this.menuSetPCRDataDir});
             this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(59, 21);
+            this.menuSettings.Size = new System.Drawing.Size(70, 24);
             this.menuSettings.Text = "设置(&S)";
             // 
             // menuOutputAutoScroll
             // 
             this.menuOutputAutoScroll.Name = "menuOutputAutoScroll";
-            this.menuOutputAutoScroll.Size = new System.Drawing.Size(222, 22);
+            this.menuOutputAutoScroll.Size = new System.Drawing.Size(269, 26);
             this.menuOutputAutoScroll.Text = "输出自动滚动";
             this.menuOutputAutoScroll.Click += new System.EventHandler(this.menuOutputAutoScroll_Click);
             // 
             // menuSetAdbServerPath
             // 
             this.menuSetAdbServerPath.Name = "menuSetAdbServerPath";
-            this.menuSetAdbServerPath.Size = new System.Drawing.Size(222, 22);
+            this.menuSetAdbServerPath.Size = new System.Drawing.Size(269, 26);
             this.menuSetAdbServerPath.Text = "设置MumuAdbServer路径";
             this.menuSetAdbServerPath.Click += new System.EventHandler(this.menuSetAdbServerPath_Click);
             // 
             // menuSetTesseractPath
             // 
             this.menuSetTesseractPath.Name = "menuSetTesseractPath";
-            this.menuSetTesseractPath.Size = new System.Drawing.Size(222, 22);
+            this.menuSetTesseractPath.Size = new System.Drawing.Size(269, 26);
             this.menuSetTesseractPath.Text = "设置Tesseract主程序路径";
             this.menuSetTesseractPath.Click += new System.EventHandler(this.menuSetTesseractPath_Click);
             // 
             // menuSetPCRDataDir
             // 
             this.menuSetPCRDataDir.Name = "menuSetPCRDataDir";
-            this.menuSetPCRDataDir.Size = new System.Drawing.Size(222, 22);
+            this.menuSetPCRDataDir.Size = new System.Drawing.Size(269, 26);
             this.menuSetPCRDataDir.Text = "设置PCR数据资源目录";
             this.menuSetPCRDataDir.Click += new System.EventHandler(this.menuSetPCRDataDir_Click);
             // 
@@ -138,13 +139,13 @@
             this.menuScripts.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuShowViewportSizeScript});
             this.menuScripts.Name = "menuScripts";
-            this.menuScripts.Size = new System.Drawing.Size(59, 21);
+            this.menuScripts.Size = new System.Drawing.Size(70, 24);
             this.menuScripts.Text = "脚本(&T)";
             // 
             // menuShowViewportSizeScript
             // 
             this.menuShowViewportSizeScript.Name = "menuShowViewportSizeScript";
-            this.menuShowViewportSizeScript.Size = new System.Drawing.Size(185, 22);
+            this.menuShowViewportSizeScript.Size = new System.Drawing.Size(221, 26);
             this.menuShowViewportSizeScript.Text = "跟踪Mumu视口大小";
             this.menuShowViewportSizeScript.Click += new System.EventHandler(this.menuShowViewportSizeScript_Click);
             // 
@@ -153,42 +154,43 @@
             this.menuToolsAndHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuOpenCacheDir});
             this.menuToolsAndHelp.Name = "menuToolsAndHelp";
-            this.menuToolsAndHelp.Size = new System.Drawing.Size(86, 21);
+            this.menuToolsAndHelp.Size = new System.Drawing.Size(104, 24);
             this.menuToolsAndHelp.Text = "工具|帮助(&T)";
             // 
             // menuOpenCacheDir
             // 
             this.menuOpenCacheDir.Name = "menuOpenCacheDir";
-            this.menuOpenCacheDir.Size = new System.Drawing.Size(152, 22);
+            this.menuOpenCacheDir.Size = new System.Drawing.Size(174, 26);
             this.menuOpenCacheDir.Text = "打开缓存目录";
             this.menuOpenCacheDir.Click += new System.EventHandler(this.menuOpenCacheDir_Click);
             // 
             // menuStopScript
             // 
             this.menuStopScript.Name = "menuStopScript";
-            this.menuStopScript.Size = new System.Drawing.Size(83, 21);
+            this.menuStopScript.Size = new System.Drawing.Size(99, 24);
             this.menuStopScript.Text = "终止脚本(&E)";
             this.menuStopScript.Click += new System.EventHandler(this.menuStopScript_Click);
             // 
             // menuClearOutput
             // 
             this.menuClearOutput.Name = "menuClearOutput";
-            this.menuClearOutput.Size = new System.Drawing.Size(84, 21);
+            this.menuClearOutput.Size = new System.Drawing.Size(101, 24);
             this.menuClearOutput.Text = "清空输出(&C)";
             this.menuClearOutput.Click += new System.EventHandler(this.menuClearOutput_Click);
             // 
             // txtOutput
             // 
             this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtOutput.Location = new System.Drawing.Point(0, 25);
+            this.txtOutput.Location = new System.Drawing.Point(0, 28);
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(677, 361);
+            this.txtOutput.ReadOnly = true;
+            this.txtOutput.Size = new System.Drawing.Size(677, 358);
             this.txtOutput.TabIndex = 2;
             this.txtOutput.Text = "";
             // 
             // Frm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(677, 386);
             this.Controls.Add(this.txtOutput);

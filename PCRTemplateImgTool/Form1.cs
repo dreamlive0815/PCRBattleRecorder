@@ -22,6 +22,11 @@ namespace PCRTemplateImgTool
             InitializeComponent();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //RefreshImageByViewportCapture();
+        }
+
         public void RefreshImageByViewportCapture()
         {
             var capture = MumuTools.GetInstance().DoCaptureViewport();
@@ -118,9 +123,21 @@ namespace PCRTemplateImgTool
             return new Vec4f(rx1, ry1, rx2, ry2);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        void SaveImageByRectRate(Vec4f rectRate)
         {
-            RefreshImageByViewportCapture();
+            var mat = new Bitmap(pictureBox1.Image).ToOpenCvMat();
+            var childMat = mat.GetChildMatByRectRate(rectRate);
+            var isPartial = Math.Abs(rectRate.Item0 - rectRate.Item2) < 1
+                || Math.Abs(rectRate.Item1 - rectRate.Item3) < 1;
+            var saveDialog = new SaveFileDialog();
+            saveDialog.Title = "选择图片保存路径(" + (isPartial ? "部分" : "完整");
+            saveDialog.Filter = "*.png|*.png";
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                childMat.SaveImage(saveDialog.FileName);
+                var name = new FileInfo(saveDialog.FileName).Name;
+                fileName = name;
+            }
         }
 
         string fileName = "";
@@ -131,26 +148,26 @@ namespace PCRTemplateImgTool
             {
                 var pwid = pictureBox1.Width;
                 var phei = pictureBox1.Height;
-                var mat = new Bitmap(pictureBox1.Image).ToOpenCvMat();
                 var isPartial = !e.Alt;
                 var rect = isPartial ? rectangle : new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height);
                 if (rect.Width == 0 || rect.Height == 0)
                     return;
                 var rectRate = GetRectRate();
-                var childMat = mat.GetChildMatByRectRate(rectRate);
-                var saveDialog = new SaveFileDialog();
-                saveDialog.Title = "选择图片保存路径(" + (isPartial ? "部分" : "完整");
-                saveDialog.Filter = "*.png|*.png";
-                if (saveDialog.ShowDialog() == DialogResult.OK)
-                {
-                    childMat.SaveImage(saveDialog.FileName);
-                    var name = new FileInfo(saveDialog.FileName).Name;
-                    fileName = name;
-                }
+                SaveImageByRectRate(rectRate);
             }
             else if (e.KeyCode == Keys.F5)
             {
                 RefreshImageByViewportCapture();
+            }
+            else if (e.Control && e.KeyCode == Keys.I)
+            {
+                var dialog = new InputDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var rectRate = dialog.GetVec4f();
+                    SaveImageByRectRate(rectRate);
+                }
+
             }
         }
 

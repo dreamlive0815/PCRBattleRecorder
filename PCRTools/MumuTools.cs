@@ -69,12 +69,12 @@ namespace PCRBattleRecorder
             CheckRect(viewportRect);
             if (viewportRect.Width <= 15 || viewportRect.Height <= 15)
             {
-                throw new Exception(Trans.T("Mumu模拟器窗口尺寸不合法"));
+                throw new NoTrackTraceException(Trans.T("Mumu模拟器窗口尺寸不合法"));
             }
             var title = Win32Api.GetWindowTitle(hWnd);
             if (!title.Contains("NemuPlayer"))
             {
-                throw new Exception(Trans.T("无法获取Mumu模拟器窗口尺寸"));
+                throw new NoTrackTraceException(Trans.T("无法获取Mumu模拟器窗口尺寸"));
             }
             return viewportRect;
         }

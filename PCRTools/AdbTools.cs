@@ -32,7 +32,10 @@ namespace PCRBattleRecorder
 
         public void ConnectToMumuAdbServer()
         {
-            var output = RunCommand("connect 127.0.0.1:7555");
+            string output;
+            output = RunCommand("start-server");
+            logTools.Info("ConnectToMumuAdbServer", output);
+            output = RunCommand("connect 127.0.0.1:7555");
             logTools.Info("ConnectToMumuAdbServer", output);
         }
 
