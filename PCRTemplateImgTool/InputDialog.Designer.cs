@@ -64,6 +64,7 @@
             // 
             // InputDialog
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(466, 127);
@@ -76,7 +77,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InputDialog";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "InputDialog";
             this.Load += new System.EventHandler(this.InputDialog_Load);
             this.ResumeLayout(false);

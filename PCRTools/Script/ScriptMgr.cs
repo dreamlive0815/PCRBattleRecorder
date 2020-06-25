@@ -55,7 +55,7 @@ namespace PCRBattleRecorder.Script
                 var viewportRect = mumuTools.GetMumuViewportRect();
                 var viewportCapture = tools.DoCaptureScreen(viewportRect);
                 logTools.Info("ScriptStart", $"Script: {script.Name} OnStart");
-                script.OnStart(viewportCapture, viewportRect);
+                script.OnStart(viewportCapture.ToOpenCvMat(), viewportRect);
                 while (true)
                 {
                     if (token.IsCancellationRequested)
@@ -69,7 +69,7 @@ namespace PCRBattleRecorder.Script
                         viewportRect = mumuTools.GetMumuViewportRect();
                         viewportCapture = tools.DoCaptureScreen(viewportRect);
                         logTools.Info("ScriptLoop", $"Script: {script.Name} Tick");
-                        script.Tick(viewportCapture, viewportRect);
+                        script.Tick(viewportCapture.ToOpenCvMat(), viewportRect);
                     }
                     catch (Exception e)
                     {

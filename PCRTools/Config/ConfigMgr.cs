@@ -190,5 +190,7 @@ namespace PCRBattleRecorder.Config
         }
 
         public bool OutputAutoScroll { get; set; }
+
+        public double DefaultMatchTemplateThreshold { get; set; } = 0.8;
     }
 }

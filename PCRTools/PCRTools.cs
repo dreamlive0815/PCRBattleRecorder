@@ -1,11 +1,13 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenCvSharp;
 using CvSize = OpenCvSharp.Size;
-using PCRBattleRecorder.Config;
 using ConfigBase = PCRBattleRecorder.Config.Config;
 using Newtonsoft.Json.Linq;
+using PCRBattleRecorder.Config;
+
 
 namespace PCRBattleRecorder
 {
@@ -32,50 +34,80 @@ namespace PCRBattleRecorder
         }
 
 
-        #region 下面是PCR配置文件加载策略 先从主程序同级目录加载 再从PCRData下childType目录加载 最后从PCRData下parentType目录加载
-
+        #region 下面是PCR配置文件加载策略 先从主程序同级data目录加载 再从PCRData下childType目录加载 最后从PCRData下parentType目录加载
 
         private Dictionary<string, ConfigBase> dataContainerDict = new Dictionary<string, ConfigBase>();
+
+        public string GetDataFilePath(string parentType, string childType, string fileName)
+        {
+            var parentEmpty = string.IsNullOrEmpty(parentType);
+            var childEmpty = string.IsNullOrEmpty(childType);
+            if (parentEmpty && childEmpty)
+                return fileTools.JoinPath(fileTools.GetDirFullPath("data"), fileName); //同级data目录
+            else
+            {
+                if (childEmpty)
+                    return fileTools.JoinPath(configMgr.PCRDataDir, parentType, fileName);
+                else
+                    return fileTools.JoinPath(configMgr.PCRDataDir, parentType, childType, fileName);
+            }
+        }
+
 
         private string GetDictKey(string parentType, string childType, string fileName)
         {
             var parentEmpty = string.IsNullOrEmpty(parentType);
             var childEmpty = string.IsNullOrEmpty(childType);
-            return null;
-        }
-
-        private string GetFilePath(string parentType, string childType, string fileName)
-        {
-            return null;
+            if (parentEmpty && childEmpty)
+                return fileName;
+            else
+            {
+                if (childEmpty)
+                    return $"{parentType}/{fileName}";
+                else
+                    return $"{parentType}/{childType}/{fileName}";
+            }
         }
 
         public ConfigBase GetDataContainer(string parentType, string childType, string fileName)
         {
-            return null;
+            var dictKey = GetDictKey(parentType, childType, fileName);
+            if (dataContainerDict.ContainsKey(dictKey))
+                return dataContainerDict[dictKey]; //缓存
+            var filePath = GetDataFilePath(parentType, childType, fileName);
+            var dataContainer = JsonConfig.FromFileOrEmpty(filePath);
+            dataContainerDict[dictKey] = dataContainer; //缓存
+            return dataContainer;
         }
 
         public ConfigBase ChooseDataContainer(string parentType, string childType, string fileName, string key)
         {
-            return null;
+            var relativeDataContainer = GetDataContainer(null, null, fileName); //同级data目录
+            if (relativeDataContainer.HasKey(key))
+                return relativeDataContainer;
+            var childDataContainer = GetDataContainer(parentType, childType, fileName);
+            if (childDataContainer.HasKey(key))
+                return childDataContainer;
+            var parentDataContainer = GetDataContainer(parentType, null, fileName);
+            return parentDataContainer;
+        }
+
+        public string ChooseFilePath(string parentType, string childType, string fileName)
+        {
+            var relativeFilePath = GetDataFilePath(null, null, fileName);
+            if (File.Exists(relativeFilePath))
+                return relativeFilePath;
+            var childFilePath = GetDataFilePath(parentType, childType, fileName);
+            if (File.Exists(childFilePath))
+                return childFilePath;
+            var parentFilePath = GetDataFilePath(parentType, null, fileName);
+            return parentFilePath;
         }
 
         #endregion
 
 
-        private const string MSRectRateJsonFileName = "match_source_rect_rate.json";
-        private ConfigBase parentMSRectRateData = JsonConfig.FromFileOrEmpty(FileTools.GetInstance().JoinPath(ConfigMgr.GetInstance().PCRDataDir, "Template", MSRectRateJsonFileName));
-
-        private Dictionary<string, ConfigBase> childMSRectRateDataDict = new Dictionary<string, ConfigBase>();
-
-        public ConfigBase GetMatchSourceRectRateData(string key)
-        {
-            //缓存
-            if (childMSRectRateDataDict.ContainsKey(key))
-                return childMSRectRateDataDict[key];
-            var data = JsonConfig.FromFileOrEmpty(fileTools.JoinPath(configMgr.PCRDataDir, "Template", key, MSRectRateJsonFileName));
-            childMSRectRateDataDict[key] = data; //缓存
-            return data;
-        }
+        private const string MatchSourceRectRateJsonFileName = "match_source_rect_rate.json";
 
         public Vec4f GetRectRateByJArray(JArray jArr)
         {
@@ -88,26 +120,43 @@ namespace PCRBattleRecorder
 
         public Vec4f GetTemplateMatchSourceRectRate(string type, string imgName)
         {
-            var rectRateData = GetMatchSourceRectRateData(type);
             try
             {
-                if (rectRateData.HasKey(imgName))
-                {
-                    var jArr = rectRateData.Get(imgName) as JArray;
-                    return GetRectRateByJArray(jArr);
-                }
-                else
-                {
-                    var jArr = parentMSRectRateData.Get(imgName) as JArray;
-                    return GetRectRateByJArray(jArr);
-                }
+                var dataContainer = ChooseDataContainer("Template", type, MatchSourceRectRateJsonFileName, imgName);
+                var jArr = dataContainer.Get(imgName) as JArray;
+                return GetRectRateByJArray(jArr);
             }
             catch (Exception e)
             {
-                throw new Exception(Trans.T("无法读取 {0}.{0} 样图的采样区域", type, imgName));
+                throw new BreakException(Trans.T("无法读取 {0}.{1} 样图的采样区域", type, imgName));
             }
         }
 
+        private const string MatchTemplateThresholdJsonFileName = "match_template_threshold.json";
+
+        public double GetMatchTemplateThreshold(string type, string imgName)
+        {
+            try
+            {
+                var dataContainer = ChooseDataContainer("Template", type, MatchTemplateThresholdJsonFileName, imgName);
+                var numStr = dataContainer.Get(imgName).ToString();
+                double threshold;
+                if (double.TryParse(numStr, out threshold))
+                    return threshold;
+                else
+                    return configMgr.DefaultMatchTemplateThreshold;
+            }
+            catch (Exception e)
+            {
+                return configMgr.DefaultMatchTemplateThreshold;
+            }
+        }
+
+        /// <summary>
+        /// 未使用加载策略
+        /// </summary>
+        /// <param name="relativePath"></param>
+        /// <returns></returns>
         public string GetTemplateImgPath(string relativePath)
         {
             var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template");
@@ -117,11 +166,17 @@ namespace PCRBattleRecorder
 
         public string GetTemplateImgPath(string type, string imgName)
         {
-            var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template", type);
-            var path = fileTools.JoinPath(imgDir, imgName);
+            //var imgDir = fileTools.JoinPath(configMgr.PCRDataDir, "Template", type);
+            //var path = fileTools.JoinPath(imgDir, imgName);
+            var path = ChooseFilePath("Template", type, imgName);
             return path;
         }
 
+        /// <summary>
+        /// 未使用加载策略
+        /// </summary>
+        /// <param name="relativePath"></param>
+        /// <returns></returns>
         public Mat GetTemplateMat(string relativePath)
         {
             var path = GetTemplateImgPath(relativePath);
@@ -136,6 +191,11 @@ namespace PCRBattleRecorder
             return mat;
         }
 
+        /// <summary>
+        /// 未使用加载策略
+        /// </summary>
+        /// <param name="relativePath"></param>
+        /// <returns></returns>
         public Mat GetResizedTemplateMat(string relativePath)
         {
             var mat = GetTemplateMat(relativePath);
@@ -167,7 +227,7 @@ namespace PCRBattleRecorder
         public Size GetViewportSize()
         {
             if (bGotViewportSize)
-                return viewportSize;
+                return viewportSize; //缓存
             var viewportRect = MumuTools.GetInstance().GetMumuViewportRect();
             viewportSize = new Size(viewportRect.Width, viewportRect.Height);
             bGotViewportSize = true; //缓存

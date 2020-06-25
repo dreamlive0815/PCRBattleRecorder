@@ -41,11 +41,6 @@ namespace PCRTemplateImgTool
             rectangle = new Rectangle();
         }
 
-        void RefreshTitle()
-        {
-
-        }
-
         bool press = false;
         int startX, startY;
         Rectangle rectangle;
@@ -58,9 +53,17 @@ namespace PCRTemplateImgTool
             startY = e.Y;
         }
 
+        void RefreshTitle(int x, int y)
+        {
+            if (pictureBox1.Image == null)
+                return;
+            var head = $"Image:{pictureBox1.Image.Width},{pictureBox1.Image.Height} PicBox:{pictureBox1.Width},{pictureBox1.Height} ";
+            Text = $"{head}{x},{y} {GetPointRate().Format()} {GetRectRate().Format()}";
+        }
+
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            Text = $"{e.X},{e.Y} {GetPointRate().Format()} {GetRectRate().Format()}";
+            RefreshTitle(e.X, e.Y);
             if (!press) return;
             pictureBox1.Refresh();
             var g = pictureBox1.CreateGraphics();
@@ -78,24 +81,24 @@ namespace PCRTemplateImgTool
             press = false;
             var width = pictureBox1.Width;
             var height = pictureBox1.Height;
-
             var rect = rectangle;
             if (rect.Width > 5 && rect.Height > 5)
             {
                 var rectRate = GetRectRate();
-                var s = rectRate.Format();
+                var s = $"\"{fileName}\": {GetRectRate().FormatAsJsonArray()},";
                 Clipboard.SetText(s);
             }
             else
             {
+                if (rectangle.X == 0 || rectangle.Y == 0)
+                {
+                    rectangle = new Rectangle(e.X, e.Y, 0, 0);
+                }
                 var pointRate = GetPointRate();
                 var s = pointRate.Format();
                 Clipboard.SetText(s);
             }
-            Text = $"{GetPointRate().Format()} {GetRectRate().Format()}";
-
-            var ss = $"\"{fileName}\": {GetRectRate().FormatAsJsonArray()},";
-            Clipboard.SetText(ss);
+            RefreshTitle(e.X, e.Y);
         }
 
         string FormatFloat(double f)
@@ -125,6 +128,12 @@ namespace PCRTemplateImgTool
 
         void SaveImageByRectRate(Vec4f rectRate)
         {
+            if (pictureBox1.Image == null)
+            {
+                MessageBox.Show("请先捕获截图");
+                return;
+            }
+
             var mat = new Bitmap(pictureBox1.Image).ToOpenCvMat();
             var childMat = mat.GetChildMatByRectRate(rectRate);
             var isPartial = Math.Abs(rectRate.Item0 - rectRate.Item2) < 1
@@ -167,11 +176,8 @@ namespace PCRTemplateImgTool
                     var rectRate = dialog.GetVec4f();
                     SaveImageByRectRate(rectRate);
                 }
-
             }
         }
-
-        
     }
 
     static class FloatExtension
