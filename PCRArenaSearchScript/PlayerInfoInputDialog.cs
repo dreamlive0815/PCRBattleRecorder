@@ -18,7 +18,7 @@ namespace PCRArenaSearchScript
             InitializeComponent();
         }
 
-        public ArenaSearchOp NameRankOp { get; set; } = ArenaSearchOp.And;
+        public ArenaSearchOp NameRankOp { get; set; } = ArenaSearchOp.Or;
 
         public string PlayerName { get { return txtName.Text; } }
 

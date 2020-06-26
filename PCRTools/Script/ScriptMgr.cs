@@ -77,12 +77,17 @@ namespace PCRBattleRecorder.Script
                     }
                     catch (Exception e)
                     {
-                        logTools.Error("ScriptLoop", Trans.T("脚本: {0} 终止或者发生错误", script.Name), false);
                         var needBreak = logTools.IsSelfOrChildrenBreakException(e);
                         if (!script.CanKeepOnWhenException || needBreak)
+                        {
+                            logTools.Error("ScriptLoop", Trans.T("脚本: {0} 因发生错误而被终止", script.Name), false);
                             throw e;
+                        }
                         else
+                        {
+                            logTools.Error("ScriptLoop", Trans.T("脚本: {0} 发生错误", script.Name), false);
                             logTools.Error("ScriptLoop", e);
+                        }
                     }
                 }
             }, tokenSource.Token);
