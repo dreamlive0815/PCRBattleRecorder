@@ -51,7 +51,7 @@ namespace PCRBattleRecorder
             try
             {
                 var args = string.Format("{0} {1} -l {2} --psm 6", ocrImgStorePath, ocrResPathForTess, languages);
-                var output = tools.DoShell(tesseratPath, args);
+                var output = tools.DoShell(tesseratPath, args, true);
                 if (!File.Exists(ocrResStorePath))
                     throw new Exception(Trans.T("找不到OCR的输出文件"));
                 var result = File.ReadAllText(ocrResStorePath);
@@ -84,7 +84,8 @@ namespace PCRBattleRecorder
             switch (pcrRegion)
             {
                 case PCRRegion.Mainland: return "chi_sim+eng";
-                case PCRRegion.Taiwan: return "chi_sim+chi_tra+eng";
+                //case PCRRegion.Taiwan: return "chi_sim+chi_tra+eng";
+                case PCRRegion.Taiwan: return "chi_sim+eng";
                 case PCRRegion.Japan: return "jpn+eng";
             }
             return "chi_sim+eng";

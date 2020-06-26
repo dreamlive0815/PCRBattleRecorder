@@ -35,6 +35,11 @@ namespace PCRBattleRecorder
 
         public string DoShell(string exePath, string arguments)
         {
+            return DoShell(exePath, arguments, false);
+        }
+
+        public string DoShell(string exePath, string arguments, bool ingoreError)
+        {
             var startInfo = new ProcessStartInfo()
             {
                 FileName = exePath,
@@ -49,14 +54,14 @@ namespace PCRBattleRecorder
             proc.WaitForExit();
             var output = proc.StandardOutput.ReadToEnd();
             var error = proc.StandardError.ReadToEnd().Trim();
-            if (!string.IsNullOrEmpty(error))
+            if (!ingoreError && !string.IsNullOrEmpty(error))
             {
                 throw new ShellException(error);
             }
             if (configMgr.PrintShellOutput)
             {
                 var fileName = new FileInfo(exePath).Name;
-                logTools.Info("DoShell", $"[{fileName}] {output}");
+                logTools.Info("DoShell", $"[{fileName}] {arguments} {output}");
             }
             return output;
         }

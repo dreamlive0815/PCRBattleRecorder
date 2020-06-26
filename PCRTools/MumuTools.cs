@@ -24,8 +24,9 @@ namespace PCRBattleRecorder
             return instance;
         }
 
-        private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private AdbTools adbTools = AdbTools.GetInstance();
+        private ConfigMgr configMgr = ConfigMgr.GetInstance();
+        private PCRTools pcrTools = PCRTools.GetInstance();
 
         private MumuTools()
         {
@@ -90,6 +91,18 @@ namespace PCRBattleRecorder
         public void DoClick(EmulatorPoint point)
         {
             adbTools.DoTap(point);
+        }
+
+        public void DoClick(Vec2f pointRate)
+        {
+            var emulatorPoint = GetEmulatorPoint(pointRate);
+            DoClick(emulatorPoint);
+        }
+
+        public void DoClick(string key)
+        {
+            var pointRate = pcrTools.GetPointRate(configMgr.PCRRegion.ToString(), key);
+            DoClick(pointRate);
         }
 
         public EmulatorPoint GetEmulatorPoint(Vec2f pointRate)

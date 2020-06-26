@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 using PCRArenaSearchScript;
 using PCRBattleRecorder.Config;
+using System.Text.RegularExpressions;
 
 namespace PCRBattleRecorder.Script
 {
@@ -24,6 +25,8 @@ namespace PCRBattleRecorder.Script
         public override bool CanKeepOnWhenException { get; } = true;
 
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
+        private LogTools logTools = LogTools.GetInstance();
+        private MumuTools mumuTools = MumuTools.GetInstance();
         private OCRTools ocrTools = OCRTools.GetInstance();
         private PCRTools pcrTools = PCRTools.GetInstance();
         private string playerRank;
@@ -50,8 +53,20 @@ namespace PCRBattleRecorder.Script
 
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
-
             var list = GetPlayerInfoList(viewportMat, viewportRect);
+            var playerIndex = FindPlayerIndex(list);
+            if (playerIndex != NOT_FOUND)
+            {
+                logTools.Info("ArenaSearch", $"PlayerIndex: {playerIndex}");
+                mumuTools.DoClick($"Arena_Player_{playerIndex + 1}");
+                var playerInfo = list[playerIndex];
+                throw new BreakException(Trans.T("已找到目标玩家,名字:{0},排名:{1},脚本终止", playerInfo.Name, playerInfo.Rank));
+            }
+            else
+            {
+                logTools.Info("ArenaSearch", $"PlayerIndex Not Found");
+                mumuTools.DoClick("Arena_Refresh");
+            }
         }
 
         private List<ArenaPlayerInfo> GetPlayerInfoList(Mat viewportMat, RECT viewportRect)
@@ -66,9 +81,7 @@ namespace PCRBattleRecorder.Script
                 var task = new Task(() =>
                 {
                     var name = OCRPlayerName(viewportMat, viewportRect, index);
-                    var rank = "";
-                    //var name = MumuState.DoArenaPlayerNameOCR(viewportCaptureClone, viewportRect, index);
-                    //var rank = MumuState.DoArenaPlayerRankOCR(viewportCaptureClone, viewportRect, index);
+                    var rank = OCRPlayerRank(viewportMat, viewportRect, index);
                     r[index] = new ArenaPlayerInfo()
                     {
                         Index = index,
@@ -83,6 +96,33 @@ namespace PCRBattleRecorder.Script
             return r;
         }
 
+        private const int NOT_FOUND = -1;
+
+        private int FindPlayerIndex(List<ArenaPlayerInfo> list)
+        {
+            var namePattern = playerName;
+            var rankPattern = playerRank;
+            logTools.Info("ArenaSearch", $"Name Pattern: {playerName}");
+            logTools.Info("ArenaSearch", $"Rank Pattern: {playerRank}");
+            for (int i = 0; i < list.Count; i++)
+            {
+                var item = list[i];
+                logTools.Info("ArenaSearch", Trans.T("玩家名字{0}: {1}", i, item.Name));
+                var matchName = !string.IsNullOrWhiteSpace(namePattern) && Regex.IsMatch(item.Name, namePattern);
+                var matchRank = !string.IsNullOrWhiteSpace(rankPattern) && Regex.IsMatch(item.Rank, rankPattern);
+                var op = nameRankOp;
+                if (op == ArenaSearchOp.And)
+                {
+                    if (matchName && matchRank) return i;
+                }
+                else if (op == ArenaSearchOp.Or)
+                {
+                    if (matchName || matchRank) return i;
+                }
+            }
+            return NOT_FOUND;
+        }
+
         private void ShowMat(string key, Mat mat)
         {
             if (configMgr.DebugMode)
@@ -92,20 +132,68 @@ namespace PCRBattleRecorder.Script
             }
         }
 
-        private string OCRPlayerName(Mat viewportMat, RECT viewportRect, int index)
+        public string OCRPlayerName(Mat viewportMat, RECT viewportRect, int index)
         {
             var rectRate = pcrTools.GetRectRate(configMgr.PCRRegion.ToString(), $"arena_player_name_{index + 1}");
-
             var playerNameMat = viewportMat.GetChildMatByRectRate(rectRate);
             var grayMat = playerNameMat.ToGray();
-            ShowMat("ArenaSearchNameGray", grayMat);
+            ShowMat($"ArenaSearchName{index}", grayMat);
             var r = ocrTools.OCR(grayMat);
             return r;
         }
 
-        private string OCRPlayerRank(Mat viewportMat, RECT viewportRect, int index)
+        public string OCRPlayerRank(Mat viewportMat, RECT viewportRect, int index)
         {
-            return "";
+            var rectRate = pcrTools.GetRectRate(configMgr.PCRRegion.ToString(), $"arena_player_rank_{index + 1}");
+            var playerRankMat = viewportMat.GetChildMatByRectRate(rectRate);
+            var grayMat = playerRankMat.ToGray();
+            var reverseMat = grayMat.ToReverse();
+            var binMat = reverseMat.ToBinary(90);
+            binMat = CleanBinCorner(binMat);
+            ShowMat($"ArenaSearchRank{index}", binMat);
+            var r = ocrTools.OCR(binMat);
+            return r;
+        }
+
+        private int[] dr = { -1, 0, 1, 0 };
+        private int[] dc = { 0, 1, 0, -1 };
+
+        private bool InBounds(Mat mat, int r, int c)
+        {
+            if (r < 0 || r >= mat.Rows) return false;
+            if (c < 0 || c >= mat.Cols) return false;
+            return true;
+        }
+
+        private void CleanBinCornerDFS(Mat mat, bool[,] vis, int r, int c)
+        {
+            mat.SetPixel(r, c, 255, 255, 255);
+            vis[r, c] = true;
+            for (int k = 0; k < 4; k++)
+            {
+                var nr = r + dr[k];
+                var nc = c + dc[k];
+                if (InBounds(mat, nr, nc) && !vis[nr, nc])
+                {
+                    var pix = mat.GetPixel(nr, nc);
+                    if (pix.R == 0)
+                    {
+                        CleanBinCornerDFS(mat, vis, nr, nc);
+                    }
+                }
+            }
+        }
+
+        public Mat CleanBinCorner(Mat mat)
+        {
+            var res = new Mat();
+            mat.CopyTo(res);
+            var vis = new bool[res.Rows, res.Cols];
+            for (int r = 0; r < res.Rows; r++) CleanBinCornerDFS(res, vis, r, 0);
+            for (int r = 0; r < res.Rows; r++) CleanBinCornerDFS(res, vis, r, res.Cols - 1);
+            for (int c = 0; c < res.Cols; c++) CleanBinCornerDFS(res, vis, 0, c);
+            for (int c = 0; c < res.Cols; c++) CleanBinCornerDFS(res, vis, res.Rows - 1, c);
+            return res;
         }
     }
 

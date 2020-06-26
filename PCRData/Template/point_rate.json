@@ -1,4 +1,9 @@
 {
+    "Arena_Refresh": [0.8555, 0.1719],
+    "Arena_Player_1": [0.6648, 0.3234],
+    "Arena_Player_2": [0.6734, 0.5359],
+    "Arena_Player_3": [0.6703, 0.7422],
+    
     "PCRTab_Menu": [0.8664, 0.9469],
     
     "default": [0.0000, 0.0000]

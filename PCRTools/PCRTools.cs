@@ -7,7 +7,7 @@ using CvSize = OpenCvSharp.Size;
 using ConfigBase = PCRBattleRecorder.Config.Config;
 using Newtonsoft.Json.Linq;
 using PCRBattleRecorder.Config;
-
+using System.Threading;
 
 namespace PCRBattleRecorder
 {
@@ -53,7 +53,6 @@ namespace PCRBattleRecorder
             }
         }
 
-
         private string GetDictKey(string parentType, string childType, string fileName)
         {
             var parentEmpty = string.IsNullOrEmpty(parentType);
@@ -80,16 +79,22 @@ namespace PCRBattleRecorder
             return dataContainer;
         }
 
+        private object chooseContainerLock = new object();
+
         public ConfigBase ChooseDataContainer(string parentType, string childType, string fileName, string key)
         {
-            var relativeDataContainer = GetDataContainer(null, null, fileName); //同级data目录
-            if (relativeDataContainer.HasKey(key))
-                return relativeDataContainer;
-            var childDataContainer = GetDataContainer(parentType, childType, fileName);
-            if (childDataContainer.HasKey(key))
-                return childDataContainer;
-            var parentDataContainer = GetDataContainer(parentType, null, fileName);
-            return parentDataContainer;
+            lock (chooseContainerLock)
+            {
+                var relativeDataContainer = GetDataContainer(null, null, fileName); //同级data目录
+                if (relativeDataContainer.HasKey(key))
+                    return relativeDataContainer;
+                var childDataContainer = GetDataContainer(parentType, childType, fileName);
+                if (childDataContainer.HasKey(key))
+                    return childDataContainer;
+                var parentDataContainer = GetDataContainer(parentType, null, fileName);
+
+                return parentDataContainer;
+            }
         }
 
         public string ChooseFilePath(string parentType, string childType, string fileName)
