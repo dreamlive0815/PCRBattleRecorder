@@ -109,6 +109,7 @@ namespace PCRBattleRecorder.Script
             {
                 var item = list[i];
                 logTools.Info("ArenaSearch", Trans.T("玩家名字{0}: {1}", i, item.Name));
+                logTools.Info("ArenaSearch", Trans.T("玩家排名{0}: {1}", i, item.Rank));
                 var matchName = !string.IsNullOrWhiteSpace(namePattern) && Regex.IsMatch(item.Name, namePattern);
                 var matchRank = !string.IsNullOrWhiteSpace(rankPattern) && Regex.IsMatch(item.Rank, rankPattern);
                 var op = nameRankOp;

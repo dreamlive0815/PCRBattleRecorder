@@ -40,11 +40,8 @@ namespace PCRBattleRecorder
 
             adbTools.OnEvent += AdbTools_OnEvent;
             adbTools.ConnectToMumuAdbServer();
-            adbTools.StartMonitorEvents();
+            //adbTools.StartMonitorEvents();
 
-            //var rect = MumuTools.GetInstance().GetMumuRect();
-            //var threshold = pcrTools.GetMatchTemplateThreshold("Taiwan", "battle_challenge.png");
-            
         }
 
         void RefreshScripts()
