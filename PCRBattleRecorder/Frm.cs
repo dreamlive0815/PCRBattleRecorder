@@ -36,7 +36,7 @@ namespace PCRBattleRecorder
             InitPathConfigs();
             RefreshRegions();
             RefreshOutputAutoScroll();
-
+            RefreshScripts();
 
             adbTools.OnEvent += AdbTools_OnEvent;
             adbTools.ConnectToMumuAdbServer();
@@ -44,7 +44,29 @@ namespace PCRBattleRecorder
 
             //var rect = MumuTools.GetInstance().GetMumuRect();
             //var threshold = pcrTools.GetMatchTemplateThreshold("Taiwan", "battle_challenge.png");
+            
+        }
 
+        void RefreshScripts()
+        {
+            menuScripts.DropDownItems.Clear();
+            var scripts = scriptMgr.GetAllScripts();
+            foreach (var script in scripts)
+            {
+                var menuItem = new ToolStripMenuItem(script.Description);
+                menuItem.Click += GetScriptMenuItemClickHandler(script);
+                menuScripts.DropDownItems.Add(menuItem);
+            }
+        }
+
+        EventHandler GetScriptMenuItemClickHandler(ScriptBase script)
+        {
+            var handler = new EventHandler((sender, e) =>
+            {
+                var newInstance = scriptMgr.CreateScriptFromType(script.GetType());
+                scriptMgr.RunScript(newInstance);
+            });
+            return handler;
         }
 
         private void AdbTools_OnEvent(AdbEvent obj)

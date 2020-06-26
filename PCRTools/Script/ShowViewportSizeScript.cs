@@ -24,7 +24,6 @@ namespace PCRBattleRecorder.Script
 
         public override void OnStart(Mat viewportMat, RECT viewportRect)
         {
-            //TryClickTemplateRect(viewportMat, viewportRect, "Taiwan", "battle_challenge.png");
         }
 
         public override void Tick(Mat viewportMat, RECT viewportRect)

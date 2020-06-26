@@ -147,6 +147,15 @@ namespace PCRBattleRecorder.Config
             }
         }
 
+        public string ScriptPluginDir
+        {
+            get
+            {
+                var dirPath = fileTools.GetDirFullPath("plugin");
+                return dirPath;
+            }
+        }
+
         public string GetCacheFullPath(string relativePath)
         {
             var fullPath = fileTools.JoinPath(CacheDir, relativePath);

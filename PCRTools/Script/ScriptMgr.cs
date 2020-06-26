@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using PCRBattleRecorder;
 using PCRBattleRecorder.Config;
-using System.Threading;
 
 namespace PCRBattleRecorder.Script
 {
@@ -24,9 +26,11 @@ namespace PCRBattleRecorder.Script
         public event Action<ScriptBase> OnScriptEnded;
 
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
+        private FileTools fileTools = FileTools.GetInstance();
+        private LogTools logTools = LogTools.GetInstance();
         private MumuTools mumuTools = MumuTools.GetInstance();
         private Tools tools = Tools.GetInstance();
-        private LogTools logTools = LogTools.GetInstance();
+
         private Task curTask;
         private ScriptBase curScript;
         private CancellationTokenSource tokenSource;
@@ -120,6 +124,95 @@ namespace PCRBattleRecorder.Script
             logTools.Info("StopCurScript", Trans.T("尝试终止当前脚本"));
             tokenSource?.Cancel();
         }
+
+        public ScriptBase CreateScriptFromType(Type scriptType)
+        {
+            try
+            {
+                var obj = Activator.CreateInstance(scriptType);
+                var script = obj as ScriptBase;
+                return script;
+            }
+            catch (Exception e)
+            {
+                logTools.Error("CreateScriptFromType", Trans.T("无法从 {0} 类型创建脚本实例: {1}", scriptType.Name, e.Message));
+                return null;
+            }
+        }
+
+        private bool IngoreScriptType(Type scriptType)
+        {
+            var typeName = scriptType.Name;
+            if (typeName == "EmptyScript")
+                return true;
+            return false;
+        }
+
+        public List<Type> GetScriptTypesFromAssembly(Assembly ass)
+        {
+            var list = new List<Type>();
+            var types = ass.GetExportedTypes();
+            foreach (var type in types)
+            {
+                if (IngoreScriptType(type))
+                    continue;
+                if (type.IsSubclassOf(typeof(ScriptBase)))
+                {
+                    list.Add(type);
+                }
+            }
+            return list;
+        }
+
+        public List<ScriptBase> GetScriptsFromAssembly(Assembly ass)
+        {
+            var list = new List<ScriptBase>();
+            var scriptTypes = GetScriptTypesFromAssembly(ass);
+            foreach (var scriptType in scriptTypes)
+            {
+                var instance = CreateScriptFromType(scriptType);
+                if (instance != null)
+                {
+                    list.Add(instance);
+                }
+            }
+            return list;
+        }
+
+        public List<ScriptBase> GetScriptsFromCurrentAssembly()
+        {
+            var ass = Assembly.GetAssembly(typeof(ScriptBase));
+            return GetScriptsFromAssembly(ass);
+        }
+
+        public List<ScriptBase> GetScriptsFromPlugin(string pluginDllName)
+        {
+            var dllFullPath = fileTools.JoinPath(configMgr.ScriptPluginDir, pluginDllName);
+            var ass = Assembly.LoadFile(dllFullPath);
+            return GetScriptsFromAssembly(ass);
+        }
+
+        public List<ScriptBase> GetScriptsFromPluginDir()
+        {
+            var list = new List<ScriptBase>();
+            var filePaths = Directory.GetFiles(configMgr.ScriptPluginDir);
+            foreach (var filePath in filePaths)
+            {
+                var ass = Assembly.LoadFile(filePath);
+                var scripts = GetScriptsFromAssembly(ass);
+                list.AddRange(scripts);
+            }
+            return list;
+        }
+
+        public List<ScriptBase> GetAllScripts()
+        {
+            var scripts = GetScriptsFromCurrentAssembly();
+            var pluginScripts = GetScriptsFromPluginDir();
+            scripts.AddRange(pluginScripts);
+            return scripts;
+        }
+
     }
 
     public struct CreateScriptTaskResult

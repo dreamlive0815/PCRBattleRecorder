@@ -90,6 +90,28 @@ namespace PCRBattleRecorder
             return r;
         }
 
+        //毫秒
+        private const int intervalLimitMS = 200;
+        private Dictionary<string, long> accessTapEventTimeDict = new Dictionary<string, long>();
+
+        private void AccessNewTapEvent(string type, int x, int y)
+        {
+            var key = $"{type}_{x}_{y}";
+            var nowTime = DateTime.Now.Ticks;
+            accessTapEventTimeDict[key] = nowTime;
+        }
+
+        private bool CheckAccessNewTapEventTimeLimit(string type, int x, int y)
+        {
+            var key = $"{type}_{x}_{y}";
+            if (!accessTapEventTimeDict.ContainsKey(key))
+                return false;
+            var lastAccessTime = accessTapEventTimeDict[key];
+            var nowTime = DateTime.Now.Ticks;
+            var diff = nowTime - lastAccessTime;
+            return diff >= intervalLimitMS * 10 * 1000;
+        }
+
         private void HandleEventLine(string line)
         {
             var split = line.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
@@ -110,7 +132,7 @@ namespace PCRBattleRecorder
             var value = getVal(3);
 
             if (code == "ABS_MT_POSITION_Y" && lastCode == "ABS_MT_POSITION_X"
-                 && (lastLastCode == "UP" || lastLastCode == "DOWN"))
+                 && lastLastCode == "BTN_TOUCH" && (lastLastValue == "UP" || lastLastValue == "DOWN"))
             {
                 x = HexStr2Int(lastValue);
                 y = HexStr2Int(value);
@@ -123,17 +145,20 @@ namespace PCRBattleRecorder
                     Param2 = y,
                 };
                 OnEvent?.Invoke(adbEvent);
+                AccessNewTapEvent(lastLastValue, x, y);
             }
-            else if (code == "ABS_MT_TRACKING_ID" && lastCode == "BTN_TOUCH")
+            else if (code == "ABS_MT_TRACKING_ID" && lastCode == "BTN_TOUCH"
+                && CheckAccessNewTapEventTimeLimit(lastValue, x, y))
             {
                 var adbEvent = new AdbEvent()
                 {
                     Type = AdbEventType.Tap,
-                    Param0 = lastCode,
+                    Param0 = lastValue,
                     Param1 = x,
                     Param2 = y,
                 };
                 OnEvent?.Invoke(adbEvent);
+                AccessNewTapEvent(lastLastValue, x, y);
             }
 
             lastLastCode = lastCode;
@@ -165,7 +190,6 @@ namespace PCRBattleRecorder
                     line = outStream.ReadLine();
                     if (line == null)
                         break;
-                    //logTools.Info("AdbEventMonitor", line);
                     HandleEventLine(line);
                 }
             });
