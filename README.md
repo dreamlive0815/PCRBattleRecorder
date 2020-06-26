@@ -8,7 +8,7 @@ Scripts for Princess Connect Re:Dive (CSharp Ver)
 
 ## 下载
 
-[1.0.0beta](https://share.weiyun.com/TYeLIR7s)点此下载  
+[1.0.0beta](https://github.com/dreamlive0815/PCRBattleRecorder/blob/master/Publish/PCRBattleRecorder.rar?raw=true)点此下载  
 PCRData文件夹最好手动与项目同步  
 Tesseract则一般不需要更新
 
@@ -16,7 +16,7 @@ Tesseract则一般不需要更新
 
 本程序存在三个主要的外部依赖资源，这三个资源所在的文件夹不需要和脚本主程序同级
 
-- **PCRData**：存放PCR解包资源以及一些程序使用的配置文件，可以从本项目PCRData文件夹取用，也可以从[这里](https://share.weiyun.com/0nFvebCG)下载
+- **PCRData**：存放PCR解包资源以及一些程序使用的配置文件，可以从本项目PCRData文件夹取用，也可以从[这里](https://github.com/dreamlive0815/PCRBattleRecorder/blob/master/Publish/PCRData.rar?raw=true)下载
 - **Tesseract**：[Tesseract-OCR](https://github.com/tesseract-ocr/tesseract)，谷歌旗下的开源识图程序，本程序使用Shell方式调用Tesseract，因此需要指定Tesseract主程序位置，可以去[这里](https://share.weiyun.com/Aupe71lq)下载
 - **AdbServer**: Mumu模拟器adb_server程序，这个程序一般在Mumu安装目录的相对目录emulator/nemu/vmonitor/bin下
 
