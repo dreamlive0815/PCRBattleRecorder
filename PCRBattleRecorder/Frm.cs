@@ -84,6 +84,7 @@ namespace PCRBattleRecorder
         {
             txtOutput?.AppendLineThreadSafe($"[{tag}] {msg}", Color.Black);
         }
+
         private void LogTools_OnError(string tag, string msg)
         {
             txtOutput?.AppendLineThreadSafe($"[{tag}] {msg}", Color.Red);
@@ -143,11 +144,6 @@ namespace PCRBattleRecorder
             configMgr.SetPCRDataDirByDialog();
         }
 
-        private void menuShowViewportSizeScript_Click(object sender, EventArgs e)
-        {
-            scriptMgr.RunScript(new ShowViewportSizeScript());
-        }
-
         private void menuStopScript_Click(object sender, EventArgs e)
         {
             scriptMgr.StopCurScript();
@@ -174,5 +170,13 @@ namespace PCRBattleRecorder
             var viewportRect = mumuTools.GetMumuViewportRect();
             EmptyScript.GetInstance().ClickTab(viewportRect, PCRTab.Menu);
         }
+
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+            var frm = new FrmAbout();
+            frm.ShowDialog();
+        }
+
+
     }
 }

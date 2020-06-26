@@ -195,7 +195,7 @@ namespace PCRBattleRecorder.Script
         public List<ScriptBase> GetScriptsFromPluginDir()
         {
             var list = new List<ScriptBase>();
-            var filePaths = Directory.GetFiles(configMgr.ScriptPluginDir);
+            var filePaths = Directory.GetFiles(configMgr.ScriptPluginDir, "*.dll");
             foreach (var filePath in filePaths)
             {
                 var ass = Assembly.LoadFile(filePath);

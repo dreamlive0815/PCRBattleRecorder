@@ -106,8 +106,14 @@ namespace PCRBattleRecorder
 
         #endregion
 
-
-        private const string MatchSourceRectRateJsonFileName = "match_source_rect_rate.json";
+        public Vec2f GetPointRateByJArray(JArray jArr)
+        {
+            var getFloat = new Func<int, float>((index) =>
+            {
+                return jArr[index].Value<float>();
+            });
+            return new Vec2f(getFloat(0), getFloat(1));
+        }
 
         public Vec4f GetRectRateByJArray(JArray jArr)
         {
@@ -117,6 +123,8 @@ namespace PCRBattleRecorder
             });
             return new Vec4f(getFloat(0), getFloat(1), getFloat(2), getFloat(3));
         }
+
+        private const string MatchSourceRectRateJsonFileName = "match_source_rect_rate.json";
 
         public Vec4f GetTemplateMatchSourceRectRate(string type, string imgName)
         {
@@ -134,15 +142,6 @@ namespace PCRBattleRecorder
 
         private const string PointRateJsonFileName = "point_rate.json";
 
-        public Vec2f GetPointRateByJArray(JArray jArr)
-        {
-            var getFloat = new Func<int, float>((index) =>
-            {
-                return jArr[index].Value<float>();
-            });
-            return new Vec2f(getFloat(0), getFloat(1));
-        }
-
         public Vec2f GetPointRate(string type, string key)
         {
             try
@@ -154,6 +153,22 @@ namespace PCRBattleRecorder
             catch (Exception e)
             {
                 throw new BreakException(Trans.T("无法读取 {0}.{1} 采样点的位置", type, key));
+            }
+        }
+
+        private const string RectRateJsonFileName = "rect_rate.json";
+
+        public Vec4f GetRectRate(string type, string key)
+        {
+            try
+            {
+                var dataContainer = ChooseDataContainer("Template", type, RectRateJsonFileName, key);
+                var jArr = dataContainer.Get(key) as JArray;
+                return GetRectRateByJArray(jArr);
+            }
+            catch (Exception e)
+            {
+                throw new BreakException(Trans.T("无法读取 {0}.{1} 的采样区域比例", type, key));
             }
         }
 

@@ -33,6 +33,8 @@ namespace PCRBattleRecorder.Config
             return config;
         }
 
+        public bool DebugMode { get; set; } = true;
+
         public string TesseractShellPath
         {
             get

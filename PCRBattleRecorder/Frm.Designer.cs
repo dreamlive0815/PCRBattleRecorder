@@ -39,13 +39,13 @@
             this.menuSetTesseractPath = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSetPCRDataDir = new System.Windows.Forms.ToolStripMenuItem();
             this.menuScripts = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuShowViewportSizeScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolsAndHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuOpenCacheDir = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTapPCRMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStopScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuClearOutput = new System.Windows.Forms.ToolStripMenuItem();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
-            this.menuTapPCRMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,8 +56,8 @@
             this.menuRegions,
             this.menuSettings,
             this.menuScripts,
-            this.menuToolsAndHelp,
             this.menuStopScript,
+            this.menuToolsAndHelp,
             this.menuClearOutput});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -78,21 +78,21 @@
             // menuRegionMainland
             // 
             this.menuRegionMainland.Name = "menuRegionMainland";
-            this.menuRegionMainland.Size = new System.Drawing.Size(114, 26);
+            this.menuRegionMainland.Size = new System.Drawing.Size(181, 26);
             this.menuRegionMainland.Text = "国服";
             this.menuRegionMainland.Click += new System.EventHandler(this.menuRegionMainland_Click);
             // 
             // menuRegionTaiwan
             // 
             this.menuRegionTaiwan.Name = "menuRegionTaiwan";
-            this.menuRegionTaiwan.Size = new System.Drawing.Size(114, 26);
+            this.menuRegionTaiwan.Size = new System.Drawing.Size(181, 26);
             this.menuRegionTaiwan.Text = "台湾";
             this.menuRegionTaiwan.Click += new System.EventHandler(this.menuRegionTaiwan_Click);
             // 
             // menuRegionJapan
             // 
             this.menuRegionJapan.Name = "menuRegionJapan";
-            this.menuRegionJapan.Size = new System.Drawing.Size(114, 26);
+            this.menuRegionJapan.Size = new System.Drawing.Size(181, 26);
             this.menuRegionJapan.Text = "日本";
             this.menuRegionJapan.Click += new System.EventHandler(this.menuRegionJapan_Click);
             // 
@@ -137,24 +137,16 @@
             // 
             // menuScripts
             // 
-            this.menuScripts.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuShowViewportSizeScript});
             this.menuScripts.Name = "menuScripts";
             this.menuScripts.Size = new System.Drawing.Size(70, 24);
             this.menuScripts.Text = "脚本(&T)";
-            // 
-            // menuShowViewportSizeScript
-            // 
-            this.menuShowViewportSizeScript.Name = "menuShowViewportSizeScript";
-            this.menuShowViewportSizeScript.Size = new System.Drawing.Size(221, 26);
-            this.menuShowViewportSizeScript.Text = "跟踪Mumu视口大小";
-            this.menuShowViewportSizeScript.Click += new System.EventHandler(this.menuShowViewportSizeScript_Click);
             // 
             // menuToolsAndHelp
             // 
             this.menuToolsAndHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuOpenCacheDir,
-            this.menuTapPCRMenu});
+            this.menuTapPCRMenu,
+            this.menuAbout});
             this.menuToolsAndHelp.Name = "menuToolsAndHelp";
             this.menuToolsAndHelp.Size = new System.Drawing.Size(104, 24);
             this.menuToolsAndHelp.Text = "工具|帮助(&T)";
@@ -165,6 +157,13 @@
             this.menuOpenCacheDir.Size = new System.Drawing.Size(203, 26);
             this.menuOpenCacheDir.Text = "打开缓存目录";
             this.menuOpenCacheDir.Click += new System.EventHandler(this.menuOpenCacheDir_Click);
+            // 
+            // menuTapPCRMenu
+            // 
+            this.menuTapPCRMenu.Name = "menuTapPCRMenu";
+            this.menuTapPCRMenu.Size = new System.Drawing.Size(203, 26);
+            this.menuTapPCRMenu.Text = "测试点击PCR菜单";
+            this.menuTapPCRMenu.Click += new System.EventHandler(this.menuTapPCRMenu_Click);
             // 
             // menuStopScript
             // 
@@ -190,12 +189,12 @@
             this.txtOutput.TabIndex = 2;
             this.txtOutput.Text = "";
             // 
-            // menuTapPCRMenu
+            // menuAbout
             // 
-            this.menuTapPCRMenu.Name = "menuTapPCRMenu";
-            this.menuTapPCRMenu.Size = new System.Drawing.Size(203, 26);
-            this.menuTapPCRMenu.Text = "测试点击PCR菜单";
-            this.menuTapPCRMenu.Click += new System.EventHandler(this.menuTapPCRMenu_Click);
+            this.menuAbout.Name = "menuAbout";
+            this.menuAbout.Size = new System.Drawing.Size(203, 26);
+            this.menuAbout.Text = "关于";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // Frm
             // 
@@ -231,12 +230,12 @@
         private System.Windows.Forms.ToolStripMenuItem menuSetPCRDataDir;
         private System.Windows.Forms.ToolStripMenuItem menuScripts;
         private System.Windows.Forms.ToolStripMenuItem menuStopScript;
-        private System.Windows.Forms.ToolStripMenuItem menuShowViewportSizeScript;
         private System.Windows.Forms.ToolStripMenuItem menuOutputAutoScroll;
         private System.Windows.Forms.ToolStripMenuItem menuClearOutput;
         private System.Windows.Forms.ToolStripMenuItem menuToolsAndHelp;
         private System.Windows.Forms.ToolStripMenuItem menuOpenCacheDir;
         private System.Windows.Forms.ToolStripMenuItem menuTapPCRMenu;
+        private System.Windows.Forms.ToolStripMenuItem menuAbout;
     }
 }
 
