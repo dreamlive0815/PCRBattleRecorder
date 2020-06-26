@@ -77,11 +77,12 @@ namespace PCRBattleRecorder.Script
             var tasks = new Task[3];
             for (int i = 0; i < 3; i++)
             {
+                var viewportMatClone = viewportMat.Clone();
                 var index = i;
                 var task = new Task(() =>
                 {
-                    var name = OCRPlayerName(viewportMat, viewportRect, index);
-                    var rank = OCRPlayerRank(viewportMat, viewportRect, index);
+                    var name = OCRPlayerName(viewportMatClone, viewportRect, index);
+                    var rank = OCRPlayerRank(viewportMatClone, viewportRect, index);
                     r[index] = new ArenaPlayerInfo()
                     {
                         Index = index,

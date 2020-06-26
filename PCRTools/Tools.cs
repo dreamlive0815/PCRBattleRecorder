@@ -58,10 +58,11 @@ namespace PCRBattleRecorder
             {
                 throw new ShellException(error);
             }
-            if (configMgr.PrintShellOutput)
+            if (configMgr.DebugMode)
             {
                 var fileName = new FileInfo(exePath).Name;
-                logTools.Info("DoShell", $"[{fileName}] {arguments} {output}");
+                var args = arguments.Length <= 10 ? arguments : arguments.Substring(0, 10) + "...";
+                logTools.Info("DoShell", $"[{fileName}] {args} {output}");
             }
             return output;
         }

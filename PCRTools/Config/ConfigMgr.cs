@@ -33,7 +33,7 @@ namespace PCRBattleRecorder.Config
             return config;
         }
 
-        public bool DebugMode { get; set; } = true;
+        public bool DebugMode { get; set; } = false;
 
         public string TesseractShellPath
         {
@@ -219,7 +219,5 @@ namespace PCRBattleRecorder.Config
         }
 
         public double DefaultMatchTemplateThreshold { get; set; } = 0.8;
-
-        public bool PrintShellOutput { get; set; } = true;
     }
 }
