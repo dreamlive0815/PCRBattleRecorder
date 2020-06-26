@@ -87,7 +87,6 @@ namespace PackTools
         {
             if (filePath.EndsWith(".xml")) return true;
             if (filePath.EndsWith(".pdb")) return true;
-            if (filePath.EndsWith("exe.config")) return true;
             if (filePath.Contains("vshost.exe")) return true;
             return false;
         }

@@ -80,7 +80,7 @@ namespace PCRBattleRecorder.Script
                         var needBreak = logTools.IsSelfOrChildrenBreakException(e);
                         if (!script.CanKeepOnWhenException || needBreak)
                         {
-                            logTools.Error("ScriptLoop", Trans.T("脚本: {0} 因发生错误而被终止", script.Name), false);
+                            logTools.Error("ScriptLoop", Trans.T("脚本: {0} 因发生错误或主动结束而被终止", script.Name), false);
                             throw e;
                         }
                         else
