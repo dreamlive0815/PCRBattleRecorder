@@ -13,6 +13,7 @@ namespace PCRBattleRecorder.Script
     {
 
         protected const string ARENA_REFRESH_KEY = "Arena_Refresh";
+        protected const string BATTLE_FAILED_GO_BACK_KEY = "Battle_Failed_Go_Back";
         protected const string BATTLE_SPEED_RATE_KEY = "Battle_Speed_Rate";
 
         protected const string BATTLE_AUTO_OFF_MKEY = "battle_auto_off.png";
@@ -27,7 +28,7 @@ namespace PCRBattleRecorder.Script
         protected const string BTN_CLOSE_MKEY = "btn_close.png";
         protected const string BTN_CONFIRM_OK_MKEY = "btn_confirm_ok.png";
         protected const string STAGELINE_NEXT_TAG_MKEY = "stageline_next_tag.png";
-
+        protected const string TUTORIAL_ARROW_MKEY = "tutorial_arrow.png";
 
         private AdbTools adbTools = AdbTools.GetInstance();
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
@@ -152,9 +153,10 @@ namespace PCRBattleRecorder.Script
                     logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_START");
                     return true;
                 }
-                else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_GOTO_MAIN_STAGELINE_MKEY))
+                else if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_FAILED_MKEY))
                 {
-                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_GOTO_MAIN_STAGELINE");
+                    logTools.Debug("SimpleBattleHandler", "BATTLE_FAILED");
+                    mumuTools.DoClick(BATTLE_FAILED_GO_BACK_KEY);
                     Thread.Sleep(2000);
                     ClickTab(viewportRect, PCRTab.Character); //挑战失败 前往角色
                     return true;

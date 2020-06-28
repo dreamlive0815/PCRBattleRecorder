@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenCvSharp;
+using System.Threading;
 
 namespace PCRBattleRecorder.Script
 {
@@ -41,13 +42,23 @@ namespace PCRBattleRecorder.Script
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
 
-            if (CanMatchTemplate(viewportMat, viewportRect, STAGELINE_NEXT_TAG_MKEY))
+            if (CanMatchTemplate(viewportMat, viewportRect, TUTORIAL_ARROW_MKEY))
+            {
+                var matchRes = lastMatchResult;
+                var rectRate = GetMatchSourceRectRate(TUTORIAL_ARROW_MKEY);
+                var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
+                var pos = absoluteRect.GetCenterPos();
+                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1700f);
+                var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
+                mumuTools.DoClick(emulatorPoint);
+            }
+            else if (CanMatchTemplate(viewportMat, viewportRect, STAGELINE_NEXT_TAG_MKEY))
             {
                 var matchRes = lastMatchResult;
                 var rectRate = GetMatchSourceRectRate(STAGELINE_NEXT_TAG_MKEY);
                 var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
                 var pos = absoluteRect.GetCenterPos();
-                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1500f);
+                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1200f);
                 var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
                 mumuTools.DoClick(emulatorPoint);
             }
@@ -69,7 +80,10 @@ namespace PCRBattleRecorder.Script
             }
             else
             {
-                mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
+                //mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
+                ClickTab(viewportRect, PCRTab.Battle);
+                Thread.Sleep(2000);
+                mumuTools.DoClick(new Vec2f(0.6273f, 0.3891f));
             }
         }
     }
