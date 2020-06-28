@@ -9,6 +9,8 @@ namespace PCRBattleRecorder.Script
 {
     public class BattleRecordScript : ScriptBase
     {
+
+
         public override string Description
         {
             get { return Trans.T("战斗记录脚本"); }
@@ -18,6 +20,10 @@ namespace PCRBattleRecorder.Script
         {
             get { return "BattleRecordScript"; }
         }
+
+        public override int Interval { get; set; } = 1000;
+
+        public override bool CanKeepOnWhenException { get; } = true;
 
         Func<Mat, RECT, bool> defaultHandler;
 

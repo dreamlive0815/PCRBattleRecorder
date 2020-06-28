@@ -13,7 +13,7 @@ namespace PCRBattleRecorder.Script
     {
 
         protected const string ARENA_REFRESH_KEY = "Arena_Refresh";
-
+        protected const string BATTLE_SPEED_RATE_KEY = "Battle_Speed_Rate";
 
         protected const string BATTLE_AUTO_OFF_MKEY = "battle_auto_off.png";
         protected const string BATTLE_AUTO_ON_MKEY = "battle_auto_on.png";
@@ -112,13 +112,36 @@ namespace PCRBattleRecorder.Script
             return true;
         }
 
+        public PCRBattleSpeedRate GetBattleSpeedRate(Mat viewportMat, RECT viewportRect)
+        {
+            if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_SPEED_RATE_1_MKEY))
+                return PCRBattleSpeedRate.Rate1;
+            else if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_SPEED_RATE_2_MKEY))
+                return PCRBattleSpeedRate.Rate2;
+            return PCRBattleSpeedRate.Unknown;
+        }
+
         public Func<Mat, RECT, bool> GetSimpleBattleHandler(bool autoBattle, PCRBattleSpeedRate speedRate)
         {
             var func = new Func<Mat, RECT, bool>((viewportMat, viewportRect) =>
             {
 
+                var matchAutoOn = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
+                var matchAutoOff = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
+                var isBattleScene = matchAutoOn || matchAutoOff;
 
-                if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_CHALLENGE_MKEY))
+                if (isBattleScene)
+                {
+                    logTools.Debug("SimpleBattleHandler", "In BattleScene");
+
+                    if (autoBattle && matchAutoOff) TryClickTemplateRect(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
+                    if (!autoBattle && matchAutoOn) TryClickTemplateRect(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
+
+                    var speedRate1 = GetBattleSpeedRate(viewportMat, viewportRect);
+                    if (speedRate != speedRate1) mumuTools.DoClick(BATTLE_SPEED_RATE_KEY);
+                    
+                }
+                else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_CHALLENGE_MKEY))
                 {
                     logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_CHALLENGE");
                     return true;

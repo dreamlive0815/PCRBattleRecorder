@@ -336,6 +336,7 @@ namespace PCRBattleRecorder
 
     public enum PCRBattleSpeedRate
     {
+        Unknown,
         Rate1,
         Rate2,
         Rate4,
