@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using OpenCvSharp;
 using OpenCvPoint = OpenCvSharp.Point;
+using PCRBattleRecorder.Config;
 
 namespace PCRBattleRecorder
 {
@@ -20,13 +21,19 @@ namespace PCRBattleRecorder
             return instance;
         }
 
+        private ConfigMgr configMgr = ConfigMgr.GetInstance();
+
         private OpenCvTools()
         {
         }
 
         public void ShowMat(string key, Mat mat)
         {
-
+            if (configMgr.DebugMode)
+            {
+                var fullPath = configMgr.GetCacheFullPath($"{key}.png");
+                mat.SaveImage(fullPath);
+            }
         }
 
         public OpenCvMatchImageResult MatchImage(Mat source, Mat search, double threshold)

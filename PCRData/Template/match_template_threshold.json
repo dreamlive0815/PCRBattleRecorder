@@ -9,6 +9,11 @@
     "battle_speed_rate_1.png": 0.9,
     "battle_speed_rate_2.png": 0.9,
     "battle_start.png": 0.9,
+
+    "btn_close.png": 0.9,
+    "btn_confirm_ok.png": 0.9,
+
+    "stageline_next_tag.png": 0.7,
     
     "default": 0
 }

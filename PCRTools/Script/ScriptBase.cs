@@ -24,8 +24,11 @@ namespace PCRBattleRecorder.Script
         protected const string BATTLE_SPEED_RATE_1_MKEY = "battle_speed_rate_1.png";
         protected const string BATTLE_SPEED_RATE_2_MKEY = "battle_speed_rate_2.png";
         protected const string BATTLE_START_MKEY = "battle_start.png";
+        protected const string BTN_CLOSE_MKEY = "btn_close.png";
+        protected const string BTN_CONFIRM_OK_MKEY = "btn_confirm_ok.png";
+        protected const string STAGELINE_NEXT_TAG_MKEY = "stageline_next_tag.png";
 
-        
+
         private AdbTools adbTools = AdbTools.GetInstance();
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private LogTools logTools = LogTools.GetInstance();
@@ -47,6 +50,11 @@ namespace PCRBattleRecorder.Script
         public abstract void OnStart(Mat viewportMat, RECT viewportRect);
 
         public abstract void Tick(Mat viewportMat, RECT viewportRect);
+
+        public Vec4f GetMatchSourceRectRate(string imgName)
+        {
+            return GetMatchSourceRectRate(configMgr.PCRRegion.ToString(), imgName);
+        }
 
         public virtual Vec4f GetMatchSourceRectRate(string type, string imgName)
         {
@@ -73,9 +81,12 @@ namespace PCRBattleRecorder.Script
             return matchResult;
         }
 
+        protected OpenCvMatchImageResult lastMatchResult;
+
         public bool CanMatchTemplate(Mat viewportMat, RECT viewportRect, string type, string imgName)
         {
             var matchResult = GetMatchTemplateResult(viewportMat, viewportRect, type, imgName);
+            lastMatchResult = matchResult;
             return matchResult.Success;
         }
 

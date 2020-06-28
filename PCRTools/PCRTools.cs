@@ -164,6 +164,11 @@ namespace PCRBattleRecorder
 
         private const string RectRateJsonFileName = "rect_rate.json";
 
+        public Vec4f GetRectRate(string key)
+        {
+            return GetRectRate(configMgr.PCRRegion.ToString(), key);
+        }
+
         public Vec4f GetRectRate(string type, string key)
         {
             try

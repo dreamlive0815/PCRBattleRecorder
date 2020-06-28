@@ -9,6 +9,11 @@ namespace PCRBattleRecorder.Script
 {
     public class StagelineBattleScript : ScriptBase
     {
+
+        private LogTools logTools = LogTools.GetInstance();
+        private MumuTools mumuTools = MumuTools.GetInstance();
+        private PCRTools pcrTools = PCRTools.GetInstance();
+
         public override string Description
         {
             get { return Trans.T("关卡自动推图"); }
@@ -35,13 +40,36 @@ namespace PCRBattleRecorder.Script
 
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
-            if (battleSceneHandler(viewportMat, viewportRect))
+
+            if (CanMatchTemplate(viewportMat, viewportRect, STAGELINE_NEXT_TAG_MKEY))
+            {
+                var matchRes = lastMatchResult;
+                var rectRate = GetMatchSourceRectRate(STAGELINE_NEXT_TAG_MKEY);
+                var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
+                var pos = absoluteRect.GetCenterPos();
+                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1500f);
+                var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
+                mumuTools.DoClick(emulatorPoint);
+            }
+            else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CLOSE_MKEY))
+            {
+                logTools.Debug("StagelineBattle", "Click Close");
+            }
+            else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CONFIRM_OK_MKEY))
+            {
+                logTools.Debug("StagelineBattle", "Click Confirm Ok");
+            }
+            else if (battleSceneHandler(viewportMat, viewportRect))
             {
 
             }
             else if (defaultHandler(viewportMat, viewportRect))
             {
 
+            }
+            else
+            {
+                mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
             }
         }
     }
