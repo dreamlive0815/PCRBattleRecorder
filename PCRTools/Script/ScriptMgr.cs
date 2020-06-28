@@ -73,7 +73,8 @@ namespace PCRBattleRecorder.Script
                         viewportRect = mumuTools.GetMumuViewportRect();
                         viewportCapture = tools.DoCaptureScreen(viewportRect);
                         logTools.Info("ScriptLoop", $"Script: {script.Name} Tick");
-                        script.Tick(viewportCapture.ToOpenCvMat(), viewportRect);
+                        var viewportMat = viewportCapture.ToOpenCvMat();
+                        script.Tick(viewportMat, viewportRect);
                     }
                     catch (Exception e)
                     {

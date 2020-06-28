@@ -121,27 +121,12 @@ namespace PCRBattleRecorder.Script
             return PCRBattleSpeedRate.Unknown;
         }
 
-        public Func<Mat, RECT, bool> GetSimpleBattleHandler(bool autoBattle, PCRBattleSpeedRate speedRate)
+        public Func<Mat, RECT, bool> GetSimpleBattleHandler()
         {
             var func = new Func<Mat, RECT, bool>((viewportMat, viewportRect) =>
             {
-
-                var matchAutoOn = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
-                var matchAutoOff = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
-                var isBattleScene = matchAutoOn || matchAutoOff;
-
-                if (isBattleScene)
-                {
-                    logTools.Debug("SimpleBattleHandler", "In BattleScene");
-
-                    if (autoBattle && matchAutoOff) TryClickTemplateRect(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
-                    if (!autoBattle && matchAutoOn) TryClickTemplateRect(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
-
-                    var speedRate1 = GetBattleSpeedRate(viewportMat, viewportRect);
-                    if (speedRate != speedRate1) mumuTools.DoClick(BATTLE_SPEED_RATE_KEY);
-                    
-                }
-                else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_CHALLENGE_MKEY))
+                
+                if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_CHALLENGE_MKEY))
                 {
                     logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_CHALLENGE");
                     return true;
@@ -165,6 +150,31 @@ namespace PCRBattleRecorder.Script
                 }
 
                 return false;
+            });
+            return func;
+        }
+
+        public Func<Mat, RECT, bool> GetSimpleBattleSceneHandler(bool autoBattle, PCRBattleSpeedRate speedRate)
+        {
+            var func = new Func<Mat, RECT, bool>((viewportMat, viewportRect) =>
+            {
+                var matchAutoOn = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
+                var matchAutoOff = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
+                var isBattleScene = matchAutoOn || matchAutoOff;
+
+                if (isBattleScene)
+                {
+                    logTools.Debug("SimpleBattleHandler", "In BattleScene");
+
+                    if (autoBattle && matchAutoOff) TryClickTemplateRect(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
+                    if (!autoBattle && matchAutoOn) TryClickTemplateRect(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
+
+                    var speedRate1 = GetBattleSpeedRate(viewportMat, viewportRect);
+                    if (speedRate != speedRate1) mumuTools.DoClick(BATTLE_SPEED_RATE_KEY);
+
+                }
+
+                return isBattleScene;
             });
             return func;
         }

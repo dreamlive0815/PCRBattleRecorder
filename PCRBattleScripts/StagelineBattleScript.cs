@@ -7,18 +7,16 @@ using OpenCvSharp;
 
 namespace PCRBattleRecorder.Script
 {
-    public class BattleRecordScript : ScriptBase
+    public class StagelineBattleScript : ScriptBase
     {
-
-
         public override string Description
         {
-            get { return Trans.T("战斗记录脚本"); }
+            get { return Trans.T("关卡自动推图"); }
         }
 
         public override string Name
         {
-            get { return "BattleRecordScript"; }
+            get { return "StagelineBattleScript"; }
         }
 
         public override int Interval { get; set; } = 1000;
@@ -27,18 +25,24 @@ namespace PCRBattleRecorder.Script
 
         Func<Mat, RECT, bool> defaultHandler;
 
+        Func<Mat, RECT, bool> battleSceneHandler;
+
         public override void OnStart(Mat viewportMat, RECT viewportRect)
         {
             defaultHandler = GetSimpleBattleHandler();
-
-            
+            battleSceneHandler = GetSimpleBattleSceneHandler(true, PCRBattleSpeedRate.Rate2);
         }
 
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
+            if (battleSceneHandler(viewportMat, viewportRect))
+            {
 
-            defaultHandler(viewportMat, viewportRect);
+            }
+            else if (defaultHandler(viewportMat, viewportRect))
+            {
 
+            }
         }
     }
 }

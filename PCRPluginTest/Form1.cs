@@ -32,6 +32,7 @@ namespace PCRPluginTest
         private void Form1_Load(object sender, EventArgs e)
         {
             logTools.OnError += LogTools_OnError;
+            logTools.OnInfo += LogTools_OnInfo;
 
             configMgr.PCRRegion = PCRRegion.Taiwan;
 
@@ -40,9 +41,14 @@ namespace PCRPluginTest
             //var viewportMat = viewportCapture.ToOpenCvMat();
             //Cv2.ImShow("viewportMat", viewportMat);
 
-            var script = new ArenaSearchScript();
+            var script = new StagelineBattleScript();
             scriptMgr.RunScript(script); 
 
+        }
+
+        private void LogTools_OnInfo(string arg1, string arg2)
+        {
+            Console.WriteLine($"[Info] [{arg1}] {arg2}");
         }
 
         private void LogTools_OnError(string arg1, string arg2)

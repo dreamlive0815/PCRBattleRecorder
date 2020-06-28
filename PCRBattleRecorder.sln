@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRPluginTest", "PCRPluginT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackTools", "PackTools\PackTools.csproj", "{DCD3C872-A7A0-47C2-926A-6A6ABF0502AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRBattleScripts", "PCRBattleScripts\PCRBattleScripts.csproj", "{5394EA1F-854D-4CE3-8524-45CF123043C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{DCD3C872-A7A0-47C2-926A-6A6ABF0502AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCD3C872-A7A0-47C2-926A-6A6ABF0502AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCD3C872-A7A0-47C2-926A-6A6ABF0502AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5394EA1F-854D-4CE3-8524-45CF123043C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5394EA1F-854D-4CE3-8524-45CF123043C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5394EA1F-854D-4CE3-8524-45CF123043C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5394EA1F-854D-4CE3-8524-45CF123043C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
