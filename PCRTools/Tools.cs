@@ -61,7 +61,8 @@ namespace PCRBattleRecorder
             if (configMgr.DebugMode)
             {
                 var fileName = new FileInfo(exePath).Name;
-                var args = arguments.Length <= 10 ? arguments : arguments.Substring(0, 10) + "...";
+                var strLen = 32;
+                var args = arguments.Length <= strLen ? arguments : arguments.Substring(0, strLen) + "...";
                 logTools.Info("DoShell", $"[{fileName}] {args} {output}");
             }
             return output;

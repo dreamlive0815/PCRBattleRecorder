@@ -71,11 +71,12 @@ namespace PCRBattleRecorder
         public ConfigBase GetDataContainer(string parentType, string childType, string fileName)
         {
             var dictKey = GetDictKey(parentType, childType, fileName);
-            if (dataContainerDict.ContainsKey(dictKey))
+            var useCache = !configMgr.DebugMode;
+            if (useCache && dataContainerDict.ContainsKey(dictKey))
                 return dataContainerDict[dictKey]; //缓存
             var filePath = GetDataFilePath(parentType, childType, fileName);
             var dataContainer = JsonConfig.FromFileOrEmpty(filePath);
-            dataContainerDict[dictKey] = dataContainer; //缓存
+            if (useCache) dataContainerDict[dictKey] = dataContainer; //缓存
             return dataContainer;
         }
 
@@ -331,6 +332,13 @@ namespace PCRBattleRecorder
         Team,
         Arena,
         PrincessArena,
+    }
+
+    public enum PCRBattleSpeedRate
+    {
+        Rate1,
+        Rate2,
+        Rate4,
     }
 
     public enum PCRStory

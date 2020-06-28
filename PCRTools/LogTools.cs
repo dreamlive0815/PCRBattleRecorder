@@ -59,6 +59,14 @@ namespace PCRBattleRecorder
             OnInfo?.Invoke(tag, msg);
         }
 
+        public void Debug(string tag, string msg)
+        {
+            if (configMgr.DebugMode)
+            {
+                Info(tag, msg);
+            }
+        }
+
         public void AppendIntoFile(string filePath, string s)
         {
             using (var file = new FileStream(filePath, FileMode.Append))

@@ -146,6 +146,8 @@ namespace PCRTemplateImgTool
                 childMat.SaveImage(saveDialog.FileName);
                 var name = new FileInfo(saveDialog.FileName).Name;
                 fileName = name;
+                var s = $"\"{fileName}\": {GetRectRate().FormatAsJsonArray()},";
+                Clipboard.SetText(s);
             }
         }
 

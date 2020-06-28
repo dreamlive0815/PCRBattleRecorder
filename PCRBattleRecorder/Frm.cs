@@ -32,6 +32,8 @@ namespace PCRBattleRecorder
 
         private void Frm_Load(object sender, EventArgs e)
         {
+            Text = $"Debug: {configMgr.DebugMode}";
+
             RegisterLogEvents();
             InitPathConfigs();
             RefreshRegions();

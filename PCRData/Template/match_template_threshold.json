@@ -1,5 +1,14 @@
 {
+
+    "battle_auto_off.png": 0.9,
+    "battle_auto_on.png": 0.9,
     "battle_challenge.png": 0.9,
+    "battle_failed.png": 0.9,
+    "battle_goto_main_stageline.png": 0.9,
+    "battle_next_step.png": 0.9,
+    "battle_speed_rate_1.png": 0.9,
+    "battle_speed_rate_2.png": 0.9,
+    "battle_start.png": 0.9,
     
     "default": 0
 }

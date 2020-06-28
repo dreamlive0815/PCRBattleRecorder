@@ -5,17 +5,33 @@ using System.Drawing;
 using PCRBattleRecorder;
 using OpenCvSharp;
 using PCRBattleRecorder.Config;
+using System.Threading;
 
 namespace PCRBattleRecorder.Script
 {
     public abstract class ScriptBase
     {
 
-        private PCRTools pcrTools = PCRTools.GetInstance();
-        private OpenCvTools opencvTools = OpenCvTools.GetInstance();
-        private ConfigMgr configMgr = ConfigMgr.GetInstance();
-        private MumuTools mumuTools = MumuTools.GetInstance();
+        protected const string ARENA_REFRESH_KEY = "Arena_Refresh";
+
+
+        protected const string BATTLE_AUTO_OFF_MKEY = "battle_auto_off.png";
+        protected const string BATTLE_AUTO_ON_MKEY = "battle_auto_on.png";
+        protected const string BATTLE_CHALLENGE_MKEY = "battle_challenge.png";
+        protected const string BATTLE_FAILED_MKEY = "battle_failed.png";
+        protected const string BATTLE_GOTO_MAIN_STAGELINE_MKEY = "battle_goto_main_stageline.png";
+        protected const string BATTLE_NEXT_STEP_MKEY = "battle_next_step.png";
+        protected const string BATTLE_SPEED_RATE_1_MKEY = "battle_speed_rate_1.png";
+        protected const string BATTLE_SPEED_RATE_2_MKEY = "battle_speed_rate_2.png";
+        protected const string BATTLE_START_MKEY = "battle_start.png";
+
+        
         private AdbTools adbTools = AdbTools.GetInstance();
+        private ConfigMgr configMgr = ConfigMgr.GetInstance();
+        private LogTools logTools = LogTools.GetInstance();
+        private MumuTools mumuTools = MumuTools.GetInstance();
+        private OpenCvTools opencvTools = OpenCvTools.GetInstance();
+        private PCRTools pcrTools = PCRTools.GetInstance();
 
         /// <summary>
         /// 单位：毫秒
@@ -73,9 +89,14 @@ namespace PCRBattleRecorder.Script
             return CanMatchTemplate(viewportMat, viewportRect, region.ToString(), imgName);
         }
 
-        public bool CanMatchTemplateOfDefaultRegion(Mat viewportMat, RECT viewportRect, string imgName)
+        public bool CanMatchTemplate(Mat viewportMat, RECT viewportRect, string imgName)
         {
             return CanMatchTemplateOfRegion(viewportMat, viewportRect, configMgr.PCRRegion, imgName);
+        }
+
+        public bool TryClickTemplateRect(Mat viewportMat, RECT viewportRect, string imgName)
+        {
+            return TryClickTemplateRect(viewportMat, viewportRect, configMgr.PCRRegion.ToString(), imgName);
         }
 
         public bool TryClickTemplateRect(Mat viewportMat, RECT viewportRect, string type, string imgName)
@@ -90,6 +111,41 @@ namespace PCRBattleRecorder.Script
             mumuTools.DoClick(emulatorPoint);
             return true;
         }
+
+        public Func<Mat, RECT, bool> GetSimpleBattleHandler(bool autoBattle, PCRBattleSpeedRate speedRate)
+        {
+            var func = new Func<Mat, RECT, bool>((viewportMat, viewportRect) =>
+            {
+
+
+                if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_CHALLENGE_MKEY))
+                {
+                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_CHALLENGE");
+                    return true;
+                }
+                else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_START_MKEY))
+                {
+                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_START");
+                    return true;
+                }
+                else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_NEXT_STEP_MKEY))
+                {
+                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_START");
+                    return true;
+                }
+                else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_GOTO_MAIN_STAGELINE_MKEY))
+                {
+                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_GOTO_MAIN_STAGELINE");
+                    Thread.Sleep(2000);
+                    ClickTab(viewportRect, PCRTab.Character); //挑战失败 前往角色
+                    return true;
+                }
+
+                return false;
+            });
+            return func;
+        }
+
 
         public void ClickTab(RECT viewportRect, PCRTab tab)
         {

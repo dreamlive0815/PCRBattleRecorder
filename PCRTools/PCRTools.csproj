@@ -80,6 +80,7 @@
     <Compile Include="OpenCvTools.cs" />
     <Compile Include="PCRTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Script\BattleRecordScript.cs" />
     <Compile Include="Script\EmptyScript.cs" />
     <Compile Include="Script\ScriptBase.cs" />
     <Compile Include="Script\ScriptMgr.cs" />

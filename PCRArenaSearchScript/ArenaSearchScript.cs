@@ -65,7 +65,7 @@ namespace PCRBattleRecorder.Script
             else
             {
                 logTools.Info("ArenaSearch", $"PlayerIndex Not Found");
-                mumuTools.DoClick("Arena_Refresh");
+                mumuTools.DoClick(ARENA_REFRESH_KEY);
             }
         }
 
