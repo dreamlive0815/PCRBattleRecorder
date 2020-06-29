@@ -73,14 +73,19 @@ namespace PCRBattleRecorder.Script
             return pcrTools.GetPointRate(type, key);
         }
 
-        public OpenCvMatchImageResult GetMatchTemplateResult(Mat viewportMat, RECT viewportRect, string type, string imgName)
+        public OpenCvMatchImageResult GetMatchTemplateResult(Mat viewportMat, RECT viewportRect, string type, string imgName, Vec4f matchSourceRectRate)
         {
-            var matchSourceRectRate = GetMatchSourceRectRate(type, imgName);
             var matchSourceMat = viewportMat.GetChildMatByRectRate(matchSourceRectRate);
             var templateMat = pcrTools.GetResizedTemplateMat(type, imgName);
             var threshold = GetMatchTemplateThreshold(type, imgName);
             var matchResult = opencvTools.MatchImage(matchSourceMat, templateMat, threshold);
             return matchResult;
+        }
+
+        public OpenCvMatchImageResult GetMatchTemplateResult(Mat viewportMat, RECT viewportRect, string type, string imgName)
+        {
+            var matchSourceRectRate = GetMatchSourceRectRate(type, imgName);
+            return GetMatchTemplateResult(viewportMat, viewportRect, type, imgName, matchSourceRectRate);
         }
 
         protected OpenCvMatchImageResult lastMatchResult;
@@ -118,6 +123,23 @@ namespace PCRBattleRecorder.Script
             if (!matchResult.Success)
                 return false;
             var matchSourceRectRate = GetMatchSourceRectRate(type, imgName);
+            var rectToViewport = matchResult.GetMatchedAbsoluteRect(viewportRect, matchSourceRectRate);
+            var centerPos = rectToViewport.GetCenterPos();
+            var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, centerPos);
+            mumuTools.DoClick(emulatorPoint);
+            return true;
+        }
+
+        public bool TryClickTemplateRect(Mat viewportMat, RECT viewportRect, string imgName, Vec4f matchSourceRectRate)
+        {
+            return TryClickTemplateRect(viewportMat, viewportRect, configMgr.PCRRegion.ToString(), imgName, matchSourceRectRate);
+        }
+
+        public bool TryClickTemplateRect(Mat viewportMat, RECT viewportRect, string type, string imgName, Vec4f matchSourceRectRate)
+        {
+            var matchResult = GetMatchTemplateResult(viewportMat, viewportRect, type, imgName, matchSourceRectRate);
+            if (!matchResult.Success)
+                return false;
             var rectToViewport = matchResult.GetMatchedAbsoluteRect(viewportRect, matchSourceRectRate);
             var centerPos = rectToViewport.GetCenterPos();
             var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, centerPos);

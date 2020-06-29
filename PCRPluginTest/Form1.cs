@@ -34,14 +34,15 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Taiwan;
+            configMgr.PCRRegion = PCRRegion.Mainland;
 
             //var viewportRect = mumuTools.GetMumuViewportRect();
             //var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
             //var viewportMat = viewportCapture.ToOpenCvMat();
             //Cv2.ImShow("viewportMat", viewportMat);
 
-            var script = new StagelineBattleScript();
+            //var script = new StagelineBattleScript();
+            var script = new UndergroundBattleScript();
             scriptMgr.RunScript(script); 
 
         }
