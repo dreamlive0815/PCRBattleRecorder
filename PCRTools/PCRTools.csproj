@@ -78,6 +78,7 @@
     <Compile Include="MumuTools.cs" />
     <Compile Include="OCRTools.cs" />
     <Compile Include="OpenCvTools.cs" />
+    <Compile Include="PCRModel\PCRUnit.cs" />
     <Compile Include="PCRTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script\BattleRecordScript.cs" />

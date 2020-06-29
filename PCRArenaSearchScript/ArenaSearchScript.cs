@@ -38,7 +38,7 @@ namespace PCRBattleRecorder.Script
             var pcrRegion = configMgr.PCRRegion;
             if (pcrRegion != PCRRegion.Taiwan)
             {
-                throw new BreakException(Trans.T("{0}暂时不支持此功能", pcrRegion.ToCNString()));
+                //throw new BreakException(Trans.T("{0}暂时不支持此功能", pcrRegion.ToCNString()));
             }
 
             var dialog = new PlayerInfoInputDialog();

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PCRBattleRecorder;
 using PCRBattleRecorder.Config;
 using PCRBattleRecorder.Script;
+using PCRBattleRecorder.PCRModel;
 using OpenCvSharp;
 using System.Threading;
 
@@ -22,6 +23,7 @@ namespace PCRPluginTest
         private MumuTools mumuTools = MumuTools.GetInstance();
         private ScriptMgr scriptMgr = ScriptMgr.GetInstance();
         private OCRTools ocrTools = OCRTools.GetInstance();
+        private OpenCvTools openCvTools = OpenCvTools.GetInstance();
         
 
         public Form1()
@@ -36,14 +38,20 @@ namespace PCRPluginTest
 
             configMgr.PCRRegion = PCRRegion.Mainland;
 
-            //var viewportRect = mumuTools.GetMumuViewportRect();
-            //var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
-            //var viewportMat = viewportCapture.ToOpenCvMat();
+            var viewportRect = mumuTools.GetMumuViewportRect();
+            var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
+            var viewportMat = viewportCapture.ToOpenCvMat();
             //Cv2.ImShow("viewportMat", viewportMat);
 
+            var unit = PCRUnit.FromUnitId(1011);
+            var r = unit.GetResizedAvatar();
+            var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
+
+
             //var script = new StagelineBattleScript();
-            var script = new UndergroundBattleScript();
-            scriptMgr.RunScript(script); 
+            //var script = new UndergroundBattleScript();
+            var script = new ArenaSearchScript();
+            //scriptMgr.RunScript(script); 
 
         }
 

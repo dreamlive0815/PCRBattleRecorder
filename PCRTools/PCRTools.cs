@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using OpenCvSharp;
 using CvSize = OpenCvSharp.Size;
-using ConfigBase = PCRBattleRecorder.Config.Config;
 using Newtonsoft.Json.Linq;
 using PCRBattleRecorder.Config;
-using System.Threading;
+using PCRBattleRecorder.PCRModel;
+using ConfigBase = PCRBattleRecorder.Config.Config;
 
 namespace PCRBattleRecorder
 {
@@ -294,6 +294,7 @@ namespace PCRBattleRecorder
             var resized = mat.Resize(new CvSize(mat.Width * widScale, mat.Height * heiScale));
             return resized;
         }
+
     }
 
     public enum PCRRegion

@@ -190,6 +190,16 @@ namespace PCRBattleRecorder.Config
             }
         }
 
+        public Size UnitAvatarTemplateSize
+        {
+            get { return new Size(115, 115); }
+        }
+
+        public Size UnitAvatarResourceSize
+        {
+            get { return new Size(128, 128); }
+        }
+
         public Size MumuViewportTemplateSize
         {
             get { return new Size(1280, 640); }
