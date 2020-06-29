@@ -42,15 +42,8 @@ namespace PCRBattleRecorder.Script
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
 
-            if (CanMatchTemplate(viewportMat, viewportRect, TUTORIAL_ARROW_MKEY))
+            if (TryClickTutorialArrow(viewportMat, viewportRect))
             {
-                var matchRes = lastMatchResult;
-                var rectRate = GetMatchSourceRectRate(TUTORIAL_ARROW_MKEY);
-                var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
-                var pos = absoluteRect.GetCenterPos();
-                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1700f);
-                var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
-                mumuTools.DoClick(emulatorPoint);
             }
             else if (CanMatchTemplate(viewportMat, viewportRect, STAGELINE_NEXT_TAG_MKEY))
             {
@@ -64,11 +57,11 @@ namespace PCRBattleRecorder.Script
             }
             else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CLOSE_MKEY))
             {
-                logTools.Debug("StagelineBattle", "Click Close");
+                logTools.Debug("StagelineBattle", "Try Click BTN_CLOSE");
             }
             else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CONFIRM_OK_MKEY))
             {
-                logTools.Debug("StagelineBattle", "Click Confirm Ok");
+                logTools.Debug("StagelineBattle", "Try Click BTN_CONFIRM_OK_MKEY");
             }
             else if (battleSceneHandler(viewportMat, viewportRect))
             {
@@ -83,7 +76,7 @@ namespace PCRBattleRecorder.Script
                 //mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
                 ClickTab(viewportRect, PCRTab.Battle);
                 Thread.Sleep(2000);
-                mumuTools.DoClick(new Vec2f(0.6273f, 0.3891f));
+                mumuTools.DoClick(new Vec2f(0.6273f, 0.3891f));//主线冒险
             }
         }
     }

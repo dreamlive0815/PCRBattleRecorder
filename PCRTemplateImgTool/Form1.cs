@@ -176,6 +176,8 @@ namespace PCRTemplateImgTool
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var rectRate = dialog.GetVec4f();
+                    if (Math.Abs(rectRate.Item2 - rectRate.Item0) < 0.001f || Math.Abs(rectRate.Item3 - rectRate.Item1) < 0.001f)
+                        return;
                     SaveImageByRectRate(rectRate);
                 }
             }

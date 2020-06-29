@@ -24,6 +24,7 @@ namespace PCRBattleRecorder.Script
         protected const string BATTLE_NEXT_STEP_MKEY = "battle_next_step.png";
         protected const string BATTLE_SPEED_RATE_1_MKEY = "battle_speed_rate_1.png";
         protected const string BATTLE_SPEED_RATE_2_MKEY = "battle_speed_rate_2.png";
+        protected const string BATTLE_SPEED_RATE_4_MKEY = "battle_speed_rate_4.png";
         protected const string BATTLE_START_MKEY = "battle_start.png";
         protected const string BTN_CLOSE_MKEY = "btn_close.png";
         protected const string BTN_CONFIRM_OK_MKEY = "btn_confirm_ok.png";
@@ -124,12 +125,31 @@ namespace PCRBattleRecorder.Script
             return true;
         }
 
+        public bool TryClickTutorialArrow(Mat viewportMat, RECT viewportRect)
+        {
+            if (CanMatchTemplate(viewportMat, viewportRect, TUTORIAL_ARROW_MKEY))
+            {
+                var matchRes = lastMatchResult;
+                var rectRate = GetMatchSourceRectRate(TUTORIAL_ARROW_MKEY);
+                var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
+                var pos = absoluteRect.GetCenterPos();
+                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1700f);
+                var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
+                mumuTools.DoClick(emulatorPoint);
+                logTools.Debug("TryClickTutorialArrow", "TryClickTutorialArrow");
+                return true;
+            }
+            return false;
+        }
+
         public PCRBattleSpeedRate GetBattleSpeedRate(Mat viewportMat, RECT viewportRect)
         {
             if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_SPEED_RATE_1_MKEY))
                 return PCRBattleSpeedRate.Rate1;
             else if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_SPEED_RATE_2_MKEY))
                 return PCRBattleSpeedRate.Rate2;
+            else if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_SPEED_RATE_4_MKEY))
+                return PCRBattleSpeedRate.Rate4;
             return PCRBattleSpeedRate.Unknown;
         }
 
@@ -137,7 +157,6 @@ namespace PCRBattleRecorder.Script
         {
             var func = new Func<Mat, RECT, bool>((viewportMat, viewportRect) =>
             {
-                
                 if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_CHALLENGE_MKEY))
                 {
                     logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_CHALLENGE");
@@ -156,15 +175,19 @@ namespace PCRBattleRecorder.Script
                 else if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_FAILED_MKEY))
                 {
                     logTools.Debug("SimpleBattleHandler", "BATTLE_FAILED");
-                    mumuTools.DoClick(BATTLE_FAILED_GO_BACK_KEY);
-                    Thread.Sleep(2000);
-                    ClickTab(viewportRect, PCRTab.Character); //挑战失败 前往角色
+                    OnBattleFailed(viewportMat, viewportRect);
                     return true;
                 }
-
                 return false;
             });
             return func;
+        }
+
+        public virtual void OnBattleFailed(Mat viewportMat, RECT viewportRect)
+        {
+            mumuTools.DoClick(BATTLE_FAILED_GO_BACK_KEY);
+            Thread.Sleep(2000);
+            ClickTab(viewportRect, PCRTab.Character); //挑战失败 前往角色
         }
 
         public Func<Mat, RECT, bool> GetSimpleBattleSceneHandler(bool autoBattle, PCRBattleSpeedRate speedRate)
