@@ -51,7 +51,7 @@ namespace PCRBattleRecorder.Script
                 var rectRate = GetMatchSourceRectRate(STAGELINE_NEXT_TAG_MKEY);
                 var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
                 var pos = absoluteRect.GetCenterPos();
-                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1200f);
+                pos.Y = pos.Y + (int)(viewportRect.Height * 0.1400f);
                 var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
                 mumuTools.DoClick(emulatorPoint);
             }
@@ -74,9 +74,9 @@ namespace PCRBattleRecorder.Script
             else
             {
                 //mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
-                ClickTab(viewportRect, PCRTab.Battle);
-                Thread.Sleep(2000);
-                mumuTools.DoClick(new Vec2f(0.6273f, 0.3891f));//主线冒险
+                //ClickTab(viewportRect, PCRTab.Battle);
+                //Thread.Sleep(2000);
+                //mumuTools.DoClick(new Vec2f(0.6273f, 0.3891f));//主线冒险
             }
         }
     }

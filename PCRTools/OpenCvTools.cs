@@ -22,6 +22,7 @@ namespace PCRBattleRecorder
         }
 
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
+        private LogTools logTools = LogTools.GetInstance();
 
         private OpenCvTools()
         {
@@ -39,9 +40,7 @@ namespace PCRBattleRecorder
         public OpenCvMatchImageResult MatchImage(Mat source, Mat search, double threshold)
         {
             if (source.Width < search.Width || source.Height < search.Height)
-            {
                 return new OpenCvMatchImageResult() { Success = false };
-            }
             var res = new Mat();
             ShowMat("source", source);
             ShowMat("search", search);
@@ -49,12 +48,14 @@ namespace PCRBattleRecorder
             double minVal, maxVal;
             OpenCvPoint minLoc, maxLoc;
             Cv2.MinMaxLoc(res, out minVal, out maxVal, out minLoc, out maxLoc);
+            logTools.Debug("OpenCvMatchImage", $"Expect Threshold: {threshold} Maxval: {maxVal}");
             if (maxVal < threshold)
-            {
                 return new OpenCvMatchImageResult() { Success = false, Maxval = maxVal };
+            if (configMgr.DebugMode)
+            {
+                Cv2.Circle(source, maxLoc.X + search.Width / 2, maxLoc.Y + search.Height / 2, 25, Scalar.Red);
+                ShowMat("MatchImage", source);
             }
-            Cv2.Circle(source, maxLoc.X + search.Width / 2, maxLoc.Y + search.Height / 2, 25, Scalar.Red);
-            ShowMat("MatchImage", source);
             return new OpenCvMatchImageResult()
             {
                 Success = true,

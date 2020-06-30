@@ -36,7 +36,7 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Mainland;
+            configMgr.PCRRegion = PCRRegion.Japan;
 
             var viewportRect = mumuTools.GetMumuViewportRect();
             var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
@@ -48,8 +48,8 @@ namespace PCRPluginTest
             //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
 
 
-            //var script = new StagelineBattleScript();
-            var script = new UndergroundBattleScript();
+            var script = new StagelineBattleScript();
+            //var script = new UndergroundBattleScript();
             //var script = new ArenaSearchScript();
             scriptMgr.RunScript(script); 
 
