@@ -44,14 +44,14 @@ namespace PCRPluginTest
             //Cv2.ImShow("viewportMat", viewportMat);
 
             var unit = PCRUnit.FromUnitId(1011);
-            var r = unit.GetResizedAvatar();
-            var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
+            //var r = unit.GetResizedAvatar();
+            //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
 
 
             //var script = new StagelineBattleScript();
-            //var script = new UndergroundBattleScript();
-            var script = new ArenaSearchScript();
-            //scriptMgr.RunScript(script); 
+            var script = new UndergroundBattleScript();
+            //var script = new ArenaSearchScript();
+            scriptMgr.RunScript(script); 
 
         }
 

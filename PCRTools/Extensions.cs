@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using RawPoint = System.Drawing.Point;
 using EmulatorPoint = System.Drawing.Point;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using PCRBattleRecorder.Config;
+
 
 namespace PCRBattleRecorder
 {
@@ -149,6 +151,8 @@ namespace PCRBattleRecorder
 
         public static Mat ReadMatFromFile(string imgPath)
         {
+            if (!File.Exists(imgPath))
+                throw new BreakException($"Missing MatImg: {imgPath}");
             return Cv2.ImRead(imgPath, ImreadModes.Unchanged);
         }
 
