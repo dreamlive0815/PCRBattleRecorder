@@ -55,6 +55,10 @@ namespace PCRBattleRecorder.Script
                 var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
                 mumuTools.DoClick(emulatorPoint);
             }
+            else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CANCEL_MKEY))
+            {
+                logTools.Debug("StagelineBattle", "Try Click BTN_CANCEL");
+            }
             else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CLOSE_MKEY))
             {
                 logTools.Debug("StagelineBattle", "Try Click BTN_CLOSE");
@@ -73,7 +77,7 @@ namespace PCRBattleRecorder.Script
             }
             else
             {
-                //mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
+                mumuTools.DoClick(new Vec2f(0.1f, 0.8f));
                 //ClickTab(viewportRect, PCRTab.Battle);
                 //Thread.Sleep(2000);
                 //mumuTools.DoClick(new Vec2f(0.6273f, 0.3891f));//主线冒险

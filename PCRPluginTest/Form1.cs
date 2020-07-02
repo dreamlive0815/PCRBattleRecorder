@@ -36,7 +36,9 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Japan;
+            configMgr.PCRRegion = PCRRegion.Taiwan;
+
+            AdbTools.GetInstance().ConnectToMumuAdbServer();
 
             var viewportRect = mumuTools.GetMumuViewportRect();
             var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
