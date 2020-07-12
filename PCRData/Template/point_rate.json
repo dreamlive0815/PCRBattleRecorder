@@ -19,6 +19,7 @@
     "PCRTab_Battle": [0.5023, 0.9516],
     "PCRTab_Character": [0.2531, 0.9469],
     "PCRTab_Menu": [0.8664, 0.9469],
+    "PCRTab_Story": [0.3672, 0.9516],
     
     "default": [0.0000, 0.0000]
 }

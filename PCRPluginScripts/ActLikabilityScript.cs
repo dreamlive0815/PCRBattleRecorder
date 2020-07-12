@@ -23,6 +23,8 @@ namespace PCRBattleRecorder.Script
             get { return "ActLikabilityScript"; }
         }
 
+        public override bool CanKeepOnWhenException { get; } = true;
+
         public override void OnStart(Mat viewportMat, RECT viewportRect)
         {
             //ClickTab(viewportRect, PCRTab.Battle);

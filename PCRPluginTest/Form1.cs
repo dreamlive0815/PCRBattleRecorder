@@ -53,7 +53,8 @@ namespace PCRPluginTest
             //script = new StagelineBattleScript();
             //script = new UndergroundBattleScript();
             //script = new ArenaSearchScript();
-            script = new ActLikabilityScript();
+            //script = new ActLikabilityScript();
+            script = new StoryScript();
             scriptMgr.RunScript(script); 
 
         }

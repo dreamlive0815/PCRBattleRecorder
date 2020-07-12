@@ -39,7 +39,11 @@ namespace PCRBattleRecorder.Script
         protected const string LIKABILITY_PREVIEW_TITLE_MKEY = "likability_preview_title.png";
         protected const string LIKABILITY_TITLE_MKEY = "likability_title.png";
         protected const string LIST_ITEM_NEW_TAG_MKEY = "list_item_new_tag.png";
+        protected const string MENU_TAG_MKEY = "menu_tag.png";
+        protected const string SKIP_LABEL_MKEY = "skip_label.png";
+        protected const string SKIP_TAG_MKEY = "skip_tag.png";
         protected const string STAGELINE_NEXT_TAG_MKEY = "stageline_next_tag.png";
+        protected const string STORY_ITEM_NEW_TAG_MKEY = "story_item_new_tag.png";
         protected const string TUTORIAL_ARROW_MKEY = "tutorial_arrow.png";
 
         private AdbTools adbTools = AdbTools.GetInstance();
