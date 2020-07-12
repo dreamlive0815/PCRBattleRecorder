@@ -14,6 +14,13 @@
     "btn_confirm_ok.png": 0.7,
     "btn_underground_confirm_ok.png": 0.7,
 
+    "data_download_title.png": 0.7,
+
+    "likability_item_new_tag.png": 0.6,
+    "likability_preview_title.png": 0.7,
+    "likability_title.png": 0.6,
+    "list_item_new_tag.png": 0.6,
+
     "stageline_next_tag.png": 0.65,
     
     "default": 0

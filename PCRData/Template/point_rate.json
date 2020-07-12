@@ -1,4 +1,6 @@
 {
+    "Act_Entrance": [0.4891, 0.7844],
+    "Act_Likability_Entrance": [0.6297, 0.5000],
     
     "Arena_Player_1": [0.6648, 0.3234],
     "Arena_Player_2": [0.6734, 0.5359],
@@ -7,6 +9,12 @@
 
     "Battle_Failed_Go_Back": [0.8023, 0.9125],
     "Battle_Speed_Rate": [0.9570, 0.9078],
+
+    "Choice_2": [0.4961, 0.4141],
+
+    "Download_Without_Voice": [0.5047, 0.6859],
+
+    "Go_Back": [0.0305, 0.0578],
     
     "PCRTab_Battle": [0.5023, 0.9516],
     "PCRTab_Character": [0.2531, 0.9469],

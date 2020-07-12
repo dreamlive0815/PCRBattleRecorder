@@ -23,6 +23,13 @@
     "btn_confirm_ok.png": [0.4813, 0.6578, 0.5180, 0.7125],
     "btn_underground_confirm_ok.png": [0.4844, 0.8672, 0.5117, 0.9031],
 
+    "data_download_title.png": [0.4141, 0.2484, 0.5852, 0.2906],
+
+    "likability_item_new_tag.png": [0.6164, 0.0922, 0.6578, 0.1234],
+    "likability_preview_title.png": [0.0477, 0.8141, 0.0914, 0.8484],
+    "likability_title.png": [0.0617, 0.0359, 0.1266, 0.0766],
+    "list_item_new_tag.png": [0.5602, 0.1406, 0.6000, 0.1719],
+
     "stageline_next_tag.png": [0.5359, 0.4656, 0.5820, 0.4953],
     
     "title": [0.2859, 0.2359, 0.7141, 0.3063],

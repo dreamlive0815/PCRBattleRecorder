@@ -36,7 +36,7 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Mainland;
+            configMgr.PCRRegion = PCRRegion.Taiwan;
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
@@ -49,10 +49,11 @@ namespace PCRPluginTest
             //var r = unit.GetResizedAvatar();
             //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
 
-
-            //var script = new StagelineBattleScript();
-            var script = new UndergroundBattleScript();
-            //var script = new ArenaSearchScript();
+            ScriptBase script;
+            //script = new StagelineBattleScript();
+            //script = new UndergroundBattleScript();
+            //script = new ArenaSearchScript();
+            script = new ActLikabilityScript();
             scriptMgr.RunScript(script); 
 
         }

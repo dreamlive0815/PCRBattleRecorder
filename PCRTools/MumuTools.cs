@@ -105,6 +105,13 @@ namespace PCRBattleRecorder
             DoClick(pointRate);
         }
 
+        public void DoDrag(Vec2f startPointRate, Vec2f endPointRate, int milliSeconds)
+        {
+            var startEmulatorPoint = GetEmulatorPoint(startPointRate);
+            var endEmulatorPoint = GetEmulatorPoint(endPointRate);
+            adbTools.DoDrag(startEmulatorPoint, endEmulatorPoint, milliSeconds);
+        }
+
         public EmulatorPoint GetEmulatorPoint(Vec2f pointRate)
         {
             var emulatorSize = configMgr.MumuViewportEmulatorSize;

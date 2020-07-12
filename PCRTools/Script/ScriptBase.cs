@@ -12,9 +12,14 @@ namespace PCRBattleRecorder.Script
     public abstract class ScriptBase
     {
 
+        protected const string ACT_ENTRANCE_KEY = "Act_Entrance";
+        protected const string ACT_LIKABILITY_ENTRANCE_KEY = "Act_Likability_Entrance";
         protected const string ARENA_REFRESH_KEY = "Arena_Refresh";
         protected const string BATTLE_FAILED_GO_BACK_KEY = "Battle_Failed_Go_Back";
         protected const string BATTLE_SPEED_RATE_KEY = "Battle_Speed_Rate";
+        protected const string CHOICE_2_KEY = "Choice_2";
+        protected const string DOWNLOAD_WITHOUT_VOICE_KEY = "Download_Without_Voice";
+        protected const string GO_BACK_KEY = "Go_Back";
 
         protected const string BATTLE_AUTO_OFF_MKEY = "battle_auto_off.png";
         protected const string BATTLE_AUTO_ON_MKEY = "battle_auto_on.png";
@@ -29,6 +34,11 @@ namespace PCRBattleRecorder.Script
         protected const string BTN_CANCEL_MKEY = "btn_cancel.png";
         protected const string BTN_CLOSE_MKEY = "btn_close.png";
         protected const string BTN_CONFIRM_OK_MKEY = "btn_confirm_ok.png";
+        protected const string DATA_DOWNLOAD_TITLE_MKEY = "data_download_title.png";
+        protected const string LIKABILITY_ITEM_NEW_TAG_MKEY = "likability_item_new_tag.png";
+        protected const string LIKABILITY_PREVIEW_TITLE_MKEY = "likability_preview_title.png";
+        protected const string LIKABILITY_TITLE_MKEY = "likability_title.png";
+        protected const string LIST_ITEM_NEW_TAG_MKEY = "list_item_new_tag.png";
         protected const string STAGELINE_NEXT_TAG_MKEY = "stageline_next_tag.png";
         protected const string TUTORIAL_ARROW_MKEY = "tutorial_arrow.png";
 
@@ -165,6 +175,18 @@ namespace PCRBattleRecorder.Script
             return false;
         }
 
+        public bool TryClickListItemNewTag(Mat viewportMat, RECT viewportRect)
+        {
+            return TryClickTemplateRect(viewportMat, viewportRect, LIST_ITEM_NEW_TAG_MKEY);
+        }
+
+        public void DragDownList()
+        {
+            var startPointRate = new Vec2f(0.7700f, 0.7012f);
+            var endPointRate = new Vec2f(0.7700f, 0.2332f);
+            mumuTools.DoDrag(startPointRate, endPointRate, 1200);
+        }
+
         public PCRBattleSpeedRate GetBattleSpeedRate(Mat viewportMat, RECT viewportRect)
         {
             if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_SPEED_RATE_1_MKEY))
@@ -192,7 +214,7 @@ namespace PCRBattleRecorder.Script
                 }
                 else if (TryClickTemplateRect(viewportMat, viewportRect, BATTLE_NEXT_STEP_MKEY))
                 {
-                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_START");
+                    logTools.Debug("SimpleBattleHandler", "Try Click BATTLE_NEXT_STEP");
                     return true;
                 }
                 else if (CanMatchTemplate(viewportMat, viewportRect, BATTLE_FAILED_MKEY))
@@ -238,7 +260,6 @@ namespace PCRBattleRecorder.Script
             return func;
         }
 
-
         public void ClickTab(RECT viewportRect, PCRTab tab)
         {
             ClickTab(viewportRect, configMgr.PCRRegion.ToString(), tab);
@@ -251,7 +272,10 @@ namespace PCRBattleRecorder.Script
             var emulatorPoint = mumuTools.GetEmulatorPoint(pointRate);
             mumuTools.DoClick(emulatorPoint);
         }
+
+        public void ClickBack()
+        {
+            mumuTools.DoClick(GO_BACK_KEY);
+        }
     }
-
-
 }
