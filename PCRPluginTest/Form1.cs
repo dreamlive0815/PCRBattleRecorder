@@ -40,22 +40,22 @@ namespace PCRPluginTest
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
-            var viewportRect = mumuTools.GetMumuViewportRect();
-            var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
-            var viewportMat = viewportCapture.ToOpenCvMat();
+            //var viewportRect = mumuTools.GetMumuViewportRect();
+            //var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
+            //var viewportMat = viewportCapture.ToOpenCvMat();
             //Cv2.ImShow("viewportMat", viewportMat);
 
             var unit = PCRUnit.FromUnitId(1011);
-            //var r = unit.GetResizedAvatar();
+            var r = unit.GetResizedAvatar();
             //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
 
             ScriptBase script;
             //script = new StagelineBattleScript();
             //script = new UndergroundBattleScript();
             //script = new ArenaSearchScript();
-            //script = new ActLikabilityScript();
-            script = new StoryScript();
-            scriptMgr.RunScript(script); 
+            script = new ActLikabilityScript();
+            //script = new StoryScript();
+            //scriptMgr.RunScript(script); 
 
         }
 

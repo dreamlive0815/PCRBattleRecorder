@@ -18,6 +18,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRArenaSearchScript", "PCRArenaSearchScript\PCRArenaSearchScript.csproj", "{2CF17296-3191-4638-8938-2350A1F6BFF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRPluginTest", "PCRPluginTest\PCRPluginTest.csproj", "{4AF82624-C3FF-4720-98F4-B1B179565F7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{863BF7B2-3E8E-4468-9CD1-4F45BAB211A7} = {863BF7B2-3E8E-4468-9CD1-4F45BAB211A7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackTools", "PackTools\PackTools.csproj", "{DCD3C872-A7A0-47C2-926A-6A6ABF0502AA}"
 EndProject
