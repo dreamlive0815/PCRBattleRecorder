@@ -70,6 +70,8 @@
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ConfigMgr.cs" />
     <Compile Include="Config\JsonConfig.cs" />
+    <Compile Include="Csv\Csv.cs" />
+    <Compile Include="Csv\CsvMgr.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileTools.cs" />
