@@ -11,6 +11,7 @@ using PCRBattleRecorder;
 using PCRBattleRecorder.Config;
 using PCRBattleRecorder.Script;
 using PCRBattleRecorder.PCRModel;
+using PCRBattleRecorder.Csv;
 using OpenCvSharp;
 using System.Threading;
 
@@ -46,7 +47,7 @@ namespace PCRPluginTest
             //Cv2.ImShow("viewportMat", viewportMat);
 
             var unit = PCRUnit.FromUnitId(1011);
-            var r = unit.GetResizedAvatar();
+            //var r = unit.GetResizedAvatar();
             //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
 
             ScriptBase script;
@@ -56,7 +57,7 @@ namespace PCRPluginTest
             script = new ActLikabilityScript();
             //script = new StoryScript();
             //scriptMgr.RunScript(script); 
-
+            var csv = Csv.FromFile("1.csv");
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)

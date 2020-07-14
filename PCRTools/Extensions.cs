@@ -7,7 +7,7 @@ using EmulatorPoint = System.Drawing.Point;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using PCRBattleRecorder.Config;
-
+using System.Collections.Generic;
 
 namespace PCRBattleRecorder
 {
@@ -175,6 +175,18 @@ namespace PCRBattleRecorder
         public static Mat ToReverse(this Mat mat)
         {
             return (~mat).ToMat();
+        }
+    }
+
+    public static class ListExtension
+    {
+        public static T GetByIndex<T>(this List<T> list, int index)
+        {
+            if (list == null)
+                return default(T);
+            if (index >= list.Count)
+                return default(T);
+            return list[index];
         }
     }
 }
