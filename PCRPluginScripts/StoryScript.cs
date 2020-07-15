@@ -61,14 +61,14 @@ namespace PCRBattleRecorder.Script
             }
             else
             {
-                if (dragTimes > 5)
+                if (!CanMatchTemplate(viewportMat, viewportRect, STORY_GUIDE_TAG_MKEY) || dragTimes > 5)
                 {
                     ClickBack();
                     dragTimes = 0;
                 }
                 else
                 {
-                    mumuTools.DoClick(new Vec2f(0.1f, 0.7f));
+                    mumuTools.DoClick(CHOICE_2_KEY);
                     Thread.Sleep(500);
                     DragDownList();
                     dragTimes++;

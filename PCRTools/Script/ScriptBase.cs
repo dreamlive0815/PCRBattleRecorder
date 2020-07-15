@@ -43,6 +43,7 @@ namespace PCRBattleRecorder.Script
         protected const string SKIP_LABEL_MKEY = "skip_label.png";
         protected const string SKIP_TAG_MKEY = "skip_tag.png";
         protected const string STAGELINE_NEXT_TAG_MKEY = "stageline_next_tag.png";
+        protected const string STORY_GUIDE_TAG_MKEY = "story_guide_tag.png";
         protected const string STORY_ITEM_NEW_TAG_MKEY = "story_item_new_tag.png";
         protected const string TUTORIAL_ARROW_MKEY = "tutorial_arrow.png";
 
