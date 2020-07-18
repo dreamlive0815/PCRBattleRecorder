@@ -97,6 +97,23 @@ namespace PCRBattleRecorder.Csv
                 return new CsvRow(this, rowData);
             }
         }
+
+        public bool HasRow(string rowKey)
+        {
+            return dataMap.ContainsKey(rowKey);
+        }
+
+        public List<string> GetKeys()
+        {
+            var keys = new List<string>();
+            for (int i = 0; i < dataContainer.Count; i++)
+            {
+                var data = dataContainer[i];
+                var key = data[RowKeyIndex];
+                keys.Add(key);
+            }
+            return keys;
+        }
     }
 
     public class CsvHeader

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using PCRBattleRecorder;
 using PCRBattleRecorder.Config;
+using PCRBattleRecorder.Csv;
 using OpenCvSharp;
 using OpenCvSize = OpenCvSharp.Size;
 
@@ -14,67 +15,105 @@ namespace PCRBattleRecorder.PCRModel
     public class PCRUnit
     {
 
-        public static List<int> GetAllUnitIds()
+        public static Csv.Csv GetUnitCsv()
         {
-            var r = new List<int>();
-            return r;
+            return PCRTools.GetInstance().GetCsv("Unit");
+        }
+
+        public static List<string> GetAllUnitIDs()
+        {
+            var csv = GetUnitCsv();
+            var keys = csv.GetKeys();
+            return keys;
+        }
+
+        public static PCRUnit FromUnitID(int unitID)
+        {
+            return FromUnitID(unitID.ToString());
         }
         
-        public static PCRUnit FromUnitId(int unitId)
+        public static PCRUnit FromUnitID(string unitID)
         {
-            return new PCRUnit(unitId);
+            var unit = new PCRUnit()
+            {
+                ID = unitID,
+                Stars = GetDefaultStars(unitID)
+            };
+            return unit;
+        }
+
+        public static PCRAvatarLevel GetAvatarLevelByStars(int stars)
+        {
+            if (stars >= PCRAvatarLevel.Level6.GetRequiredStars()) return PCRAvatarLevel.Level6;
+            if (stars >= PCRAvatarLevel.Level3.GetRequiredStars()) return PCRAvatarLevel.Level3;
+            return PCRAvatarLevel.Level1;
+        }
+
+        public static string GetAvatarName(string ID, PCRAvatarLevel avatarLevel)
+        {
+            return $"icon_unit_{ID}{avatarLevel.GetRequiredStars()}1.png";
+        }
+
+        public static int GetDefaultStars(string ID)
+        {
+            return 3;
         }
 
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private PCRTools pcrTools = PCRTools.GetInstance();
 
-        private PCRUnit(int unitId)
+        private PCRUnit()
         {
-            Id = unitId;
         }
 
-        public int Id { get; }
+        public string ID { get; private set; }
 
-        public int Rank { get; }
+        public int Rank { get; private set; } = 1;
 
-        public int Stars { get; } = 3;
+        public int Stars { get; private set; }
 
         public PCRAvatarLevel AvatarLevel
         {
-            get
-            {
-                if (Stars >= PCRAvatarLevel.Level6.GetRequiredStars()) return PCRAvatarLevel.Level6;
-                if (Stars >= PCRAvatarLevel.Level3.GetRequiredStars()) return PCRAvatarLevel.Level3;
-                return PCRAvatarLevel.Level1;
-            }
+            get { return GetAvatarLevelByStars(Stars); }
         }
 
-        public string AvatarName
+        public string GetAvatarName(PCRAvatarLevel avatarLevel)
         {
-            get { return $"icon_unit_{Id}{AvatarLevel.GetRequiredStars()}1.png"; }
+            return GetAvatarName(ID, avatarLevel);
         }
 
-
-        public string GetAvatarPath()
+        public string GetAvatarPath(PCRAvatarLevel avatarLevel)
         {
-            var path = pcrTools.ChooseFilePath("Img/unit", null, AvatarName);
+            var avatarName = GetAvatarName(avatarLevel);
+            var path = pcrTools.ChooseFilePath("Img/unit", null, avatarName);
             return path;
         }
 
-        public Mat GetAvatar()
+        public Mat GetAvatar(PCRAvatarLevel avatarLevel)
         {
-            var path = GetAvatarPath();
+            var path = GetAvatarPath(avatarLevel);
             var mat = OpenCvExtension.ReadMatFromFile(path);
             return mat;
         }
 
         public Mat GetResizedAvatar()
         {
-            var avatarTemplateSize = configMgr.UnitAvatarTemplateSize;
-            return GetResizedAvatar(avatarTemplateSize.Width);
+            return GetResizedAvatar(AvatarLevel);
         }
 
-        public Mat GetResizedAvatar(int templateWidth)
+        public Mat GetResizedAvatar(PCRAvatarLevel avatarLevel)
+        {
+            var avatarTemplateSize = configMgr.UnitAvatarTemplateSize;
+            return GetResizedAvatar(avatarLevel, avatarTemplateSize.Width);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="avatarLevel"></param>
+        /// <param name="templateWidth">1280*640像素下的图标大小</param>
+        /// <returns></returns>
+        public Mat GetResizedAvatar(PCRAvatarLevel avatarLevel, int templateWidth)
         {
             var avatarResSize = configMgr.UnitAvatarResourceSize;
 
@@ -84,7 +123,7 @@ namespace PCRBattleRecorder.PCRModel
             var viewportScale = 1.0 * viewportSize.Width / viewportTemplateSize.Width;
             var avatarScale = 1.0 * templateWidth / avatarResSize.Width * viewportScale;
 
-            var mat = GetAvatar();
+            var mat = GetAvatar(avatarLevel);
             var resized = mat.Resize(new OpenCvSize(mat.Width * avatarScale, mat.Height * avatarScale));
             return resized;
         }

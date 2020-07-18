@@ -6,6 +6,7 @@ using OpenCvSharp;
 using CvSize = OpenCvSharp.Size;
 using Newtonsoft.Json.Linq;
 using PCRBattleRecorder.Config;
+using PCRBattleRecorder.Csv;
 using PCRBattleRecorder.PCRModel;
 using ConfigBase = PCRBattleRecorder.Config.Config;
 
@@ -24,6 +25,8 @@ namespace PCRBattleRecorder
             return instance;
         }
 
+
+        private CsvMgr csvMgr = CsvMgr.GetInstance();
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private FileTools fileTools = FileTools.GetInstance();
         private OpenCvTools opencvTools = OpenCvTools.GetInstance();
@@ -36,7 +39,15 @@ namespace PCRBattleRecorder
 
         #region 下面是PCR配置文件加载策略 先从主程序同级data目录加载 再从PCRData下childType目录加载 最后从PCRData下parentType目录加载
 
+        //public bool UseCache { get; set; } = !ConfigMgr.GetInstance().DebugMode;
+        public bool UseCache { get; set; } = true;
+
         private Dictionary<string, ConfigBase> dataContainerDict = new Dictionary<string, ConfigBase>();
+
+        public void ClearConfigCache()
+        {
+            dataContainerDict.Clear();
+        }
 
         public string GetDataFilePath(string parentType, string childType, string fileName)
         {
@@ -71,7 +82,7 @@ namespace PCRBattleRecorder
         public ConfigBase GetDataContainer(string parentType, string childType, string fileName)
         {
             var dictKey = GetDictKey(parentType, childType, fileName);
-            var useCache = !configMgr.DebugMode;
+            var useCache = UseCache;
             if (useCache && dataContainerDict.ContainsKey(dictKey))
                 return dataContainerDict[dictKey]; //缓存
             var filePath = GetDataFilePath(parentType, childType, fileName);
@@ -111,6 +122,52 @@ namespace PCRBattleRecorder
         }
 
         #endregion
+
+        public string GetCsvFileName(string name)
+        {
+            return $"{name}.csv";
+        }
+
+        public Csv.Csv GetCsv(string name)
+        {
+            return GetCsv(configMgr.PCRRegion.ToString(), name);
+        }
+
+        public Csv.Csv GetCsv(string type, string name)
+        {
+            var fileName = GetCsvFileName(name);
+            var relativePath = GetDataFilePath(null, null, fileName);
+            if (File.Exists(relativePath))
+                return csvMgr.GetCsv(relativePath);
+            var childPath = GetDataFilePath("Csv", type, fileName);
+            if (File.Exists(childPath))
+                return csvMgr.GetCsv(childPath);
+            var parentPath = GetDataFilePath("Csv", null, fileName);
+            return csvMgr.GetCsv(parentPath);
+        }
+
+        public CsvRow GetCsvRow(string type, string name, string rowKey)
+        {
+            var fileName = GetCsvFileName(name);
+            var relativePath = GetDataFilePath(null, null, fileName);
+            Csv.Csv csv;
+            if (File.Exists(relativePath))
+            {
+                csv = csvMgr.GetCsv(relativePath);
+                if (csv.HasRow(rowKey))
+                    return csv[rowKey];
+            }
+            var childPath = GetDataFilePath("Csv", type, fileName);
+            if (File.Exists(childPath))
+            {
+                csv = csvMgr.GetCsv(childPath);
+                if (csv.HasRow(rowKey))
+                    return csv[rowKey];
+            } 
+            var parentPath = GetDataFilePath("Csv", null, fileName);
+            csv = csvMgr.GetCsv(childPath);
+            return csv[rowKey];
+        }
 
         public Vec2f GetPointRateByJArray(JArray jArr)
         {

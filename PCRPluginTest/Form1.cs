@@ -46,7 +46,7 @@ namespace PCRPluginTest
             //var viewportMat = viewportCapture.ToOpenCvMat();
             //Cv2.ImShow("viewportMat", viewportMat);
 
-            var unit = PCRUnit.FromUnitId(1011);
+            var unit = PCRUnit.FromUnitID(1011);
             //var r = unit.GetResizedAvatar();
             //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
 
@@ -56,8 +56,8 @@ namespace PCRPluginTest
             //script = new ArenaSearchScript();
             //script = new ActLikabilityScript();
             script = new StoryScript();
-            scriptMgr.RunScript(script); 
-            //var csv = Csv.FromFile("1.csv");
+            //scriptMgr.RunScript(script); 
+            var ids = PCRUnit.GetAllUnitIDs();
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)
