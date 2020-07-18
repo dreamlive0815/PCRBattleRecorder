@@ -27,19 +27,56 @@ namespace PCRBattleRecorder.PCRModel
             return keys;
         }
 
-        public static PCRUnit FromUnitID(int unitID)
+        public static string GetUnitIDByUnitName(string unitName)
         {
-            return FromUnitID(unitID.ToString());
+            var csv = GetUnitCsv();
+            var keys = csv.GetKeys();
+            foreach (var key in keys)
+            {
+                var row = csv[key];
+                var nickNames = row["NickNames"];
+                if (nickNames.Contains(unitName))
+                    return key;
+            }
+            throw new BreakException(Trans.T("找不到{0}的UnitID", unitName));
         }
-        
-        public static PCRUnit FromUnitID(string unitID)
+
+        public static PCRUnit FromUnitName(string unitName, int stars)
+        {
+            var unitID = GetUnitIDByUnitName(unitName);
+            return FromUnitID(unitID, stars);
+        }
+
+        public static PCRUnit FromUnitID(int unitID, int stars)
+        {
+            return FromUnitID(unitID.ToString(), stars);
+        }
+
+        public static PCRUnit FromUnitID(string unitID, int stars)
         {
             var unit = new PCRUnit()
             {
                 ID = unitID,
-                Stars = GetDefaultStars(unitID)
+                Name = GetUnitNameByID(unitID),
+                Stars = stars
             };
             return unit;
+        }
+
+        public static PCRUnit FromUnitID(string unitID)
+        {
+            return FromUnitID(unitID, GetDefaultStars(unitID));
+        }
+
+        public static string GetUnitNameByID(string unitID)
+        {
+            var csv = GetUnitCsv();
+            var nickNames = csv[unitID]["NickNames"];
+            var i = nickNames.IndexOf(";");
+            if (i != -1)
+                return nickNames.Substring(0, i);
+            else
+                return nickNames;
         }
 
         public static PCRAvatarLevel GetAvatarLevelByStars(int stars)
@@ -67,6 +104,8 @@ namespace PCRBattleRecorder.PCRModel
         }
 
         public string ID { get; private set; }
+
+        public string Name { get; private set; }
 
         public int Rank { get; private set; } = 1;
 

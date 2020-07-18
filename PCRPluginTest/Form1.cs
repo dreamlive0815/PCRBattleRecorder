@@ -32,6 +32,28 @@ namespace PCRPluginTest
             InitializeComponent();
         }
 
+        RECT viewportRect;
+        Mat viewportMat;
+
+        void CaptureMumu()
+        {
+            viewportRect = mumuTools.GetMumuViewportRect();
+            var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
+            viewportMat = viewportCapture.ToOpenCvMat();
+            //Cv2.ImShow("viewportMat", viewportMat);
+        }
+
+        void RunScript()
+        {
+            ScriptBase script;
+            script = new StagelineBattleScript();
+            //script = new UndergroundBattleScript();
+            //script = new ArenaSearchScript();
+            //script = new ActLikabilityScript();
+            script = new StoryScript();
+            //scriptMgr.RunScript(script); 
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             logTools.OnError += LogTools_OnError;
@@ -41,23 +63,16 @@ namespace PCRPluginTest
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
-            //var viewportRect = mumuTools.GetMumuViewportRect();
-            //var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
-            //var viewportMat = viewportCapture.ToOpenCvMat();
-            //Cv2.ImShow("viewportMat", viewportMat);
 
-            var unit = PCRUnit.FromUnitID(1011);
+            CaptureMumu();
+            var unit = PCRUnit.FromUnitName("妹弓", 3);
+            var unitList = new List<PCRUnit>() { unit };
+            EmptyScript.GetInstance().SelectBattleTeam(viewportMat, viewportRect, unitList);
+            //var a = unit.GetResizedAvatar();
+            //a = a.GetChildMatByRectRate(new Vec4f(0f, 0.25f, 1f, 0.75f));
+            //Cv2.ImShow("a", a);
             //var r = unit.GetResizedAvatar();
             //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
-
-            ScriptBase script;
-            script = new StagelineBattleScript();
-            //script = new UndergroundBattleScript();
-            //script = new ArenaSearchScript();
-            //script = new ActLikabilityScript();
-            script = new StoryScript();
-            //scriptMgr.RunScript(script); 
-            var ids = PCRUnit.GetAllUnitIDs();
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)

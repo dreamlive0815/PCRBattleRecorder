@@ -25,6 +25,7 @@ namespace PCRBattleRecorder.Csv
             var csv = new Csv();
             csv.SetHeaders(headers);
             csv.SetData(data);
+            csv.filePath = filePath;
             return csv;
         }
 
@@ -38,6 +39,7 @@ namespace PCRBattleRecorder.Csv
         private Dictionary<string, int> header2Index;
         private List<List<string>> dataContainer;
         private Dictionary<string, List<string>> dataMap;
+        private string filePath;
 
         private Csv()
         {

@@ -5,6 +5,7 @@ using System.Drawing;
 using PCRBattleRecorder;
 using OpenCvSharp;
 using PCRBattleRecorder.Config;
+using PCRBattleRecorder.PCRModel;
 using System.Threading;
 
 namespace PCRBattleRecorder.Script
@@ -31,6 +32,7 @@ namespace PCRBattleRecorder.Script
         protected const string BATTLE_SPEED_RATE_2_MKEY = "battle_speed_rate_2.png";
         protected const string BATTLE_SPEED_RATE_4_MKEY = "battle_speed_rate_4.png";
         protected const string BATTLE_START_MKEY = "battle_start.png";
+        protected const string BATTLE_UNIT_LIST_VIEW_MKEY = "battle_unit_list_view";
         protected const string BTN_CANCEL_MKEY = "btn_cancel.png";
         protected const string BTN_CLOSE_MKEY = "btn_close.png";
         protected const string BTN_CONFIRM_OK_MKEY = "btn_confirm_ok.png";
@@ -281,6 +283,35 @@ namespace PCRBattleRecorder.Script
         public void ClickBack()
         {
             mumuTools.DoClick(GO_BACK_KEY);
+        }
+
+
+        public void SelectBattleTeam(Mat viewportMat, RECT viewportRect, List<PCRUnit> units)
+        {
+            mumuTools.DoDrag(new Vec2f(0.5f, 0.6344f), new Vec2f(0.5f, 0.2397f), 2000);
+
+            return;
+            //[0.5094, 0.2297]
+            //[0.5070, 0.6344]
+            for (var i = 1; i <= 5; i++)
+            {
+                var key = $"Battle_Team_Slot_{i}";
+                mumuTools.DoClick(key);
+                //Thread.Sleep(500);
+            }
+
+            var rectRate = pcrTools.GetRectRate(BATTLE_UNIT_LIST_VIEW_MKEY);
+            var matchSourceMat = viewportMat.GetChildMatByRectRate(rectRate);
+
+            foreach (var unit in units)
+            {
+                var avatar = unit.GetResizedAvatar();
+                var avatarPartial = avatar.GetChildMatByRectRate(new Vec4f(0f, 0.25f, 1f, 0.75f));
+                var matchRes = opencvTools.MatchImage(matchSourceMat, avatarPartial, 0.7);
+
+            }
+
+            
         }
     }
 }
