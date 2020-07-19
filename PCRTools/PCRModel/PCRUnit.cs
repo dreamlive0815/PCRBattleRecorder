@@ -20,6 +20,8 @@ namespace PCRBattleRecorder.PCRModel
             return PCRTools.GetInstance().GetCsv("Unit");
         }
 
+        public static string UnknownUnitID { get { return "1000"; } }
+
         public static List<string> GetAllUnitIDs()
         {
             var csv = GetUnitCsv();
@@ -106,6 +108,8 @@ namespace PCRBattleRecorder.PCRModel
         public string ID { get; private set; }
 
         public string Name { get; private set; }
+
+        public int Level { get; private set; } = 1;
 
         public int Rank { get; private set; } = 1;
 

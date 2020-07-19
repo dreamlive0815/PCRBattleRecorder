@@ -64,15 +64,14 @@ namespace PCRPluginTest
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
 
+            var es = EmptyScript.GetInstance();
+
             CaptureMumu();
             var unit = PCRUnit.FromUnitName("妹弓", 3);
             var unitList = new List<PCRUnit>() { unit };
-            EmptyScript.GetInstance().SelectBattleTeam(viewportMat, viewportRect, unitList);
-            //var a = unit.GetResizedAvatar();
-            //a = a.GetChildMatByRectRate(new Vec4f(0f, 0.25f, 1f, 0.75f));
-            //Cv2.ImShow("a", a);
-            //var r = unit.GetResizedAvatar();
-            //var matchRes = openCvTools.MatchImage(viewportMat, r, 0.5);
+            //es.SelectBattleTeam(viewportMat, viewportRect, unitList);
+            var units = es.GetBattleTeamInfo(viewportMat, viewportRect);
+            es.SelectBattleTeam(viewportMat, viewportRect, units);
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)

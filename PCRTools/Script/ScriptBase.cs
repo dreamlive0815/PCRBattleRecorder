@@ -7,6 +7,7 @@ using OpenCvSharp;
 using PCRBattleRecorder.Config;
 using PCRBattleRecorder.PCRModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PCRBattleRecorder.Script
 {
@@ -79,6 +80,11 @@ namespace PCRBattleRecorder.Script
         public virtual Vec4f GetMatchSourceRectRate(string type, string imgName)
         {
             return pcrTools.GetTemplateMatchSourceRectRate(type, imgName);
+        }
+
+        public double GetMatchTemplateThreshold(string imgName)
+        {
+            return GetMatchTemplateThreshold(configMgr.PCRRegion.ToString(), imgName);
         }
 
         public virtual double GetMatchTemplateThreshold(string type, string imgName)
@@ -286,32 +292,159 @@ namespace PCRBattleRecorder.Script
         }
 
 
+        public virtual void OnBattleTeamUnitNotFound(List<PCRUnit> units, bool[] vis)
+        {
+        }
+
+        protected Vec4f unitAvatarPartialRectRate = new Vec4f(0.00f, 0.25f, 1.00f, 0.75f);
+
         public void SelectBattleTeam(Mat viewportMat, RECT viewportRect, List<PCRUnit> units)
         {
-            mumuTools.DoDrag(new Vec2f(0.5f, 0.6344f), new Vec2f(0.5f, 0.2397f), 2000);
-
-            return;
-            //[0.5094, 0.2297]
-            //[0.5070, 0.6344]
             for (var i = 1; i <= 5; i++)
             {
                 var key = $"Battle_Team_Slot_{i}";
                 mumuTools.DoClick(key);
-                //Thread.Sleep(500);
+                Thread.Sleep(500);
             }
 
-            var rectRate = pcrTools.GetRectRate(BATTLE_UNIT_LIST_VIEW_MKEY);
-            var matchSourceMat = viewportMat.GetChildMatByRectRate(rectRate);
+            viewportRect = mumuTools.GetMumuViewportRect();
+            var viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
+            viewportMat = viewportCapture.ToOpenCvMat();
 
-            foreach (var unit in units)
+            var rectRate = GetMatchSourceRectRate(BATTLE_UNIT_LIST_VIEW_MKEY);
+            var threshold = GetMatchTemplateThreshold(BATTLE_UNIT_LIST_VIEW_MKEY);
+            var vis = new bool[5];
+            var dragTimesLimit = 5;
+            for (var i = 0; i < dragTimesLimit; i++)
             {
-                var avatar = unit.GetResizedAvatar();
-                var avatarPartial = avatar.GetChildMatByRectRate(new Vec4f(0f, 0.25f, 1f, 0.75f));
-                var matchRes = opencvTools.MatchImage(matchSourceMat, avatarPartial, 0.7);
+                var matchSourceMat = viewportMat.GetChildMatByRectRate(rectRate);
+                for (var k = 0; k < units.Count; k++)
+                {
+                    if (vis[k]) continue;
+                    var unit = units[k];
+                    var avatar = unit.GetResizedAvatar();
+                    var avatarPartial = avatar.GetChildMatByRectRate(unitAvatarPartialRectRate);
+                    var matchRes = opencvTools.MatchImage(matchSourceMat, avatarPartial, threshold);
+                    if (matchRes.Success)
+                    {
+                        var rectToViewport = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
+                        var centerPos = rectToViewport.GetCenterPos();
+                        var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, centerPos);
+                        mumuTools.DoClick(emulatorPoint);
+                        vis[k] = true;
+                        Thread.Sleep(500);
+                    }
+                }
 
+                var allOk = true;
+                for (var k = 0; k < units.Count; k++) allOk = allOk && vis[k];
+                if (allOk)
+                    break;
+
+                var milliSeconds = 2000;
+                mumuTools.DoDrag(new Vec2f(0.5f, 0.6344f), new Vec2f(0.5f, 0.2450f), milliSeconds);
+                Thread.Sleep(milliSeconds);
+
+                if (i != dragTimesLimit - 1)
+                {
+                    viewportRect = mumuTools.GetMumuViewportRect();
+                    viewportCapture = Tools.GetInstance().DoCaptureScreen(viewportRect);
+                    viewportMat = viewportCapture.ToOpenCvMat();
+                }
             }
 
-            
+            OnBattleTeamUnitNotFound(units, vis);
         }
+
+        private Dictionary<string, Mat> unitAvatarPartialDict = new Dictionary<string, Mat>();
+
+        protected void ClearUnitAvatarPartialDict()
+        {
+            foreach (var pair in unitAvatarPartialDict)
+            {
+                pair.Value.Dispose();
+            }
+            unitAvatarPartialDict.Clear();
+        }
+
+        protected Mat GetUnitAvatarPartial(string unitID, PCRAvatarLevel avatarLevel, int templateWidth)
+        {
+            var key = $"{unitID}_{avatarLevel}_{templateWidth}";
+            if (unitAvatarPartialDict.ContainsKey(key))
+                return unitAvatarPartialDict[key];
+            var unit = PCRUnit.FromUnitID(unitID, avatarLevel.GetRequiredStars());
+            var avatar = unit.GetResizedAvatar(avatarLevel, templateWidth);
+            var avatarPartial = avatar.GetChildMatByRectRate(unitAvatarPartialRectRate);
+            unitAvatarPartialDict[key] = avatarPartial;
+            return avatarPartial;
+        }
+
+        private object getUnitAvatarPartialLock = new object();
+
+        public PCRUnit GetBattleTeamInfoByIndex(Mat viewportMat, RECT viewportRect, int index)
+        {
+            var key = $"Battle_Team_Slot_{index}";
+            var rectRate = GetMatchSourceRectRate(key);
+            var threshold = GetMatchTemplateThreshold("Battle_Team_Slot");
+            var matchSourceMat = viewportMat.GetChildMatByRectRate(rectRate);
+            var unitIDs = PCRUnit.GetAllUnitIDs();
+            var templateWidth = configMgr.UnitAvatarTemplateSize.Width;
+            var getByAvatarLevel = new Func<string, PCRAvatarLevel, PCRUnit>((unitID, avatarLevel) =>
+            {
+                if (unitID == PCRUnit.UnknownUnitID)
+                    return null;
+                Mat avatarPartial;
+                lock (getUnitAvatarPartialLock)
+                {
+                    avatarPartial = GetUnitAvatarPartial(unitID, avatarLevel, templateWidth);
+                }
+                var matchRes = opencvTools.MatchImage(matchSourceMat, avatarPartial, threshold);
+                if (matchRes.Success)
+                    return PCRUnit.FromUnitID(unitID, avatarLevel.GetRequiredStars());
+                else
+                    return null;
+            });
+            var getByAvatarLevelNoEx = new Func<string, PCRAvatarLevel, PCRUnit>((unitID, avatarLevel) =>
+            {
+                try { return getByAvatarLevel(unitID, avatarLevel); }
+                catch { return null; }
+            });
+            foreach (var unitID in unitIDs)
+            {
+                PCRUnit unit;
+                unit = getByAvatarLevelNoEx(unitID, PCRAvatarLevel.Level3);
+                if (unit != null) return unit;
+                unit = getByAvatarLevelNoEx(unitID, PCRAvatarLevel.Level1);
+                if (unit != null) return unit;
+                unit = getByAvatarLevelNoEx(unitID, PCRAvatarLevel.Level6);
+                if (unit != null) return unit;
+            }
+            return null;
+        }
+
+        public List<PCRUnit> GetBattleTeamInfo(Mat viewportMat, RECT viewportRect)
+        {
+            var list = new List<PCRUnit>();
+            //for (var i = 1; i <= 5; i++)
+            //{
+            //    var unit = GetBattleTeamInfoByIndex(viewportMat, viewportRect, i);
+            //    list.Add(unit);
+            //}
+            var tasks = new Task[5];
+            for (var i = 0; i < 5; i++)
+            {
+                list.Add(null);
+                tasks[i] = new Task((idxO) =>
+                {
+                    var idx = (int)idxO;
+                    var unit = GetBattleTeamInfoByIndex(viewportMat, viewportRect, idx + 1);
+                    list[idx] = unit;
+                }, i);
+                tasks[i].Start();
+            }
+            Task.WaitAll(tasks);
+            ClearUnitAvatarPartialDict();
+            return list;
+        } 
     }
 }

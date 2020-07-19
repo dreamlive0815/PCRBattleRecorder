@@ -30,8 +30,7 @@ namespace PCRBattleRecorder.Script
         public override void OnStart(Mat viewportMat, RECT viewportRect)
         {
             defaultHandler = GetSimpleBattleHandler();
-
-            
+              
         }
 
         public override void Tick(Mat viewportMat, RECT viewportRect)
