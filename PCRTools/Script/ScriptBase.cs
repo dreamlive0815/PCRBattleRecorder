@@ -443,8 +443,35 @@ namespace PCRBattleRecorder.Script
                 tasks[i].Start();
             }
             Task.WaitAll(tasks);
-            ClearUnitAvatarPartialDict();
+            //ClearUnitAvatarPartialDict();
             return list;
-        } 
+        }
+
+
+        private int GetPowerBarPercent(Mat barMat)
+        {
+            var gray = barMat.ToGray();
+            var egY = gray.Height / 2;
+            var cnt = 0;
+            for (var c = 0; c < gray.Cols; c++)
+            {
+                var clr = gray.GetPixel(egY, c);
+                if (clr.R > 100) cnt++;
+            }
+            var percent = (int)(100.0 * cnt / gray.Cols);
+            //gray.SaveImage(configMgr.GetCacheFullPath("barGray.png"));
+            return percent;
+        }
+
+        public void GetBattleSceneUnitsStatus(Mat viewportMat, RECT viewportRect)
+        {
+            for (var i = 1; i <= 5; i++)
+            {
+                var rectRate = GetMatchSourceRectRate($"Battle_Unit_TP_{i}");
+                var mat = viewportMat.GetChildMatByRectRate(rectRate);
+                var percent = GetPowerBarPercent(mat);
+                //mat.SaveImage(configMgr.GetCacheFullPath($"tp_{i}.png"));
+            }
+        }
     }
 }

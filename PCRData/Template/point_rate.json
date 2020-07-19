@@ -10,6 +10,12 @@
     "Battle_Failed_Go_Back": [0.8023, 0.9125],
     "Battle_Speed_Rate": [0.9570, 0.9078],
 
+    "Battle_Scene_Slot_1": [0.2781, 0.8141],
+    "Battle_Scene_Slot_2": [0.3906, 0.8141],
+    "Battle_Scene_Slot_3": [0.5016, 0.8172],
+    "Battle_Scene_Slot_4": [0.6133, 0.8109],
+    "Battle_Scene_Slot_5": [0.7242, 0.8016],
+
     "Battle_Team_Slot_1": [0.1422, 0.8375],
     "Battle_Team_Slot_2": [0.2508, 0.8375],
     "Battle_Team_Slot_3": [0.3516, 0.8375],
