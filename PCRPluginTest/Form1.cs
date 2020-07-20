@@ -70,11 +70,12 @@ namespace PCRPluginTest
             var unit = PCRUnit.FromUnitName("妹弓", 3);
             var unitList = new List<PCRUnit>() { unit };
             //var isok = es.IsBattleSceneUnitUBReady(viewportMat, viewportRect, 1);
-            es.GetBattleSceneUnitsStatus(viewportMat, viewportRect);
+            //es.GetBattleSceneUnitsStatus(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, unitList);
             //var units = es.GetBattleTeamInfo(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, units);
             //RunScript();
+            var r = es.GetBattleLeftTime(viewportMat, viewportRect);
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)

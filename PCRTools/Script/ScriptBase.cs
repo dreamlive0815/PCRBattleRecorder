@@ -8,6 +8,7 @@ using PCRBattleRecorder.Config;
 using PCRBattleRecorder.PCRModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace PCRBattleRecorder.Script
 {
@@ -29,6 +30,7 @@ namespace PCRBattleRecorder.Script
         protected const string BATTLE_FAILED_MKEY = "battle_failed.png";
         protected const string BATTLE_GOTO_MAIN_STAGELINE_MKEY = "battle_goto_main_stageline.png";
         protected const string BATTLE_NEXT_STEP_MKEY = "battle_next_step.png";
+        protected const string BATTLE_PAUSE_TAG_MKEY = "battle_pause_tag.png";
         protected const string BATTLE_SPEED_RATE_1_MKEY = "battle_speed_rate_1.png";
         protected const string BATTLE_SPEED_RATE_2_MKEY = "battle_speed_rate_2.png";
         protected const string BATTLE_SPEED_RATE_4_MKEY = "battle_speed_rate_4.png";
@@ -552,6 +554,20 @@ namespace PCRBattleRecorder.Script
                 });
             }
             return r;
+        }
+
+        public int GetBattleLeftTime(Mat viewportMat, RECT viewportRect)
+        {
+            var rectRate = pcrTools.GetRectRate("Battle_Time");
+            var leftTimeMat = viewportMat.GetChildMatByRectRate(rectRate);
+            var s = OCRTools.GetInstance().OCR(leftTimeMat);
+            var ma = Regex.Match(s, "(\\d+):(\\d+)");
+            if (!ma.Success)
+                throw new Exception(Trans.T("无法读取战斗剩余时间"));
+            var mins = Convert.ToInt32(ma.Groups[1].Value);
+            var secs = Convert.ToInt32(ma.Groups[2].Value);
+            var time =  mins * 60 + secs;
+            return time;
         }
     }
 
