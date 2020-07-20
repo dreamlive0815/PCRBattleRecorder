@@ -304,22 +304,16 @@ namespace PCRBattleRecorder
         /// </summary>
         /// <param name="relativePath"></param>
         /// <returns></returns>
-        public Mat GetResizedTemplateMat(string relativePath)
+        public Mat GetResizedTemplateMatByRawPath(string relativePath)
         {
             var mat = GetTemplateMat(relativePath);
             var resized = ResizedByTemplateViewportSize(mat);
             return resized;
         }
 
-        public Mat GetResizedTemplateMatOfCommon(string imgName)
+        public Mat GetResizedTemplateMat(string imgName)
         {
-            return GetResizedTemplateMat("Common", imgName);
-        }
-
-        public Mat GetResizedTemplateMatOfDefaultRegion(string imgName)
-        {
-            var region = configMgr.PCRRegion;
-            return GetResizedTemplateMat(region.ToString(), imgName);
+            return GetResizedTemplateMat(configMgr.PCRRegion.ToString(), imgName);
         }
 
         public Mat GetResizedTemplateMat(string type, string imgName)

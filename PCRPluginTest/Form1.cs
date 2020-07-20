@@ -50,8 +50,8 @@ namespace PCRPluginTest
             //script = new UndergroundBattleScript();
             //script = new ArenaSearchScript();
             //script = new ActLikabilityScript();
-            script = new StoryScript();
-            //scriptMgr.RunScript(script); 
+            //script = new StoryScript();
+            scriptMgr.RunScript(script); 
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -59,7 +59,7 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Japan;
+            configMgr.PCRRegion = PCRRegion.Mainland;
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
@@ -69,10 +69,12 @@ namespace PCRPluginTest
             CaptureMumu();
             var unit = PCRUnit.FromUnitName("妹弓", 3);
             var unitList = new List<PCRUnit>() { unit };
+            //var isok = es.IsBattleSceneUnitUBReady(viewportMat, viewportRect, 1);
             es.GetBattleSceneUnitsStatus(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, unitList);
             //var units = es.GetBattleTeamInfo(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, units);
+            //RunScript();
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)

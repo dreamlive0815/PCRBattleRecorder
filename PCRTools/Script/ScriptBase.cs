@@ -447,8 +447,7 @@ namespace PCRBattleRecorder.Script
             return list;
         }
 
-
-        private int GetPowerBarPercent(Mat barMat)
+        private int GetPowerBarPercent(Mat barMat, int threshold)
         {
             var gray = barMat.ToGray();
             var egY = gray.Height / 2;
@@ -456,22 +455,111 @@ namespace PCRBattleRecorder.Script
             for (var c = 0; c < gray.Cols; c++)
             {
                 var clr = gray.GetPixel(egY, c);
-                if (clr.R > 100) cnt++;
+                if (clr.R > threshold) cnt++;
             }
             var percent = (int)(100.0 * cnt / gray.Cols);
             //gray.SaveImage(configMgr.GetCacheFullPath("barGray.png"));
             return percent;
         }
 
-        public void GetBattleSceneUnitsStatus(Mat viewportMat, RECT viewportRect)
+        public List<int> GetBattleSceneUnitHPPercents(Mat viewportMat, RECT viewportRect)
         {
+            var r = new List<int>();
             for (var i = 1; i <= 5; i++)
             {
-                var rectRate = GetMatchSourceRectRate($"Battle_Unit_TP_{i}");
-                var mat = viewportMat.GetChildMatByRectRate(rectRate);
-                var percent = GetPowerBarPercent(mat);
-                //mat.SaveImage(configMgr.GetCacheFullPath($"tp_{i}.png"));
+                var percent = GetBattleSceneUnitHPPercent(viewportMat, viewportRect, i);
+                r.Add(percent);
             }
+            return r;
         }
+
+        public int GetBattleSceneUnitHPPercent(Mat viewportMat, RECT viewportRect, int index)
+        {
+            var rectRate = GetMatchSourceRectRate($"Battle_Unit_HP_{index}");
+            var mat = viewportMat.GetChildMatByRectRate(rectRate);
+            var percent = GetPowerBarPercent(mat, 100);
+            return percent;
+        }
+
+        public List<int> GetBattleSceneUnitTPPercents(Mat viewportMat, RECT viewportRect)
+        {
+            var r = new List<int>();
+            for (var i = 1; i <= 5; i++)
+            {
+                var percent = GetBattleSceneUnitTPPercent(viewportMat, viewportRect, i);
+                r.Add(percent);
+            }
+            return r;
+        }
+
+        public int GetBattleSceneUnitTPPercent(Mat viewportMat, RECT viewportRect, int index)
+        {
+            var rectRate = GetMatchSourceRectRate($"Battle_Unit_TP_{index}");
+            var mat = viewportMat.GetChildMatByRectRate(rectRate);
+            var percent = GetPowerBarPercent(mat, 100);
+            return percent;
+        }
+
+        public List<bool> IsBattleSceneUnitsUBReady(Mat viewportMat, RECT viewportRect)
+        {
+            var r = new List<bool>();
+            for (var i = 1; i <= 5; i++)
+            {
+                var isReady = IsBattleSceneUnitUBReady(viewportMat, viewportRect, i);
+                r.Add(isReady);
+            }
+            return r;
+        }
+
+        public bool IsBattleSceneUnitUBReady(Mat viewportMat, RECT viewportRect, int index)
+        {
+            var rectRate = GetMatchSourceRectRate($"Battle_Unit_UB_OK_{index}");
+            var matchSourceMat = viewportMat.GetChildMatByRectRate(rectRate);
+            var threshold = GetMatchTemplateThreshold("Battle_Unit_UB_OK");
+            var templateMat = pcrTools.GetResizedTemplateMat("battle_unit_ub_ok.png");
+            var matchRes = opencvTools.MatchImage(matchSourceMat, templateMat, threshold);
+            return matchRes.Success;
+        }
+
+        public List<PCRUnitStatus> GetBattleSceneUnitsStatus(Mat viewportMat, RECT viewportRect)
+        {
+            List<bool> ubStatus = null;
+            List<int> hpPercents = null;
+            List<int> tpPercents = null;
+            var tasks = new Task[3];
+            tasks[0] = Task.Run(() =>
+            {
+                ubStatus = IsBattleSceneUnitsUBReady(viewportMat, viewportRect);
+            });
+            tasks[1] = Task.Run(() =>
+            {
+                hpPercents = GetBattleSceneUnitHPPercents(viewportMat, viewportRect);
+            });
+            tasks[2] = Task.Run(() =>
+            {
+                tpPercents = GetBattleSceneUnitTPPercents(viewportMat, viewportRect);
+            });
+            Task.WaitAll(tasks);
+            var r = new List<PCRUnitStatus>();
+            for (var i = 0; i < 5; i++)
+            {
+                r.Add(new PCRUnitStatus()
+                {
+                    index = i + 1,
+                    UBReady = ubStatus[i],
+                    HPPercent = hpPercents[i],
+                    TPPercent = tpPercents[i]
+                });
+            }
+            return r;
+        }
+    }
+
+    public struct PCRUnitStatus
+    {
+        public int index;
+        public bool UBReady;
+        public int HPPercent;
+        public int TPPercent;
     }
 }
