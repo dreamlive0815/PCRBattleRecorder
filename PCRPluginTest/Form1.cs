@@ -59,7 +59,7 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Mainland;
+            configMgr.PCRRegion = PCRRegion.Japan;
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
@@ -74,8 +74,8 @@ namespace PCRPluginTest
             //es.SelectBattleTeam(viewportMat, viewportRect, unitList);
             //var units = es.GetBattleTeamInfo(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, units);
-            //RunScript();
-            var r = es.GetBattleLeftTime(viewportMat, viewportRect);
+            RunScript();
+            //var r = es.GetBattleLeftTime(viewportMat, viewportRect);
         }
 
         private void LogTools_OnInfo(string arg1, string arg2)
