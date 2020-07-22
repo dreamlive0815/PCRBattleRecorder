@@ -62,6 +62,19 @@ namespace PCRBattleRecorder
             return output;
         }
 
+        public void DoFastTap(EmulatorPoint point)
+        {
+            var cmd = GetTapCommand(point);
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = configMgr.MumuAdbServerPath,
+                Arguments = cmd,
+                WindowStyle = ProcessWindowStyle.Minimized,
+                CreateNoWindow = true,
+            };
+            var proc = Process.Start(startInfo);
+        }
+
         public void DoTap(EmulatorPoint point)
         {
             var cmd = GetTapCommand(point);

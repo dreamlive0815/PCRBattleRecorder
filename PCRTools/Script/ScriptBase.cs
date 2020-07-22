@@ -123,11 +123,6 @@ namespace PCRBattleRecorder.Script
             return matchResult.Success;
         }
 
-        public bool CanMatchCommonTemplate(Mat viewportMat, RECT viewportRect, string imgName)
-        {
-            return CanMatchTemplate(viewportMat, viewportRect, "Common", imgName);
-        }
-
         public bool CanMatchTemplateOfRegion(Mat viewportMat, RECT viewportRect, PCRRegion region, string imgName)
         {
             return CanMatchTemplate(viewportMat, viewportRect, region.ToString(), imgName);
@@ -192,7 +187,16 @@ namespace PCRBattleRecorder.Script
 
         public bool TryClickListItemNewTag(Mat viewportMat, RECT viewportRect)
         {
-            return TryClickTemplateRect(viewportMat, viewportRect, LIST_ITEM_NEW_TAG_MKEY);
+            if (!CanMatchTemplate(viewportMat, viewportRect, LIST_ITEM_NEW_TAG_MKEY))
+                return false;
+            var matchRes = lastMatchResult;
+            var rectRate = GetMatchSourceRectRate(LIST_ITEM_NEW_TAG_MKEY);
+            var absoluteRect = matchRes.GetMatchedAbsoluteRect(viewportRect, rectRate);
+            var pos = absoluteRect.GetCenterPos();
+            pos.Y = pos.Y + (int)(viewportRect.Height * 0.0500f);
+            var emulatorPoint = mumuTools.GetEmulatorPoint(viewportRect, pos);
+            mumuTools.DoClick(emulatorPoint);
+            return true;
         }
 
         public void DragDownList()
@@ -241,6 +245,36 @@ namespace PCRBattleRecorder.Script
                 return false;
             });
             return func;
+        }
+
+        protected bool battleAutoOn;
+        public bool IsBattleAutoOn(Mat viewportMat, RECT viewportRect)
+        {
+            battleAutoOn = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_ON_MKEY);
+            return battleAutoOn;
+        }
+
+        protected bool battleAutoOff;
+        public bool IsBattleAutoOff(Mat viewportMat, RECT viewportRect)
+        {
+            battleAutoOff = CanMatchTemplate(viewportMat, viewportRect, BATTLE_AUTO_OFF_MKEY);
+            return battleAutoOff;
+        }
+
+        public bool IsBattleScene(Mat viewportMat, RECT viewportRect)
+        {
+            var battleAutoOn = IsBattleAutoOn(viewportMat, viewportRect);
+            var battleAutoOff = IsBattleAutoOff(viewportMat, viewportRect);
+            return battleAutoOn || battleAutoOff;
+        }
+
+        public void ChangeSpeedRate(Mat viewportMat, RECT viewportRect, PCRBattleSpeedRate speedRate)
+        {
+            var curSpeedRate = GetBattleSpeedRate(viewportMat, viewportRect);
+            if (curSpeedRate != speedRate)
+            {
+                mumuTools.DoClick(BATTLE_SPEED_RATE_KEY);
+            }
         }
 
         public virtual void OnBattleFailed(Mat viewportMat, RECT viewportRect)
@@ -292,7 +326,6 @@ namespace PCRBattleRecorder.Script
         {
             mumuTools.DoClick(GO_BACK_KEY);
         }
-
 
         public virtual void OnBattleTeamUnitNotFound(List<PCRUnit> units, bool[] vis)
         {
@@ -556,6 +589,7 @@ namespace PCRBattleRecorder.Script
             return r;
         }
 
+        protected int leftTime;
         public int GetBattleLeftTime(Mat viewportMat, RECT viewportRect)
         {
             var rectRate = pcrTools.GetRectRate("Battle_Time");
@@ -567,6 +601,7 @@ namespace PCRBattleRecorder.Script
             var mins = Convert.ToInt32(ma.Groups[1].Value);
             var secs = Convert.ToInt32(ma.Groups[2].Value);
             var time =  mins * 60 + secs;
+            leftTime = time;
             return time;
         }
     }

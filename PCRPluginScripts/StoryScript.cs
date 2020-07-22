@@ -30,7 +30,9 @@ namespace PCRBattleRecorder.Script
             ClickTab(viewportRect, PCRTab.Story);
         }
 
+        private int dragLimit = 5;
         private int dragTimes = 0;
+        private bool newFlag = false;
 
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
@@ -46,6 +48,10 @@ namespace PCRBattleRecorder.Script
             {
                 logTools.Debug("StoryScript", "MENU_TAG");
             }
+            else if (TryClickTemplateRect(viewportMat, viewportRect, BTN_CLOSE_MKEY))
+            {
+                logTools.Debug("StoryScript", "BTN_CLOSE");
+            }
             else if (CanMatchTemplate(viewportMat, viewportRect, DATA_DOWNLOAD_TITLE_MKEY))
             {
                 logTools.Debug("StoryScript", "DATA_DOWNLOAD");
@@ -57,11 +63,16 @@ namespace PCRBattleRecorder.Script
             }
             else if (TryClickListItemNewTag(viewportMat, viewportRect))
             {
+                newFlag = true;
                 logTools.Debug("StoryScript", "TryClickListItemNewTag");
             }
             else
             {
-                if (!CanMatchTemplate(viewportMat, viewportRect, STORY_GUIDE_TAG_MKEY) || dragTimes > 5)
+                var shouldClickBack = dragTimes > dragLimit;
+                if (dragTimes > dragLimit) newFlag = false;
+                shouldClickBack = shouldClickBack || !CanMatchTemplate(viewportMat, viewportRect, STORY_GUIDE_TAG_MKEY);
+                shouldClickBack = shouldClickBack && !newFlag;
+                if (shouldClickBack)
                 {
                     ClickBack();
                     dragTimes = 0;

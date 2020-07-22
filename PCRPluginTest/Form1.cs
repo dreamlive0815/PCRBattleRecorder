@@ -19,6 +19,8 @@ namespace PCRPluginTest
 {
     public partial class Form1 : Form
     {
+
+        private AdbTools adbTools = AdbTools.GetInstance();
         private ConfigMgr configMgr = ConfigMgr.GetInstance();
         private LogTools logTools = LogTools.GetInstance();
         private MumuTools mumuTools = MumuTools.GetInstance();
@@ -74,7 +76,7 @@ namespace PCRPluginTest
             //es.SelectBattleTeam(viewportMat, viewportRect, unitList);
             //var units = es.GetBattleTeamInfo(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, units);
-            RunScript();
+            //RunScript();
             //var r = es.GetBattleLeftTime(viewportMat, viewportRect);
         }
 
