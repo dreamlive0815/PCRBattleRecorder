@@ -31,6 +31,7 @@ namespace PCRBattleRecorder.Script
         protected const string BATTLE_GOTO_MAIN_STAGELINE_MKEY = "battle_goto_main_stageline.png";
         protected const string BATTLE_NEXT_STEP_MKEY = "battle_next_step.png";
         protected const string BATTLE_PAUSE_TAG_MKEY = "battle_pause_tag.png";
+        protected const string BATTLE_SET_TEAM_SCENE_TITLE_MKEY = "battle_set_team_scene_title.png";
         protected const string BATTLE_SPEED_RATE_1_MKEY = "battle_speed_rate_1.png";
         protected const string BATTLE_SPEED_RATE_2_MKEY = "battle_speed_rate_2.png";
         protected const string BATTLE_SPEED_RATE_4_MKEY = "battle_speed_rate_4.png";

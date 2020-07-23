@@ -48,7 +48,7 @@ namespace PCRBattleRecorder
             double minVal, maxVal;
             OpenCvPoint minLoc, maxLoc;
             Cv2.MinMaxLoc(res, out minVal, out maxVal, out minLoc, out maxLoc);
-            logTools.Debug("OpenCvMatchImage", $"Expect Threshold: {threshold} Maxval: {maxVal}");
+            //logTools.Debug("OpenCvMatchImage", $"Expect Threshold: {threshold} Maxval: {maxVal}");
             if (maxVal < threshold)
                 return new OpenCvMatchImageResult() { Success = false, Maxval = maxVal };
             if (configMgr.DebugMode)

@@ -53,6 +53,7 @@ namespace PCRPluginTest
             //script = new ArenaSearchScript();
             //script = new ActLikabilityScript();
             //script = new StoryScript();
+            script = new BattleRecordScript();
             scriptMgr.RunScript(script); 
         }
 
@@ -61,7 +62,7 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Japan;
+            configMgr.PCRRegion = PCRRegion.Taiwan;
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
@@ -76,7 +77,7 @@ namespace PCRPluginTest
             //es.SelectBattleTeam(viewportMat, viewportRect, unitList);
             //var units = es.GetBattleTeamInfo(viewportMat, viewportRect);
             //es.SelectBattleTeam(viewportMat, viewportRect, units);
-            //RunScript();
+            RunScript();
             //var r = es.GetBattleLeftTime(viewportMat, viewportRect);
         }
 
