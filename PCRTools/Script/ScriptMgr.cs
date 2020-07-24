@@ -72,12 +72,12 @@ namespace PCRBattleRecorder.Script
                         Thread.Sleep(script.Interval);
                         viewportRect = mumuTools.GetMumuViewportRect();
                         viewportCapture = tools.DoCaptureScreen(viewportRect);
-                        logTools.Info("ScriptLoop", $"Script: {script.Name} Tick");
+                        //logTools.Info("ScriptLoop", $"Script: {script.Name} Tick");
                         var viewportMat = viewportCapture.ToOpenCvMat();
                         var startTime = DateTime.Now;
                         script.Tick(viewportMat, viewportRect);
                         var endTime = DateTime.Now;
-                        logTools.Info("ScriptLoop", $"Tick Takes {(endTime - startTime).TotalMilliseconds}ms");
+                        //logTools.Info("ScriptLoop", $"Tick Takes {(endTime - startTime).TotalMilliseconds}ms");
                     }
                     catch (Exception e)
                     {

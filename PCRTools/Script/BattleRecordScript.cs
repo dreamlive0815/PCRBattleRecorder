@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenCvSharp;
 using PCRBattleRecorder.PCRModel;
+using System.Threading;
 
 namespace PCRBattleRecorder.Script
 {
     public class BattleRecordScript : ScriptBase
     {
-
+        private const int TICK_INTERVAL_MS = 200;
         private LogTools logTools = LogTools.GetInstance();
 
         public override string Description
@@ -89,9 +90,8 @@ namespace PCRBattleRecorder.Script
         private bool firstCalUseTime = true;
         private DateTime preTime;
 
-        private void CalUseTime()
+        private int CalUseTime()
         {
-
             var now = DateTime.Now;
             if (firstCalUseTime)
             {
@@ -102,7 +102,9 @@ namespace PCRBattleRecorder.Script
             var span = now - preTime;
             preTime = now;
 
-            logTools.Debug(Name, $"Tick Takes: {span.Milliseconds} MS");
+            var spanMS = span.Milliseconds;
+            logTools.Debug(Name, $"Tick Takes: {spanMS} MS");
+            return spanMS;
         }
 
         private bool hasEnteredBattleScene = false;
@@ -113,6 +115,7 @@ namespace PCRBattleRecorder.Script
 
             if (paused)
             {
+                logTools.Debug(Name, $"PAUSED");
                 return;
             }
 
@@ -127,19 +130,24 @@ namespace PCRBattleRecorder.Script
                     //throw new BreakException(Trans.T("录制过程请不要离开战斗界面"));
                     FinishBattleRecord();
                 }
+                logTools.Debug(Name, $"HAS_NOT_ENTERED");
                 return;
             }
 
 
             var unitStatus = GetBattleSceneUnitsStatus(viewportMat, viewportRect);
 
-            CalUseTime();
+            int spanMS = CalUseTime();
+            var sleepTime = Math.Max(TICK_INTERVAL_MS - spanMS, 0);
+            Thread.Sleep(sleepTime);
     
         }
 
         private void FinishBattleRecord()
         {
 
+
+            throw new BreakException(Trans.T("战斗录制结束"));
         }
     }
 }
