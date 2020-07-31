@@ -90,20 +90,20 @@ namespace PCRBattleRecorder.Script
         private bool firstCalUseTime = true;
         private DateTime preTime;
 
-        private int CalUseTime()
+        private int CalUseTimeAndDelay()
         {
-            var now = DateTime.Now;
             if (firstCalUseTime)
             {
-                preTime = now;
+                preTime = DateTime.Now;
                 firstCalUseTime = false;
             }
-
-            var span = now - preTime;
-            preTime = now;
-
+            var span = DateTime.Now - preTime;
             var spanMS = span.Milliseconds;
             logTools.Debug(Name, $"Tick Takes: {spanMS} MS");
+            var sleepMS = Math.Max(TICK_INTERVAL_MS - spanMS, 0);
+            Thread.Sleep(sleepMS);
+            logTools.Debug(Name, $"Tick Sleep: {sleepMS} MS");
+            preTime = DateTime.Now;
             return spanMS;
         }
 
@@ -136,10 +136,7 @@ namespace PCRBattleRecorder.Script
 
 
             var unitStatus = GetBattleSceneUnitsStatus(viewportMat, viewportRect);
-
-            int spanMS = CalUseTime();
-            var sleepTime = Math.Max(TICK_INTERVAL_MS - spanMS, 0);
-            Thread.Sleep(sleepTime);
+            int spanMS = CalUseTimeAndDelay();
     
         }
 

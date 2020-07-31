@@ -49,11 +49,11 @@ namespace PCRPluginTest
         {
             ScriptBase script;
             script = new StagelineBattleScript();
-            //script = new UndergroundBattleScript();
+            script = new UndergroundBattleScript();
             //script = new ArenaSearchScript();
             //script = new ActLikabilityScript();
             //script = new StoryScript();
-            script = new BattleRecordScript();
+            //script = new BattleRecordScript();
             scriptMgr.RunScript(script); 
         }
 
@@ -62,7 +62,7 @@ namespace PCRPluginTest
             logTools.OnError += LogTools_OnError;
             logTools.OnInfo += LogTools_OnInfo;
 
-            configMgr.PCRRegion = PCRRegion.Taiwan;
+            configMgr.PCRRegion = PCRRegion.Japan;
 
             AdbTools.GetInstance().ConnectToMumuAdbServer();
 
