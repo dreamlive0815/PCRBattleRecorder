@@ -49,7 +49,7 @@ namespace PCRPluginTest
         {
             ScriptBase script;
             script = new StagelineBattleScript();
-            script = new UndergroundBattleScript();
+            //script = new UndergroundBattleScript();
             //script = new ArenaSearchScript();
             //script = new ActLikabilityScript();
             //script = new StoryScript();
