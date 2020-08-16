@@ -45,6 +45,11 @@ namespace PCRBattleRecorder.Script
             battleSceneHandler = GetSimpleBattleSceneHandler(true, PCRBattleSpeedRate.Rate4);
         }
 
+        public override void OnBattleFailed(Mat viewportMat, RECT viewportRect)
+        {
+            mumuTools.DoClick(BATTLE_FAILED_GO_BACK_KEY);
+        }
+
         public override void Tick(Mat viewportMat, RECT viewportRect)
         {
 

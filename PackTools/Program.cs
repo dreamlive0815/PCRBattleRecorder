@@ -9,8 +9,8 @@ namespace PackTools
 {
     class Program
     {
-        //static string mode = "Debug";
-        static string mode = "Release";
+        static string mode = "Debug";
+        //static string mode = "Release";
 
         static string mainProject = "PCRBattleRecorder";
 
@@ -28,7 +28,9 @@ namespace PackTools
 
         static List<string> pluginProjects = new List<string>()
         {
-            "PCRArenaSearchScript"
+            "PCRArenaSearchScript",
+            "PCRBattleScripts",
+            "PCRPluginScripts",
         };
 
         static void Main(string[] args)
